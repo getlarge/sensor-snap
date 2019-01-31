@@ -26,15 +26,9 @@
       <!-- SENSOR DESCRIPTION -->
       <g :transform="`translate(${updatedWidth / 2}, ${updatedHeight / 10})`">
         <text text-anchor="middle" x="0" class="sensor-details">
-          <tspan x="0" :y="`${updatedHeight / 8}`">
-            IPSO : {{ sensor.type }}
-          </tspan>
-          <tspan x="0" :y="`${updatedHeight / 4}`">
-            counter : {{ sensor.frameCounter }}
-          </tspan>
-          <tspan x="0" :y="`${updatedHeight / 3}`">
-            {{ sensor.protocolName }} {{ sensor.protocolVersion }}
-          </tspan>
+          <tspan x="0" :y="`${updatedHeight / 8}`">IPSO : {{ sensor.type }}</tspan>
+          <tspan x="0" :y="`${updatedHeight / 4}`">counter : {{ sensor.frameCounter }}</tspan>
+          <tspan x="0" :y="`${updatedHeight / 3}`">{{ sensor.protocolName }} {{ sensor.protocolVersion }}</tspan>
           <tspan x="0" :y="`${updatedHeight / 2}`">
             routes :
           </tspan>
@@ -44,11 +38,7 @@
           <tspan x="0" :y="`${updatedHeight / 1.5}`">
             {{ sensor.outputPath }}
           </tspan>
-          <tspan
-            v-if="sensor.resources['5750']"
-            x="0"
-            :y="`${updatedHeight / 1.2}`"
-          >
+          <tspan v-if="sensor.resources['5750']" x="0" :y="`${updatedHeight / 1.2}`">
             {{ sensor.resources["5750"] }}
           </tspan>
         </text>
@@ -60,15 +50,28 @@
 
 <script>
 /* eslint-disable no-console */
-import { updateAloesSensors } from "aloes-handlers";
+import {updateAloesSensors} from "aloes-handlers";
 import componentsSchemas from "@/assets/components-list.json";
 import SensorStyles from "@/styles/SensorStyles";
 import deviceTree from "@/assets/device-tree.json";
+import SensorCamera from "./SensorCamera.vue";
+import SensorGauge from "./SensorGauge.vue";
+import SensorLevel from "./SensorLevel.vue";
+import SensorSwitch from "./SensorSwitch.vue";
+import SensorTime from "./SensorTime.vue";
 
 const defaultSensor = deviceTree.children[7];
 
 export default {
   name: "SensorSnap",
+
+  components: {
+    "sensor-camera":SensorCamera,
+    "sensor-gauge":SensorGauge,
+    "sensor-level":SensorLevel,
+    "sensor-switch":SensorSwitch,
+    "sensor-time":SensorTime,
+  },
 
   props: {
     id: {
@@ -76,114 +79,114 @@ export default {
       required: true,
       default: () => {
         return defaultSensor.id.toString();
-      }
+      },
     },
     deviceId: {
       type: String,
       required: true,
-      default: defaultSensor.deviceId.toString()
+      default: defaultSensor.deviceId.toString(),
     },
     name: {
       type: String,
       required: true,
-      default: defaultSensor.name
+      default: defaultSensor.name,
     },
     type: {
       type: Number,
       required: true,
-      default: defaultSensor.type
+      default: defaultSensor.type,
     },
     resources: {
       type: String,
       required: true,
       default: () => {
         return JSON.stringify(defaultSensor.resources);
-      }
+      },
     },
     resource: {
       type: Number,
       required: true,
-      default: defaultSensor.resource
+      default: defaultSensor.resource,
     },
     icons: {
       type: String,
       required: false,
       default: () => {
         return defaultSensor.icons.toString();
-      }
+      },
     },
     colors: {
       type: String,
       required: false,
       default: () => {
         return defaultSensor.colors.toString();
-      }
+      },
     },
     value: {
       type: String,
       required: true,
       default: () => {
         return defaultSensor.value.toString();
-      }
+      },
     },
     frameCounter: {
       type: Number,
       required: false,
-      default: defaultSensor.frameCounter
+      default: defaultSensor.frameCounter,
     },
     devEui: {
       type: String,
       required: true,
-      default: defaultSensor.devEui
+      default: defaultSensor.devEui,
     },
     protocolName: {
       type: String,
       required: true,
-      default: defaultSensor.protocolName
+      default: defaultSensor.protocolName,
     },
     protocolVersion: {
       type: String,
       required: false,
-      default: defaultSensor.protocolVersion
+      default: defaultSensor.protocolVersion,
     },
     inputPath: {
       type: String,
       required: false,
-      default: defaultSensor.inputPath || ""
+      default: defaultSensor.inputPath || "",
     },
     outputPath: {
       type: String,
       required: false,
-      default: defaultSensor.outputPath || ""
+      default: defaultSensor.outputPath || "",
     },
     inPrefix: {
       type: String,
       required: true,
-      default: defaultSensor.inPrefix
+      default: defaultSensor.inPrefix,
     },
     outPrefix: {
       type: String,
       required: true,
-      default: defaultSensor.outPrefix
+      default: defaultSensor.outPrefix,
     },
     nativeSensorId: {
       type: String,
       required: true,
-      default: defaultSensor.nativeSensorId
+      default: defaultSensor.nativeSensorId,
     },
     nativeNodeId: {
       type: String,
       required: false,
-      default: defaultSensor.nativeNodeId || null
+      default: defaultSensor.nativeNodeId || null,
     },
     width: {
       type: Number,
-      default: 450
+      default: 450,
     },
     height: {
       type: Number,
-      default: 480
-    }
+      default: 480,
+    },
   },
 
   data() {
@@ -199,7 +202,7 @@ export default {
       updatedSensor: null,
       updatedWidth: null,
       updatedHeight: null,
-      aSide: true
+      aSide: true,
     };
   },
 
@@ -213,38 +216,18 @@ export default {
       } else if (this.updatedType === componentsSchemas.color.list[0]) {
         //  return "color";
         return null;
-      } else if (
-        componentsSchemas.gauge.list.find(
-          objectId => objectId === this.updatedType
-        )
-      ) {
+      } else if (componentsSchemas.gauge.list.find((objectId) => objectId === this.updatedType)) {
         return "gauge";
-      } else if (
-        componentsSchemas.level.list.find(
-          objectId => objectId === this.updatedType
-        )
-      ) {
+      } else if (componentsSchemas.level.list.find((objectId) => objectId === this.updatedType)) {
         return "level";
       } else if (this.updatedType === componentsSchemas.map.list[0]) {
         //  return "map"
         return null;
-      } else if (
-        componentsSchemas.switch.list.find(
-          objectId => objectId === this.updatedType
-        )
-      ) {
+      } else if (componentsSchemas.switch.list.find((objectId) => objectId === this.updatedType)) {
         return "switch";
-      } else if (
-        componentsSchemas.time.list.find(
-          objectId => objectId === this.updatedType
-        )
-      ) {
+      } else if (componentsSchemas.time.list.find((objectId) => objectId === this.updatedType)) {
         return "time";
-      } else if (
-        componentsSchemas.timer.list.find(
-          objectId => objectId === this.updatedType
-        )
-      ) {
+      } else if (componentsSchemas.timer.list.find((objectId) => objectId === this.updatedType)) {
         //  return "timer"
         return null;
       }
@@ -264,16 +247,16 @@ export default {
       },
       set(value) {
         this.updatedSensor = value;
-      }
+      },
     },
     stylesConf() {
       return {
         height: this.updatedHeight,
         width: this.updatedWidth,
         successColor: `${this.sensor.colors[0]}`,
-        warningColor: `${this.sensor.colors[1]}`
+        warningColor: `${this.sensor.colors[1]}`,
       };
-    }
+    },
   },
 
   watch: {
@@ -281,57 +264,57 @@ export default {
       handler(name) {
         this.updatedName = name;
       },
-      immediate: true
+      immediate: true,
     },
     type: {
       handler(type) {
         this.updatedType = Number(type);
       },
-      immediate: true
+      immediate: true,
     },
     value: {
       handler(value) {
         //  this.parseUpdatedValue(value);
         this.updatedValue = JSON.parse(value);
       },
-      immediate: true
+      immediate: true,
     },
     icons: {
       handler(icons) {
         this.updatedIcons = icons.split(",");
       },
-      immediate: true
+      immediate: true,
     },
     colors: {
       handler(colors) {
         this.updatedColors = colors.split(",");
       },
-      immediate: true
+      immediate: true,
     },
     resources: {
       handler(resources) {
         this.updatedResources = JSON.parse(resources);
       },
-      immediate: true
+      immediate: true,
     },
     resource: {
       handler(resource) {
         this.updatedResource = resource;
       },
-      immediate: true
+      immediate: true,
     },
     width: {
       handler(width) {
         this.updatedWidth = width;
       },
-      immediate: true
+      immediate: true,
     },
     height: {
       handler(height) {
         this.updatedHeight = height;
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
 
   mounted() {
@@ -373,7 +356,7 @@ export default {
           resource: this.updatedResource,
           icons: this.updatedIcons,
           colors: this.updatedColors,
-          value: this.updatedValue
+          value: this.updatedValue,
         };
         return this.updatedSensor;
       } else if (this.$props.protocolName.toLowerCase() === "aloeslight") {
@@ -395,7 +378,7 @@ export default {
           resource: this.updatedResource,
           icons: this.updatedIcons,
           colors: this.updatedColors,
-          value: this.updatedValue
+          value: this.updatedValue,
         };
         return this.updatedSensor;
       }
@@ -427,15 +410,15 @@ export default {
     updateStyles(componentName) {
       if (!componentName || componentName === null) return null;
       const styleName = componentName.split("-")[1];
-      const styles = `${SensorStyles.picker(
-        "snap",
+      const styles = `${SensorStyles.picker("snap", this.sensor, this.stylesConf)} ${SensorStyles.picker(
+        styleName,
         this.sensor,
-        this.stylesConf
-      )} ${SensorStyles.picker(styleName, this.sensor, this.stylesConf)}`;
+        this.stylesConf,
+      )}`;
       //  console.log("updateStyles", styles);
       console.log("updateStyles", this.style);
       return styles;
-    }
-  }
+    },
+  },
 };
 </script>
