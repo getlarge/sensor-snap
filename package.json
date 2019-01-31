@@ -9,7 +9,7 @@
     "build-wc": "vue-cli-service build --target wc --name SensorSnap ./src/App.vue --dest build --modern",
     "lint": "vue-cli-service lint"
   },
-  "main": ".dist/SensorSnap.common.js",
+  "main": "./dist/SensorSnap.umd.js",
   "files": [
     "dist/*",
     "src/*",
