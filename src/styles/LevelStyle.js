@@ -1,4 +1,4 @@
-const levelStyle = (conf) => {
+const levelStyle = conf => {
   return `svg.sensor-level {
   --font-color: ${conf.fontColor};
   --primary-color: ${conf.primaryColor};
@@ -9,7 +9,8 @@ const levelStyle = (conf) => {
   --border-radius: 5px;
   --border: 1px solid transparent;
   --box-shadow: 0 ${conf.width / 50}px ${conf.width / 35}px 0px #6e6e6e;
-  --box-shadow-selected: 0 ${conf.width / 75}px ${conf.width / 100}px 0px #6e6e6e;
+  --box-shadow-selected: 0 ${conf.width / 75}px ${conf.width /
+    100}px 0px #6e6e6e;
   cursor: pointer;
   overflow: hidden;
 }

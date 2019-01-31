@@ -53,31 +53,47 @@
     <g
       :transform="`translate(${updatedWidth / 2.5}, ${updatedHeight / 8})`"
       @click="
-        updatedSensor.resources['5650'] ? updateSensor(updatedSensor, 5650, updatedSensor.resources['5650']) : null
+        updatedSensor.resources['5650']
+          ? updateSensor(updatedSensor, 5650, updatedSensor.resources['5650'])
+          : null
       "
     >
       <image
         :transform="`translate(0, ${updatedHeight / 8})`"
         :height="`${updatedHeight / 5.3}`"
         :width="`${updatedWidth / 5}`"
-        v-bind="{'xlink:href': updatedSensor.icons[0]}"
+        v-bind="{ 'xlink:href': updatedSensor.icons[0] }"
         class="sensor-icon"
       />
-      <g v-if="displayNeedle" :transform="`rotate(${value} ${updatedWidth / 2} ${updatedHeight / 2})`">
+      <g
+        v-if="displayNeedle"
+        :transform="`rotate(${value} ${updatedWidth / 2} ${updatedHeight / 2})`"
+      >
         <image
           :ref="`gaugeNeedle-${updatedSensor.id}`"
           :transform="`translate(0, ${updatedHeight / 8})`"
           :height="`${updatedHeight / 2.28}`"
           :width="`${updatedWidth / 7.5}`"
           class="meter-needle"
-          v-bind="{'xlink:href': gaugeNeedle}"
+          v-bind="{ 'xlink:href': gaugeNeedle }"
         />
       </g>
-      <text :transform="`translate(${updatedWidth / 10}, ${updatedHeight / 1.8})`" class="sensor-resources">
-        <tspan x="0" :y="`${updatedHeight / 10}`">Min range : {{ minRangeValue }}</tspan>
-        <tspan x="0" :y="`${(updatedHeight / 10) * 1.4}`">Max range : {{ maxRangeValue }}</tspan>
-        <tspan x="0" :y="`${(updatedHeight / 10) * 1.8}`">Min measurment : {{ minMeasuredValue }}</tspan>
-        <tspan x="0" :y="`${(updatedHeight / 10) * 2.2}`">Max measurment : {{ maxMeasuredValue }}</tspan>
+      <text
+        :transform="`translate(${updatedWidth / 10}, ${updatedHeight / 1.8})`"
+        class="sensor-resources"
+      >
+        <tspan x="0" :y="`${updatedHeight / 10}`">
+          Min range : {{ minRangeValue }}
+        </tspan>
+        <tspan x="0" :y="`${(updatedHeight / 10) * 1.4}`">
+          Max range : {{ maxRangeValue }}
+        </tspan>
+        <tspan x="0" :y="`${(updatedHeight / 10) * 1.8}`">
+          Min measurment : {{ minMeasuredValue }}
+        </tspan>
+        <tspan x="0" :y="`${(updatedHeight / 10) * 2.2}`">
+          Max measurment : {{ maxMeasuredValue }}
+        </tspan>
       </text>
     </g>
   </svg>
@@ -93,40 +109,40 @@ export default {
   props: {
     sensor: {
       type: String,
-      required: true,
+      required: true
     },
     width: {
       type: Number,
-      default: 150,
+      default: 150
     },
     height: {
       type: Number,
-      default: 140,
+      default: 140
     },
     startAngle: {
       type: Number,
-      default: 135,
+      default: 135
     },
     endAngle: {
       type: Number,
-      default: 45,
+      default: 45
     },
     valueDialClass: {
       type: String,
-      default: "value",
+      default: "value"
     },
     valueTextClass: {
       type: String,
-      default: "value-text",
+      default: "value-text"
     },
     dialClass: {
       type: String,
-      default: "dial",
+      default: "dial"
     },
     gaugeClass: {
       type: String,
-      default: "sensor-gauge",
-    },
+      default: "sensor-gauge"
+    }
   },
 
   data() {
@@ -140,9 +156,9 @@ export default {
       displayValue: true,
       displayNeedle: false,
       gaugeColor: true,
-      requestAnimationFrame: (cb) => {
+      requestAnimationFrame: cb => {
         return setTimeout(cb, 1000 / 60);
-      },
+      }
     };
   },
 
@@ -166,7 +182,7 @@ export default {
       },
       set(value) {
         this.updatedSensor.resources["5601"] = Number(value);
-      },
+      }
     },
     maxMeasuredValue: {
       get() {
@@ -175,7 +191,7 @@ export default {
       },
       set(value) {
         this.updatedSensor.resources["5602"] = Number(value);
-      },
+      }
     },
     minRangeValue: {
       get() {
@@ -184,7 +200,7 @@ export default {
       },
       set(value) {
         this.updatedSensor.resources["5603"] = Number(value);
-      },
+      }
     },
     maxRangeValue: {
       get() {
@@ -193,7 +209,7 @@ export default {
       },
       set(value) {
         this.updatedSensor.resources["5604"] = Number(value);
-      },
+      }
     },
     mainResourceId() {
       if (this.updatedSensor.type === 3202) return "5600";
@@ -201,7 +217,12 @@ export default {
       return "5700";
     },
     dialContainerPath() {
-      return this.pathString(this.radius, this.startAngle, this.endAngle, this.flag());
+      return this.pathString(
+        this.radius,
+        this.startAngle,
+        this.endAngle,
+        this.flag()
+      );
     },
     valueDialContainerPath() {
       return this.pathString(this.radius, this.startAngle, this.startAngle);
@@ -221,13 +242,17 @@ export default {
         this.updatedSensor.resources[this.mainResourceId] = this.normalize(
           value,
           this.minRangeValue,
-          this.maxRangeValue,
+          this.maxRangeValue
         );
-      },
+      }
     },
     valueInPercentage() {
-      return this.getValueInPercentage(this.value, this.minRangeValue, this.maxRangeValue);
-    },
+      return this.getValueInPercentage(
+        this.value,
+        this.minRangeValue,
+        this.maxRangeValue
+      );
+    }
   },
 
   watch: {
@@ -235,19 +260,19 @@ export default {
       handler(sensor) {
         this.updatedSensor = JSON.parse(sensor);
       },
-      immediate: true,
+      immediate: true
     },
     width: {
       handler(width) {
         this.updatedWidth = width;
       },
-      immediate: true,
+      immediate: true
     },
     height: {
       handler(height) {
         this.updatedHeight = height;
       },
-      immediate: true,
+      immediate: true
     },
     value: {
       handler(value) {
@@ -259,8 +284,8 @@ export default {
         this.setValueAnimated(value);
         this.previousValue = value;
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
 
   mounted() {
@@ -283,7 +308,7 @@ export default {
 
   methods: {
     hasRightType(type) {
-      return componentsSchemas.gauge.list.find((objectId) => objectId === type);
+      return componentsSchemas.gauge.list.find(objectId => objectId === type);
     },
 
     updateSensor(...args) {
@@ -300,8 +325,12 @@ export default {
 
     mountElements() {
       this.gaugeElement = this.$refs[`gaugeContainer-${this.updatedSensor.id}`];
-      this.gaugeValuePath = this.$refs[`valueDialContainer-${this.updatedSensor.id}`];
-      this.gaugeValueElem = this.$refs[`valueTextContainer-${this.updatedSensor.id}`];
+      this.gaugeValuePath = this.$refs[
+        `valueDialContainer-${this.updatedSensor.id}`
+      ];
+      this.gaugeValueElem = this.$refs[
+        `valueTextContainer-${this.updatedSensor.id}`
+      ];
       this.elementsMounted = true;
     },
 
@@ -317,7 +346,10 @@ export default {
 
     angle(val) {
       if (!val || val === null) val = 100;
-      return this.getAngle(val, 360 - Math.abs(this.startAngle - this.endAngle));
+      return this.getAngle(
+        val,
+        360 - Math.abs(this.startAngle - this.endAngle)
+      );
     },
 
     easeInOutCubic(pos) {
@@ -371,7 +403,7 @@ export default {
       const rad = (angle * Math.PI) / 180;
       return {
         x: Math.round((cx + radius * Math.cos(rad)) * 1000) / 1000,
-        y: Math.round((cy + radius * Math.sin(rad)) * 1000) / 1000,
+        y: Math.round((cy + radius * Math.sin(rad)) * 1000) / 1000
       };
     },
 
@@ -380,7 +412,7 @@ export default {
       const cy = this.centerY;
       return {
         end: this.getCartesian(cx, cy, radius, endAngle),
-        start: this.getCartesian(cx, cy, radius, startAngle),
+        start: this.getCartesian(cx, cy, radius, startAngle)
       };
     },
 
@@ -389,7 +421,19 @@ export default {
       const start = coords.start;
       const end = coords.end;
       const largeArcFlag = typeof largeArc === "undefined" ? 1 : largeArc;
-      return ["M", start.x, start.y, "A", this.radius, this.radius, 0, largeArcFlag, 1, end.x, end.y].join(" ");
+      return [
+        "M",
+        start.x,
+        start.y,
+        "A",
+        this.radius,
+        this.radius,
+        0,
+        largeArcFlag,
+        1,
+        end.x,
+        end.y
+      ].join(" ");
     },
 
     setGaugeColor(value, duration) {
@@ -406,19 +450,19 @@ export default {
       }
       const dur = duration * 1000;
       const pathTransition = `stroke ${dur} ms ease`;
-      textTransition = `fill ${dur} ms ease`;
+      const textTransition = `fill ${dur} ms ease`;
       this.gaugeValuePath.style = [
         `stroke: ${c}`,
         `-webkit-transition: ${pathTransition}`,
         `-moz-transition: ${pathTransition}`,
-        `transition: ${pathTransition}`,
+        `transition: ${pathTransition}`
       ].join(";");
 
       this.gaugeValueElem.style = [
         `fill: ${c}`,
-        `-webkit-transition: ${pathTransition}`,
-        `-moz-transition: ${pathTransition}`,
-        `transition: ${pathTransition}`,
+        `-webkit-transition: ${textTransition}`,
+        `-moz-transition: ${textTransition}`,
+        `transition: ${textTransition}`
       ].join(";");
     },
 
@@ -443,14 +487,18 @@ export default {
         duration: duration || 1,
         step: (val, frame) => {
           this.updateGauge(val, frame);
-        },
+        }
       });
     },
 
     updateGauge(theValue) {
       if (!this.elementsMounted) return null;
       // this is because we are using arc greater than 180deg
-      const value = this.getValueInPercentage(theValue, this.minRangeValue, this.maxRangeValue);
+      const value = this.getValueInPercentage(
+        theValue,
+        this.minRangeValue,
+        this.maxRangeValue
+      );
       if (this.displayValue) {
         this.gaugeValueElem.textContent = this.label(theValue);
       }
@@ -458,9 +506,14 @@ export default {
       if (this.value < this.minRangeValue) return;
       this.gaugeValuePath.setAttribute(
         "d",
-        this.pathString(this.radius, this.startAngle, this.angle(value) + this.startAngle, this.flag(value)),
+        this.pathString(
+          this.radius,
+          this.startAngle,
+          this.angle(value) + this.startAngle,
+          this.flag(value)
+        )
       );
-    },
-  },
+    }
+  }
 };
 </script>

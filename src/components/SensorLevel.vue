@@ -29,13 +29,18 @@
     />
     <g :transform="`translate(0, ${updatedHeight / 4.8})`">
       <defs>
-        <symbol :id="`rangeMarks-${updatedSensor.id}`" shape-rendering="crispEdges">
+        <symbol
+          :id="`rangeMarks-${updatedSensor.id}`"
+          shape-rendering="crispEdges"
+        >
           <path
             v-for="gradient in gradients"
             :key="gradient.pos"
             class="range-marks-path"
             :d="
-              `M ${updatedWidth / gradient.margin} ${gradientHeight(gradient.pos)} l ${updatedWidth / gradient.width} 0`
+              `M ${updatedWidth / gradient.margin} ${gradientHeight(
+                gradient.pos
+              )} l ${updatedWidth / gradient.width} 0`
             "
           ></path>
         </symbol>
@@ -50,12 +55,15 @@
           <path class="range-slider-path" :d="newPath"></path>
         </clipPath>
       </defs>
-      <use v-bind="{'xlink:href': `#rangeMarks-${updatedSensor.id}`}" class="range-marks-colored"></use>
+      <use
+        v-bind="{ 'xlink:href': `#rangeMarks-${updatedSensor.id}` }"
+        class="range-marks-colored"
+      ></use>
       <!-- Slider `path`, that will be morphed properly on user interaction -->
       <path class="range-slider-path" :d="newPath"></path>
       <!--  :d="`M 0 ${updatedHeight} l ${updatedWidth} 0 l 0 ${updatedHeight} l -${updatedWidth} 0 Z`" -->
       <use
-        v-bind="{'xlink:href': `#rangeMarks-${updatedSensor.id}`}"
+        v-bind="{ 'xlink:href': `#rangeMarks-${updatedSensor.id}` }"
         class="range-marks-white"
         :clip-path="`url(#rangeSliderClipPath-${updatedSensor.id})`"
       ></use>
@@ -102,16 +110,16 @@ export default {
   props: {
     sensor: {
       type: String,
-      required: true,
+      required: true
     },
     width: {
       type: Number,
-      default: 150,
+      default: 150
     },
     height: {
       type: Number,
-      default: 140,
-    },
+      default: 140
+    }
   },
 
   data() {
@@ -140,22 +148,22 @@ export default {
       loading: false,
       elementsMounted: false,
       gradients: [
-        {margin: 1.19, width: 14, pos: 15},
-        {margin: 1.17, width: 18, pos: 14},
-        {margin: 1.16, width: 21, pos: 13},
-        {margin: 1.15, width: 25, pos: 12},
-        {margin: 1.15, width: 25, pos: 11},
-        {margin: 1.15, width: 25, pos: 10},
-        {margin: 1.15, width: 25, pos: 9},
-        {margin: 1.15, width: 25, pos: 8},
-        {margin: 1.15, width: 25, pos: 7},
-        {margin: 1.15, width: 25, pos: 6},
-        {margin: 1.15, width: 25, pos: 5},
-        {margin: 1.15, width: 25, pos: 4},
-        {margin: 1.16, width: 21, pos: 3},
-        {margin: 1.17, width: 18, pos: 2},
-        {margin: 1.19, width: 14, pos: 1},
-      ],
+        { margin: 1.19, width: 14, pos: 15 },
+        { margin: 1.17, width: 18, pos: 14 },
+        { margin: 1.16, width: 21, pos: 13 },
+        { margin: 1.15, width: 25, pos: 12 },
+        { margin: 1.15, width: 25, pos: 11 },
+        { margin: 1.15, width: 25, pos: 10 },
+        { margin: 1.15, width: 25, pos: 9 },
+        { margin: 1.15, width: 25, pos: 8 },
+        { margin: 1.15, width: 25, pos: 7 },
+        { margin: 1.15, width: 25, pos: 6 },
+        { margin: 1.15, width: 25, pos: 5 },
+        { margin: 1.15, width: 25, pos: 4 },
+        { margin: 1.16, width: 21, pos: 3 },
+        { margin: 1.17, width: 18, pos: 2 },
+        { margin: 1.19, width: 14, pos: 1 }
+      ]
     };
   },
 
@@ -173,7 +181,7 @@ export default {
       set(value) {
         //  this.updatedSensor.resources["5851"] = parseInt(value);
         this.updatedSensor.resources["5851"] = value;
-      },
+      }
     },
     rangeMin() {
       if (!this.updatedSensor || !this.updatedSensor.resources) return 0;
@@ -192,7 +200,9 @@ export default {
       return (this.rangeHeight * this.rangeMax) / this.rangeMax;
     },
     scale() {
-      const scale = ((this.value - this.rangeMin) / (this.rangeMax - this.rangeMin)) * this.scaleMax;
+      const scale =
+        ((this.value - this.rangeMin) / (this.rangeMax - this.rangeMin)) *
+        this.scaleMax;
       return scale;
     },
     newSliderY() {
@@ -202,10 +212,21 @@ export default {
       return this.currentY + this.mouseY - this.pageY;
     },
     newPath() {
-      if (this.value > this.rangeMax) return this.buildPath(this.lastMouseDy, this.rangeHeight - this.rangeMaxY);
-      if (this.value < this.minRange) return this.buildPath(this.lastMouseDy, this.rangeHeight - this.rangeMinY);
-      return this.buildPath(this.lastMouseDy, this.rangeHeight - this.newSliderY);
-    },
+      if (this.value > this.rangeMax)
+        return this.buildPath(
+          this.lastMouseDy,
+          this.rangeHeight - this.rangeMaxY
+        );
+      if (this.value < this.minRange)
+        return this.buildPath(
+          this.lastMouseDy,
+          this.rangeHeight - this.rangeMinY
+        );
+      return this.buildPath(
+        this.lastMouseDy,
+        this.rangeHeight - this.newSliderY
+      );
+    }
   },
 
   watch: {
@@ -213,19 +234,19 @@ export default {
       handler(sensor) {
         this.updatedSensor = JSON.parse(sensor);
       },
-      immediate: true,
+      immediate: true
     },
     width: {
       handler(width) {
         this.updatedWidth = width;
       },
-      immediate: true,
+      immediate: true
     },
     height: {
       handler(height) {
         this.updatedHeight = height;
       },
-      immediate: true,
+      immediate: true
     },
     value: {
       handler(value) {
@@ -233,8 +254,8 @@ export default {
         this.afterUpdate();
         this.previousValue = value;
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
 
   mounted() {
@@ -257,7 +278,7 @@ export default {
 
   methods: {
     hasRightType(type) {
-      return componentsSchemas.level.list.find((objectId) => objectId === type);
+      return componentsSchemas.level.list.find(objectId => objectId === type);
     },
 
     updateSensor(...args) {
@@ -282,7 +303,9 @@ export default {
 
     // Handle `mousedown` and `touchstart` events, saving data about mouse position
     mouseDown(e) {
-      this.mouseY = this.mouseInitialY = e.targetTouches ? e.targetTouches[0].pageY : e.pageY;
+      this.mouseY = this.mouseInitialY = e.targetTouches
+        ? e.targetTouches[0].pageY
+        : e.pageY;
       this.rangeWrapperLeft = this.rangeWrapper.getBoundingClientRect().left;
     },
 
@@ -297,9 +320,12 @@ export default {
           this.currentY = this.newY;
           this.mouseY = this.pageY;
         } else {
-          this.currentY = this.newY < this.rangeMinY ? this.rangeMinY : this.rangeMaxY;
+          this.currentY =
+            this.newY < this.rangeMinY ? this.rangeMinY : this.rangeMaxY;
         }
-        this.value = parseInt((this.currentY * this.rangeMax) / this.rangeHeight);
+        this.value = parseInt(
+          (this.currentY * this.rangeMax) / this.rangeHeight
+        );
       }
     },
 
@@ -345,21 +371,26 @@ export default {
     buildPath(dy, ty) {
       if (!dy || dy === null) dy = 0;
       if (!ty || ty === null) ty = 0;
-      return `M 0 ${ty} q ${this.mouseX} ${dy} ${this.updatedWidth} 0 l 0 ${this.updatedHeight} l -${
-        this.updatedWidth
-      } 0 Z`;
+      return `M 0 ${ty} q ${this.mouseX} ${dy} ${this.updatedWidth} 0 l 0 ${
+        this.updatedHeight
+      } l -${this.updatedWidth} 0 Z`;
     },
 
     afterUpdate() {
       if (!this.elementsMounted) return null;
       if (this.value > this.rangeMax) return null;
       if (this.value < this.rangeMin) return null;
-      anime.remove([this.rangeValues, this.rangeSliderPaths[0], this.rangeSliderPaths[1]]);
+      anime.remove([
+        this.rangeValues,
+        this.rangeSliderPaths[0],
+        this.rangeSliderPaths[1]
+      ]);
       // Some maths calc
       if (Math.abs(this.mouseDy) < this.mouseDyLimit) {
         this.lastMouseDy = this.mouseDy;
       } else {
-        this.lastMouseDy = this.mouseDy < 0 ? -this.mouseDyLimit : this.mouseDyLimit;
+        this.lastMouseDy =
+          this.mouseDy < 0 ? -this.mouseDyLimit : this.mouseDyLimit;
       }
       // if (this.newSliderY < this.rangeMinY || this.newSliderY > this.rangeMaxY) {
       //   this.newSliderY = this.newSliderY < this.rangeMinY ? this.rangeMinY : this.rangeMaxY;
@@ -373,7 +404,8 @@ export default {
         targets: this.rangeSliderPaths,
         d: this.buildPath(
           -this.lastMouseDy * 1.3,
-          this.rangeHeight - (this.currentY - this.lastMouseDy / this.mouseDyFactor),
+          this.rangeHeight -
+            (this.currentY - this.lastMouseDy / this.mouseDyFactor)
         ),
         duration: 150,
         easing: "linear",
@@ -383,15 +415,17 @@ export default {
             targets: this.rangeSliderPaths,
             d: this.buildPath(0, this.rangeHeight - this.currentY),
             duration: 2000,
-            elasticity: 500,
+            elasticity: 500
           });
-        },
+        }
       });
 
       // Translate the values to the opposite direction, to simulate a strong elasticity
       anime({
         targets: this.rangeValues,
-        translateY: this.rangeHeight - (this.currentY + this.lastMouseDy / this.mouseDyFactor / 4),
+        translateY:
+          this.rangeHeight -
+          (this.currentY + this.lastMouseDy / this.mouseDyFactor / 4),
         duration: 150,
         easing: "linear",
         complete: () => {
@@ -399,11 +433,11 @@ export default {
             targets: this.rangeValues,
             translateY: this.rangeHeight - this.currentY,
             duration: 2000,
-            elasticity: 500,
+            elasticity: 500
           });
-        },
+        }
       });
-    },
-  },
+    }
+  }
 };
 </script>

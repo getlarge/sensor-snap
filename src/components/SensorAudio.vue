@@ -72,6 +72,61 @@ export default {
 
     flipSide(value) {
       this.$emit("flip-side", value);
+    },
+
+    // WIP
+    initAudioPlayer() {
+      var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      var source;
+      var pre = document.querySelector("pre");
+      var myScript = document.querySelector("script");
+      var play = document.querySelector(".play");
+      var stop = document.querySelector(".stop");
+      var errorDisplay = document.querySelector(".error");
+
+      // use fetch to load an audio track, and
+      // decodeAudioData to decode it and stick it in a buffer.
+      // Then we put the buffer into the source
+      function getData() {
+        source = audioCtx.createBufferSource();
+
+        return fetch("viper.ogg")
+          .then(function(response) {
+            if (!response.ok) {
+              throw new Error("HTTP error, status = " + response.status);
+            }
+            return response.arrayBuffer();
+          })
+          .then(function(buffer) {
+            audioCtx.decodeAudioData(buffer, function(decodedData) {
+              source.buffer = decodedData;
+              source.connect(audioCtx.destination);
+            });
+          });
+      }
+
+      // wire up buttons to stop and play audio
+      play.onclick = function() {
+        getData()
+          .then(function() {
+            errorDisplay.innerHTML = "";
+            source.start(0);
+            play.disabled = true;
+          })
+          .catch(function(error) {
+            errorDisplay.appendChild(
+              document.createTextNode("Error: " + error.message)
+            );
+          });
+      };
+
+      stop.onclick = function() {
+        source.stop(0);
+        play.disabled = false;
+      };
+
+      // dump script to pre element
+      pre.innerHTML = myScript.innerHTML;
     }
   }
 };

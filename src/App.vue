@@ -42,14 +42,14 @@ export default {
 
   components: {
     //  "sensor-snap": () => import("@/components/SensorSnap.vue"),
-    "sensor-snap": SensorSnap,
+    "sensor-snap": SensorSnap
   },
 
   data() {
     return {
       sensor: deviceTree.children[6],
       width: 450,
-      height: 480,
+      height: 480
     };
   },
 
@@ -60,19 +60,13 @@ export default {
       },
       set(value) {
         this.sensor = value;
-      },
-    },
+      }
+    }
   },
 
   mounted() {
-    // setInterval(() => {
-    //   const resource = this.sensor.resource.toString();
-    //   const sensor = JSON.parse(JSON.stringify(this.sensor));
-    //   console.log("oldSensor", sensor.resources[resource]);
-    //   sensor.resources[resource] = this.sensor.resources[resource] + Math.floor(Math.random() + 10);
-    //   this.sensor = sensor;
-    //   console.log("newSensor", this.sensor.resources[resource]);
-    // }, 3000);
+    //  this.measurementTest()
+    //  this.cameraTest();
   },
 
   methods: {
@@ -86,6 +80,38 @@ export default {
     onDeleteSensor(...args) {
       console.log("aloes-sensor deleteSensor()", args);
     },
-  },
+
+    measurementTest() {
+      setInterval(() => {
+        const resource = this.sensor.resource.toString();
+        const sensor = JSON.parse(JSON.stringify(this.sensor));
+        console.log("oldSensor", sensor.resources[resource]);
+        sensor.value =
+          this.sensor.resources[resource] + Math.floor(Math.random() + 500);
+        sensor.resources[resource] = sensor.value;
+        this.sensor = sensor;
+        console.log("newSensor", this.sensor.resources[resource]);
+      }, 3000);
+    },
+
+    cameraTest() {
+      const sensor = JSON.parse(JSON.stringify(this.sensor));
+      console.log("oldSensor", sensor.resources["5910"]);
+      return fetch("/icons/aloes/clock.png")
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("HTTP error, status = " + response.status);
+          }
+          return response.arrayBuffer();
+        })
+        .then(buffer => {
+          // this.$refs[`sensorSnap-${this.sensor.id}`].sendCommand("getImage", new Blob([buffer]));
+          sensor.value = Buffer.from(buffer);
+          sensor.resources["5910"] = Buffer.from(buffer);
+          this.sensor = sensor;
+          console.log("newSensor", this.sensor.resources["5910"]);
+        });
+    }
+  }
 };
 </script>

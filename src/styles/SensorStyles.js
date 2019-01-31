@@ -18,7 +18,7 @@ const conf = (sensor, styles) => {
     secondaryColor: styles.secondaryColor || "#55ffb6",
     successColor: styles.successColor || "#69ff4f",
     warningColor: styles.warningColor || "#fff62d",
-    dangerColor: styles.dangerColor || "#ff954d",
+    dangerColor: styles.dangerColor || "#ff954d"
   };
 };
 
@@ -26,7 +26,7 @@ SensorStyles.picker = (styleName, sensor, styles) => {
   return SensorStyles[styleName](conf(sensor, styles));
 };
 
-SensorStyles.snap = (conf) => {
+SensorStyles.snap = conf => {
   return `@font-face {
   /* Aloes Regular - latin */
   font-family: 'Aloes-Rg';
@@ -58,7 +58,8 @@ div.sensor-snap {
   --border-radius: ${conf.width / 30}px;
   --border: 1px solid transparent;
   --box-shadow: 0 ${conf.width / 70}px ${conf.width / 35}px 0px #6e6e6e;
-  --box-shadow-selected: 0 ${conf.width / 75}px ${conf.width / 100}px 0px #6e6e6e;
+  --box-shadow-selected: 0 ${conf.width / 75}px ${conf.width /
+    100}px 0px #6e6e6e;
   text-align: center;
   font-family: ${conf.fontFamily};
 }
@@ -105,7 +106,7 @@ div.sensor-snap > svg > g > text.sensor-details {
 }`;
 };
 
-SensorStyles.audio = (conf) => {
+SensorStyles.audio = conf => {
   return `svg.sensor-timer {
   --font-color: ${conf.fontColor};
   --primary-color: ${conf.primaryColor};
@@ -117,11 +118,11 @@ SensorStyles.audio = (conf) => {
 }`;
 };
 
-SensorStyles.camera = (conf) => {
+SensorStyles.camera = conf => {
   return cameraStyle(conf);
 };
 
-SensorStyles.color = (conf) => {
+SensorStyles.color = conf => {
   return `svg.sensor-color {
   --font-color: ${conf.fontColor};
   --primary-color: ${conf.primaryColor};
@@ -137,19 +138,19 @@ SensorStyles.color = (conf) => {
 };
 //  SensorStyles.energy = sensor => {};
 
-SensorStyles.gauge = (conf) => {
+SensorStyles.gauge = conf => {
   return gaugeStyle(conf);
 };
 
 //  SensorStyles.joystick = sensor => {};
 
-SensorStyles.level = (conf) => {
+SensorStyles.level = conf => {
   return levelStyle(conf);
 };
 
 //  SensorStyles.magnetometer = sensor => {};
 
-SensorStyles.map = (conf) => {
+SensorStyles.map = conf => {
   return `svg.sensor-map {
   --font-color: ${conf.fontColor};
   --primary-color: ${conf.primaryColor};
@@ -166,13 +167,13 @@ SensorStyles.map = (conf) => {
 
 //  SensorStyles.power = sensor => {};
 
-SensorStyles.switch = (conf) => {
+SensorStyles.switch = conf => {
   return switchStyle(conf);
 };
 
 //  SensorStyles.text = sensor => {};
 
-SensorStyles.timer = (conf) => {
+SensorStyles.timer = conf => {
   return `svg.sensor-timer {
   --font-color: ${conf.fontColor};
   --primary-color: ${conf.primaryColor};
@@ -187,7 +188,7 @@ SensorStyles.timer = (conf) => {
 }`;
 };
 
-SensorStyles.time = (conf) => {
+SensorStyles.time = conf => {
   return timeStyle(conf);
 };
 export default SensorStyles;

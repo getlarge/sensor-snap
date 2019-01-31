@@ -1,4 +1,4 @@
-const switchStyle = (conf) => {
+const switchStyle = conf => {
   return `svg.sensor-switch {
   --font-color: ${conf.fontColor};
   --primary-color: ${conf.primaryColor};

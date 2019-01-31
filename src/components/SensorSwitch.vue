@@ -30,7 +30,9 @@
     <g
       v-if="updatedSensor.type === 3200 || updatedSensor.type === 3342"
       :transform="`translate(${updatedWidth / 10}, ${updatedHeight / 6.4})`"
-      @click.prevent.stop="updateSensor(updatedSensor, 5500, !updatedSensor.resources['5500'])"
+      @click.prevent.stop="
+        updateSensor(updatedSensor, 5500, !updatedSensor.resources['5500'])
+      "
     >
       <image
         x="0"
@@ -39,12 +41,18 @@
         :height="`${updatedHeight / 2.67}`"
         :width="`${updatedWidth / 2.5}`"
         v-bind="{
-          'xlink:href': updatedSensor.resources['5500'] ? updatedSensor.icons[0] : updatedSensor.icons[1],
+          'xlink:href': updatedSensor.resources['5500']
+            ? updatedSensor.icons[0]
+            : updatedSensor.icons[1]
         }"
         class="sensor-icon"
       />
       <circle
-        :stroke="updatedSensor.resources['5500'] ? colors.successColor : colors.warningColor"
+        :stroke="
+          updatedSensor.resources['5500']
+            ? colors.successColor
+            : colors.warningColor
+        "
         :cy="`${updatedHeight / 2.67}`"
         :cx="`${updatedWidth / 2.5}`"
         :r="`${updatedWidth / 2.5}`"
@@ -54,7 +62,9 @@
     <g
       v-else-if="updatedSensor.type === 3201"
       :transform="`translate(${updatedWidth / 10}, ${updatedHeight / 6.4})`"
-      @click.prevent.stop="updateSensor(updatedSensor, 5550, !updatedSensor.resources['5550'])"
+      @click.prevent.stop="
+        updateSensor(updatedSensor, 5550, !updatedSensor.resources['5550'])
+      "
     >
       <image
         x="0"
@@ -63,12 +73,18 @@
         :height="`${updatedHeight / 2.67}`"
         :width="`${updatedWidth / 2.5}`"
         v-bind="{
-          'xlink:href': updatedSensor.resources['5550'] ? updatedSensor.icons[0] : updatedSensor.icons[1],
+          'xlink:href': updatedSensor.resources['5550']
+            ? updatedSensor.icons[0]
+            : updatedSensor.icons[1]
         }"
         class="sensor-icon"
       />
       <circle
-        :stroke="updatedSensor.resources['5550'] ? colors.successColor : colors.warningColor"
+        :stroke="
+          updatedSensor.resources['5550']
+            ? colors.successColor
+            : colors.warningColor
+        "
         :cy="`${updatedHeight / 2.67}`"
         :cx="`${updatedWidth / 2.5}`"
         :r="`${updatedWidth / 2.5}`"
@@ -88,16 +104,16 @@ export default {
   props: {
     sensor: {
       type: String,
-      required: true,
+      required: true
     },
     width: {
       type: Number,
-      default: 150,
+      default: 150
     },
     height: {
       type: Number,
-      default: 140,
-    },
+      default: 140
+    }
   },
 
   data() {
@@ -105,7 +121,7 @@ export default {
       updatedSensor: null,
       updatedWidth: null,
       updatedHeight: null,
-      aSide: true,
+      aSide: true
     };
   },
 
@@ -115,7 +131,7 @@ export default {
     },
     colors() {
       return componentsSchemas.switch.colors;
-    },
+    }
   },
 
   watch: {
@@ -123,20 +139,20 @@ export default {
       handler(sensor) {
         this.updatedSensor = JSON.parse(sensor);
       },
-      immediate: true,
+      immediate: true
     },
     width: {
       handler(width) {
         this.updatedWidth = width;
       },
-      immediate: true,
+      immediate: true
     },
     height: {
       handler(height) {
         this.updatedHeight = height;
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
 
   mounted() {},
@@ -145,7 +161,7 @@ export default {
 
   methods: {
     hasRightType(type) {
-      return componentsSchemas.switch.list.find((objectId) => objectId === type);
+      return componentsSchemas.switch.list.find(objectId => objectId === type);
     },
 
     flipSide(value) {
@@ -158,7 +174,7 @@ export default {
 
     deleteSensor(...args) {
       this.$emit("delete-sensor", ...args);
-    },
-  },
+    }
+  }
 };
 </script>
