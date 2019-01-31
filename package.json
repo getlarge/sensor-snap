@@ -60,5 +60,9 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://framagit.org/aloes/sensor-snap"
+  }
 }
