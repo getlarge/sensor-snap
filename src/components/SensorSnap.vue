@@ -66,11 +66,11 @@ export default {
   name: "SensorSnap",
 
   components: {
-    "sensor-camera": () => import("@/components/SensorCamera.vue"),
-    "sensor-gauge": () => import("@/components/SensorGauge.vue"),
-    "sensor-level": () => import("@/components/SensorLevel.vue"),
-    "sensor-switch": () => import("@/components/SensorSwitch.vue"),
-    "sensor-time": () => import("@/components/SensorTime.vue"),
+    "sensor-camera": () => import("@/components/SensorCamera"),
+    "sensor-gauge": () => import("@/components/SensorGauge"),
+    "sensor-level": () => import("@/components/SensorLevel"),
+    "sensor-switch": () => import("@/components/SensorSwitch"),
+    "sensor-time": () => import("@/components/SensorTime"),
     // "sensor-camera": SensorCamera,
     // "sensor-gauge": SensorGauge,
     // "sensor-level": SensorLevel,

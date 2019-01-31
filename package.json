@@ -5,8 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-lib": "vue-cli-service build --target lib --name SensorSnap ./src/App.vue --dest dist --modern",
-    "build-wc": "vue-cli-service build --target wc --name SensorSnap ./src/App.vue --dest build --modern",
+    "build-lib": "vue-cli-service build --target lib --name SensorSnap ./src/App.vue --dest dist",
+    "build-wc": "vue-cli-service build --target wc --name SensorSnap ./src/App.vue --dest build",
     "lint": "vue-cli-service lint"
   },
   "main": "./dist/SensorSnap.umd.js",
