@@ -46,7 +46,7 @@
           :y1="-radius / 1.1"
           x2="0"
           y2="0"
-          :stroke="colors.secondary"
+          :stroke="colors.secondaryColor"
           :stroke-width="radius / 16"
           transform="rotate(0)"
         />
@@ -67,7 +67,7 @@
           :y1="-radius / 1.2"
           x2="0"
           y2="0"
-          :stroke="colors.primary"
+          :stroke="colors.primaryColor"
           :stroke-width="radius / 12"
           transform="rotate(0)"
         />
@@ -88,7 +88,7 @@
           :y1="-radius / 1.3"
           x2="0"
           y2="0"
-          :stroke="colors.primary"
+          :stroke="colors.primaryColor"
           :stroke-width="radius / 10"
           transform="rotate(0)"
         />
@@ -109,7 +109,7 @@
           :cy="-(radius / 1.2 - radius / 100)"
           :r="radius / 15"
           stroke="none"
-          :fill="colors.primary"
+          :fill="colors.primaryColor"
         />
         <circle
           id="hourScaleLine"
@@ -135,7 +135,7 @@
           cy="0"
           :r="radius"
           fill="none"
-          :stroke="colors.secondary"
+          :stroke="colors.secondaryColor"
           :stroke-width="updatedWidth / 40"
         />
         <use
@@ -232,7 +232,7 @@
           y="0"
           :width="updatedWidth"
           :height="calendarHeight / 4"
-          :fill="colors.secondary"
+          :fill="colors.secondaryColor"
         />
         <rect
           x="0"

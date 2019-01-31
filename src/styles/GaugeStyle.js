@@ -1,11 +1,11 @@
 const gaugeStyle = conf => {
   return `svg.sensor-gauge {
+  --font-color: ${conf.fontColor};
   --primary-color: ${conf.primaryColor};
   --secondary-color: ${conf.secondaryColor};
   --success: ${conf.successColor};
   --warning: ${conf.warningColor};
-  --alert-color: ${conf.alertColor};
-  --danger-color: ${conf.dangerColor};
+  --danger: ${conf.dangerColor};
   --box-shadow: 0 1px 2px 0px #6e6e6e;
   --box-shadow-selected: 0 0px 1px 0px #6e6e6e;
   text-align: center;
@@ -31,6 +31,7 @@ svg.sensor-gauge > .value-text {
 }
 svg.sensor-gauge > g > text.sensor-resources {
   font-size: ${conf.height / 30}px;
+  fill: var(--font-color); 
   font-weight: 400;
   text-anchor: middle;
   alignment-baseline: middle:

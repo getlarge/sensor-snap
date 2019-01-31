@@ -1,11 +1,11 @@
 const timeStyle = conf => {
   return `svg.sensor-time {
+  --font-color: ${conf.fontColor};
   --primary-color: ${conf.primaryColor};
   --secondary-color: ${conf.secondaryColor};
   --success: ${conf.successColor};
   --warning: ${conf.warningColor};
-  --alert-color: ${conf.alertColor};
-  --danger-color: ${conf.dangerColor};
+  --danger: ${conf.dangerColor};
   --border: 1px solid transparent;
   --box-shadow: 0 1px 2px 0px #6e6e6e;
   --box-shadow-selected: 0 0px 1px 0px #6e6e6e;
@@ -29,11 +29,11 @@ g.calendar-weeks > text {
   font-weight: bold
 }
 text.calendar-month {
-  fill: #f2f2f2; 
+  fill: var(--font-color); 
   font-size: ${conf.height / 15}px;
 }
 text.calendar-year {
-  fill: #f2f2f2; 
+  fill: var(--font-color); 
   font-family: "arial";
   font-size: ${conf.height / 15}px;
 }`;

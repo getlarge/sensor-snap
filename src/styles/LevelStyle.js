@@ -1,20 +1,17 @@
-const levelStyle = conf => {
+const levelStyle = (conf) => {
   return `svg.sensor-level {
+  --font-color: ${conf.fontColor};
   --primary-color: ${conf.primaryColor};
   --secondary-color: ${conf.secondaryColor};
   --success: ${conf.successColor};
   --warning: ${conf.warningColor};
-  --alert-color: ${conf.alertColor};
-  --danger-color: ${conf.dangerColor};
+  --danger: ${conf.dangerColor};
   --border-radius: 5px;
   --border: 1px solid transparent;
   --box-shadow: 0 ${conf.width / 50}px ${conf.width / 35}px 0px #6e6e6e;
-  --box-shadow-selected: 0 ${conf.width / 75}px ${conf.width /
-    100}px 0px #6e6e6e;
+  --box-shadow-selected: 0 ${conf.width / 75}px ${conf.width / 100}px 0px #6e6e6e;
   cursor: pointer;
   overflow: hidden;
-  width: ${conf.width}px;
-  height: ${conf.height}px;
 }
 svg.sensor-level > g > path.range-slider-path {
   fill: var(--primary-color);
@@ -30,7 +27,6 @@ svg.sensor-level > g > path.range-marks-path {
 .range-marks-white {
   stroke: white;
 }
-
 svg.sensor-level > g.range-values > text.range-value {
   box-sizing: border-box;
   display: -webkit-flex;
@@ -45,7 +41,7 @@ svg.sensor-level > g.range-values > text.range-value--top {
   fill: var(--primary-color);
 }
 svg.sensor-level > g.range-values > text.range-value--bottom {
-  fill: white;
+  fill: var(--font-color); 
 }
 .range__value__number {
   font-size: ${conf.height / 15}px;

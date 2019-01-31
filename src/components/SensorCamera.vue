@@ -1,67 +1,62 @@
 <template lang="html">
   <!-- CAMERA v-bind="{ 'xlink:href':updatedValue }"
       BITMAP INPUT 5910, BITMAP INPUT RESET 5911,appType 5750-->
-  <div
+  <svg
     v-if="updatedSensor.type && updatedSensor.type === 3349"
     class="sensor-camera"
+    :height="updatedHeight"
+    :width="updatedWidth"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    :viewBox="viewBox"
   >
-    <svg
-      :height="updatedHeight"
-      :width="updatedWidth"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
-      :viewBox="viewBox"
+    <text
+      :transform="`translate(${updatedWidth / 2}, ${updatedHeight / 10})`"
+      text-anchor="middle"
+      x="0"
+      class="sensor-title"
+      @click="flipSide(!aSide)"
     >
-      <text
-        :transform="`translate(${updatedWidth / 2}, ${updatedHeight / 10})`"
-        text-anchor="middle"
-        x="0"
-        class="sensor-title"
-        @click="flipSide(!aSide)"
-      >
-        {{ updatedSensor.name }}
-      </text>
-      <circle
-        :transform="`translate(${updatedWidth / 1.2}, ${updatedHeight / 10})`"
-        :r="`${updatedWidth / 15}`"
-        class="delete-button"
-        @click="deleteSensor(updatedSensor)"
-      />
-      <circle
-        cx="15"
-        cy="15"
-        r="10"
-        class="stream-button"
-        @click="
-          updateSensor(updatedSensor, 5911, !updatedSensor.resources['5911'])
-        "
-      />
-      <!-- :stroke="updatedResources['5850'] ? updatedColors[0] : updatedColors[1]" -->
-      <image
-        v-show="uploadedFiles.length <= 0 || !updatedSensor.resources['5911']"
-        transform="translate(45,45)"
-        height="60"
-        width="60"
-        v-bind="{ 'xlink:href': updatedSensor.icons[0] }"
-        class="sensor-icon"
-      />
-      <image
-        v-show="uploadedFiles.length > 0 && updatedSensor.resources['5911']"
-        :ref="`streamViewer-${updatedSensor.id}`"
-        x="0"
-        y="10"
-        height="130"
-        width="130"
-        class="stream-viewer"
-      />
-    </svg>
-    <canvas
-      :ref="`streamContainer-${updatedSensor.id}`"
-      class="stream-container"
-      :height="height"
-      :width="width"
+      {{ updatedSensor.name }}
+    </text>
+    <circle
+      :transform="`translate(${updatedWidth / 1.2}, ${updatedHeight / 10})`"
+      :r="`${updatedWidth / 15}`"
+      class="delete-button"
+      @click="deleteSensor(updatedSensor)"
     />
-  </div>
+    <circle
+      :transform="`translate(${updatedWidth / 7}, ${updatedHeight / 10})`"
+      :r="updatedWidth / 15"
+      class="stream-button"
+      @click="updateSensor(updatedSensor, 5911, !updatedSensor.resources['5911'])"
+    />
+    <!-- :stroke="updatedResources['5850'] ? updatedColors[0] : updatedColors[1]" -->
+    <image
+      v-show="uploadedFiles.length <= 0 || !updatedSensor.resources['5911']"
+      :transform="`translate(${updatedWidth / 4}, ${updatedHeight / 4})`"
+      :height="updatedHeight / 2"
+      :width="updatedWidth / 2"
+      v-bind="{'xlink:href': updatedSensor.icons[0]}"
+      class="sensor-icon"
+    />
+    <image
+      v-show="uploadedFiles.length > 0 && updatedSensor.resources['5911']"
+      :ref="`streamViewer-${updatedSensor.id}`"
+      :transform="`translate(${updatedWidth / 8}, ${updatedHeight / 4})`"
+      :height="updatedHeight / 1.6"
+      :width="updatedWidth / 1.4"
+      class="stream-viewer"
+    />
+    <foreignObject :transform="`translate(${updatedWidth / 8}, ${updatedHeight / 4})`">
+      <canvas
+        :ref="`streamContainer-${updatedSensor.id}`"
+        class="stream-container"
+        :height="updatedHeight / 1.6"
+        :width="updatedWidth / 1.4"
+      />
+    </foreignObject>
+  </svg>
 </template>
 
 <script>
@@ -72,16 +67,16 @@ export default {
   props: {
     sensor: {
       type: String,
-      required: true
+      required: true,
     },
     width: {
       type: Number,
-      default: 150
+      default: 150,
     },
     height: {
       type: Number,
-      default: 140
-    }
+      default: 140,
+    },
   },
 
   data() {
@@ -89,21 +84,21 @@ export default {
       updatedSensor: null,
       updatedHeight: null,
       updatedWidth: null,
-      aside: true,
+      aSide: true,
       // camera
       fpm: [1, 2, 4, 6],
       img: {},
       canvas: {},
       captures: [],
       uploadedFiles: [],
-      counter: 0
+      counter: 0,
     };
   },
 
   computed: {
     viewBox() {
       return `0 0 ${this.updatedWidth} ${this.updatedHeight}`;
-    }
+    },
   },
 
   watch: {
@@ -111,20 +106,20 @@ export default {
       handler(sensor) {
         this.updatedSensor = JSON.parse(sensor);
       },
-      immediate: true
+      immediate: true,
     },
     width: {
       handler(width) {
         this.updatedWidth = width;
       },
-      immediate: true
+      immediate: true,
     },
     height: {
       handler(height) {
         this.updatedHeight = height;
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
 
   mounted() {},
@@ -153,17 +148,17 @@ export default {
         //console.log(this.counter);
         if (this.counter === 1) {
           return (this.uploadedFiles = new Blob([payload], {
-            type: "image/jpeg"
+            type: "image/jpeg",
           }));
         } else {
           return (this.uploadedFiles = new Blob([this.uploadedFiles, payload], {
-            type: "image/jpeg"
+            type: "image/jpeg",
           }));
         }
       } else if (payload.length <= 4) {
         //console.log("last", this.counter);
         const blob = new Blob([this.uploadedFiles, payload], {
-          type: "image/jpeg"
+          type: "image/jpeg",
         });
         this.uploadedFiles = [];
         this.counter = 0;
@@ -204,7 +199,7 @@ export default {
       const canvas = this.$refs[`streamContainer-${this.sensor.id}`];
       canvas.getContext("2d").drawImage(img, 0, 0, 640, 480);
       this.captures.push(canvas.toDataURL("image/png"));
-    }
-  }
+    },
+  },
 };
 </script>

@@ -51,7 +51,7 @@
 <script>
 /* eslint-disable no-console */
 import {updateAloesSensors} from "aloes-handlers";
-import componentsSchemas from "@/assets/components-list.json";
+import componentsSchemas from "@/assets/components-list";
 import SensorStyles from "@/styles/SensorStyles";
 import deviceTree from "@/assets/device-tree.json";
 import SensorCamera from "./SensorCamera";
@@ -215,8 +215,8 @@ export default {
     componentType() {
       if (this.updatedType === componentsSchemas.audio.list[0]) {
         //  return "audio"
-        return null;
-      } else if (this.updatedType === componentsSchemas.camera.list[0]) {
+        //  return null;
+      } else if (componentsSchemas.camera.list.find((objectId) => objectId === this.updatedType)) {
         return "camera";
       } else if (this.updatedType === componentsSchemas.color.list[0]) {
         //  return "color";
@@ -255,11 +255,18 @@ export default {
       },
     },
     stylesConf() {
+      if (!this.componentType) {
+        return {
+          height: this.updatedHeight,
+          width: this.updatedWidth,
+        };
+      }
       return {
         height: this.updatedHeight,
         width: this.updatedWidth,
-        successColor: `${this.sensor.colors[0]}`,
-        warningColor: `${this.sensor.colors[1]}`,
+        ...componentsSchemas[this.componentType].colors,
+        // successColor: "#69ff4f",
+        // warningColor: `${this.sensor.colors[1]}`,
       };
     },
   },
@@ -326,7 +333,6 @@ export default {
     this.style = document.createElement("style");
     this.$nextTick(() => {
       if (this.style !== null) {
-        console.log("aloes-sensor mounted()", this.componentName);
         const styles = this.updateStyles(this.componentName);
         this.style.innerHTML = styles;
         this.$el.prepend(this.style);

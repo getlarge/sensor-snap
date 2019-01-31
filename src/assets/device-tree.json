@@ -21,7 +21,7 @@
     {
       "id": "21",
       "group": 2,
-      "icons": ["/icons/aloes/analog.png", "/icons/aloes/analog-white.png"],
+      "icons": ["/icons/aloes/analog.svg", "/icons/aloes/analog.png", "/icons/aloes/analog-white.png"],
       "size": 40,
       "colors": ["#77d1bf", "#ffc85f"],
       "name": "Analog Input",
@@ -53,7 +53,7 @@
     {
       "id": "22",
       "group": 2,
-      "icons": ["/icons/aloes/barometer.png", "/icons/aloes/barometer-white.png"],
+      "icons": ["/icons/aloes/barometer.svg", "/icons/aloes/barometer.png", "/icons/aloes/barometer-white.png"],
       "size": 40,
       "colors": ["#77d1bf", "#ffc85f"],
       "name": "Barometer",
@@ -84,7 +84,7 @@
     {
       "id": "23",
       "group": 2,
-      "icons": ["/icons/aloes/location.png", "/icons/aloes/location-white.png"],
+      "icons": ["/icons/aloes/location.svg", "/icons/aloes/location.png", "/icons/aloes/location-white.png"],
       "size": 40,
       "colors": ["#77d1bf", "#ffc85f"],
       "name": "Location",
@@ -115,6 +115,8 @@
       "id": "24",
       "group": 2,
       "icons": [
+        "/icons/aloes/switch-on.svg",
+        "/icons/aloes/switch-off.svg",
         "/icons/aloes/switch-on.png",
         "/icons/aloes/switch-on-white.png",
         "/icons/aloes/switch-off.png",
@@ -148,7 +150,7 @@
     {
       "id": "25",
       "group": 2,
-      "icons": ["/icons/aloes/temperature.png", "/icons/aloes/temperature-white.png"],
+      "icons": ["/icons/aloes/temperature.svg", "/icons/aloes/temperature.png", "/icons/aloes/temperature-white.png"],
       "size": 40,
       "colors": ["#77d1bf", "#ffc85f"],
       "name": "Temperature",
@@ -179,7 +181,11 @@
     {
       "id": "26",
       "group": 2,
-      "icons": ["/icons/aloes/level-control.png", "/icons/aloes/level-control-white.png"],
+      "icons": [
+        "/icons/aloes/level-control.svg",
+        "/icons/aloes/level-control.png",
+        "/icons/aloes/level-control-white.png"
+      ],
       "size": 40,
       "colors": ["#77d1bf", "#ffc85f"],
       "name": "Level Control",
@@ -207,11 +213,11 @@
     {
       "id": "27",
       "group": 2,
-      "icons": ["/icons/aloes/dither.png", "/icons/aloes/dither-white.png"],
+      "icons": ["/icons/aloes/dither.svg", "/icons/aloes/dither.png", "/icons/aloes/dither-white.png"],
       "size": 40,
       "colors": ["#77d1bf", "#ffc85f"],
       "name": "Bitmap",
-      "type": 3449,
+      "type": 3349,
       "devEui": "1456278",
       "deviceId": "2",
       "resource": 5910,
@@ -232,10 +238,17 @@
       "nativeType": 3449,
       "nativeResource": 5910
     },
-        {
+    {
       "id": "28",
       "group": 2,
-      "icons": ["/icons/aloes/clock.png", "/icons/aloes/clock-white.png"],
+      "icons": [
+        "/icons/aloes/time.svg",
+        "/icons/aloes/agenda.svg",
+        "/icons/aloes/time.png",
+        "/icons/aloes/time-white.png",
+        "/icons/aloes/agenda.png",
+        "/icons/aloes/agenda-white.png"
+      ],
       "size": 40,
       "colors": ["#77d1bf", "#ffc85f"],
       "name": "Time",
