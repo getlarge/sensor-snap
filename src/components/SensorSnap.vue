@@ -54,11 +54,11 @@ import {updateAloesSensors} from "aloes-handlers";
 import componentsSchemas from "@/assets/components-list.json";
 import SensorStyles from "@/styles/SensorStyles";
 import deviceTree from "@/assets/device-tree.json";
-// import SensorCamera from "./SensorCamera";
-// import SensorGauge from "./SensorGauge";
-// import SensorLevel from "./SensorLevel";
-// import SensorSwitch from "./SensorSwitch";
-//  import SensorTime from "./SensorTime";
+import SensorCamera from "./SensorCamera";
+import SensorGauge from "./SensorGauge";
+import SensorLevel from "./SensorLevel";
+import SensorSwitch from "./SensorSwitch";
+import SensorTime from "./SensorTime";
 
 const defaultSensor = deviceTree.children[7];
 
@@ -66,16 +66,16 @@ export default {
   name: "SensorSnap",
 
   components: {
-    "sensor-camera": () => import("@/components/SensorCamera"),
-    "sensor-gauge": () => import("@/components/SensorGauge"),
-    "sensor-level": () => import("@/components/SensorLevel"),
-    "sensor-switch": () => import("@/components/SensorSwitch"),
-    "sensor-time": () => import("@/components/SensorTime"),
-    // "sensor-camera": SensorCamera,
-    // "sensor-gauge": SensorGauge,
-    // "sensor-level": SensorLevel,
-    // "sensor-switch": SensorSwitch,
-    //  "sensor-time":SensorTime,
+    // "sensor-camera": () => import("@/components/SensorCamera"),
+    // "sensor-gauge": () => import("@/components/SensorGauge"),
+    // "sensor-level": () => import("@/components/SensorLevel"),
+    // "sensor-switch": () => import("@/components/SensorSwitch"),
+    // "sensor-time": () => import("@/components/SensorTime")
+    "sensor-camera": SensorCamera,
+    "sensor-gauge": SensorGauge,
+    "sensor-level": SensorLevel,
+    "sensor-switch": SensorSwitch,
+    "sensor-time": SensorTime,
   },
 
   props: {
