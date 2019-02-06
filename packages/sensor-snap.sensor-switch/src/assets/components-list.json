@@ -1,0 +1,184 @@
+{
+  "audio": {
+    "name": "SensorAudio",
+    "list": [3339],
+    "resources": [5522, 5523, 5524, 548, 5750],
+    "colors": {
+      "primaryColor": "#528fa2",
+      "secondaryColor": "#ededed",
+      "successColor": "#528fa2",
+      "warningColor": "#ffc85f",
+      "dangerColor": "#f94b39"
+    }
+  },
+  "camera": {
+    "name": "SensorCamera",
+    "list": [3349],
+    "resources": [5910, 5911, 5912, 5750],
+    "colors": {
+      "primaryColor": "#528fa2",
+      "secondaryColor": "#ededed",
+      "successColor": "#528fa2",
+      "warningColor": "#ffc85f",
+      "dangerColor": "#f94b39"
+    }
+  },
+  "color": {
+    "name": "SensorColor",
+    "list": [3335],
+    "resources": [5706, 5701, 5750],
+    "colors": {
+      "primaryColor": "#528fa2",
+      "secondaryColor": "#ededed",
+      "successColor": "#528fa2",
+      "warningColor": "#ffc85f",
+      "dangerColor": "#f94b39"
+    }
+  },
+  "energy": {
+    "name": "SensorEnergy",
+    "list": [3331],
+    "resources": [5500, 5702, 5703, 5704],
+    "colors": {
+      "primaryColor": "#528fa2",
+      "secondaryColor": "#ededed",
+      "successColor": "#528fa2",
+      "warningColor": "#ffc85f",
+      "dangerColor": "#f94b39"
+    }
+  },
+  "gauge": {
+    "name": "SensorGauge",
+    "list": [
+      3202,
+      3203,
+      3300,
+      3301,
+      3302,
+      3303,
+      3304,
+      3305,
+      3315,
+      3316,
+      3317,
+      3318,
+      3319,
+      3320,
+      3321,
+      3322,
+      3323,
+      3324,
+      3325,
+      3326,
+      3327,
+      3328,
+      3329,
+      3330,
+      3346
+    ],
+    "resources": [5601, 5602, 5603, 5604, 5700, 5701, 5750],
+    "colors": {
+      "primaryColor": "#528fa2",
+      "secondaryColor": "#ededed",
+      "successColor": "#528fa2",
+      "warningColor": "#ffc85f",
+      "dangerColor": "#f94b39"
+    }
+  },
+  "joystick": {
+    "name": "SensorJoystick",
+    "list": [3345],
+    "resources": [5500, 5501, 5750, 5702, 5703, 5704],
+    "colors": {
+      "primaryColor": "#528fa2",
+      "secondaryColor": "#ededed",
+      "successColor": "#528fa2",
+      "warningColor": "#ffc85f",
+      "dangerColor": "#f94b39"
+    }
+  },
+  "level": {
+    "name": "SensorLevel",
+    "list": [3306, 3311, 3312],
+    "resources": [5701, 5750, 5850, 5851, 5852],
+    "colors": {
+      "primaryColor": "#528fa2",
+      "secondaryColor": "#ededed",
+      "successColor": "#528fa2",
+      "warningColor": "#ffc85f",
+      "dangerColor": "#f94b39"
+    }
+  },
+  "magnometer": {
+    "name": "SensorMagnometer",
+    "list": [3313, 3314],
+    "resources": [5500, 5501, 5750, 5850],
+    "colors": {
+      "primaryColor": "#528fa2",
+      "secondaryColor": "#ededed",
+      "successColor": "#528fa2",
+      "warningColor": "#ffc85f",
+      "dangerColor": "#f94b39"
+    }
+  },
+  "map": {
+    "name": "SensorMap",
+    "list": [3336],
+    "resources": [5514, 5515, 5517, 5750],
+    "colors": {
+      "primaryColor": "#528fa2",
+      "secondaryColor": "#ededed",
+      "successColor": "#528fa2",
+      "warningColor": "#ffc85f",
+      "dangerColor": "#f94b39"
+    }
+  },
+  "switch": {
+    "name": "SensorSwitch",
+    "list": [3200, 3201, 3342],
+    "resources": [5514, 5515, 5517, 5750],
+    "colors": {
+      "primaryColor": "#528fa2",
+      "secondaryColor": "#ededed",
+      "successColor": "#528fa2",
+      "warningColor": "#ffc85f",
+      "dangerColor": "#f94b39"
+    }
+  },
+  "text": {
+    "name": "SensorText",
+    "list": [3341],
+    "resources": [5527, 5528, 5529, 5530, 5531, 5545, 5546, 5548, 5750],
+    "colors": {
+      "primaryColor": "#528fa2",
+      "secondaryColor": "#ededed",
+      "successColor": "#528fa2",
+      "warningColor": "#ffc85f",
+      "dangerColor": "#f94b39"
+    }
+  },
+  "time": {
+    "name": "SensorTime",
+    "list": [3333],
+    "resources": [5506, 5507, 5750],
+    "colors": {
+      "primaryColor": "#528fa2",
+      "secondaryColor": "#77d1bf",
+      "successColor": "#528fa2",
+      "warningColor": "#ffc85f",
+      "dangerColor": "#f94b39"
+    }
+  },
+  "timer": {
+    "name": "SensorTimer",
+    "list": [3340],
+    "resources": [5501, 5521, 5523, 5525, 5526, 5534, 5538, 5543, 5544, 5750],
+    "colors": {
+      "primaryColor": "#528fa2",
+      "secondaryColor": "#ededed",
+      "successColor": "#528fa2",
+      "warningColor": "#ffc85f",
+      "dangerColor": "#f94b39"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "sensor-snap.sensor-snap",
+  "description": "Vue library to generate Sensors Widget with Open Mobile Alliance references as inputs.",
+  "author": {
+    "name": "Edouard",
+    "email": "ed@getlarge.eu",
+    "github": "getlarge"
+  },
+  "license": "MIT",
+  "homepage": "https://www.npmjs.com/package/sensor-snap.sensor-snap",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getlarge/sensor-snap.git"
+  },
+  "bugs": {
+    "url": "https://github.com/getlarge/sensor-snap/issues"
+  },
+  "module": "index.js",
+  "main": "cjs/index.js",
+  "unpkg": "umd/index.min.js",
+  "jsdelivr": "umd/index.min.js",
+  "peerDependencies": {
+    "vue": ">=2.0.0"
+  }
+}

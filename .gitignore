@@ -1,7 +1,17 @@
 .DS_Store
+
+# Dependencies
 node_modules
-/dist
-/build
+
+# Dev/Build Artifacts
+/dist/
+/tests/e2e/demo/public/browser/dist/
+/tests/e2e/videos/
+/tests/e2e/screenshots/
+/tests/e2e/fixtures/public/packages/
+/tests/unit/coverage/
+jsconfig.json
+
 
 # local env files
 .env.local
