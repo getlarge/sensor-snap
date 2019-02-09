@@ -142,6 +142,7 @@ export * from './src${componentName ? '/' + componentName + '.vue' : ''}'
   }
   const packageConfig = {
     name: packageName,
+    // version,
     moduleName: componentName || _.upperFirst(_.camelCase(packageName)),
     description,
     example
@@ -210,6 +211,7 @@ function generatePackageJson(package) {
       name: package.name,
       description: package.description,
       author: libConfig.author,
+      version: libConfig.version,
       license: 'MIT',
       homepage: `https://www.npmjs.com/package/${package.name}`,
       repository: {

@@ -62,7 +62,6 @@
 
 <script>
 /* eslint-disable no-console */
-import { updateAloesSensors } from 'aloes-handlers'
 import componentsSchemas from './assets/components-list'
 import SensorStyles from './styles/SensorStyles'
 import deviceTree from './assets/device-tree'
@@ -429,9 +428,7 @@ export default {
 
     updateSensor(...args) {
       if (args[0] && args[0].id) {
-        const sensor = updateAloesSensors(args[0], args[1], args[2])
-        this.sensor = sensor
-        this.$emit('update-sensor', sensor)
+        this.$emit('update-sensor', ...args)
       }
     },
 
@@ -457,8 +454,7 @@ export default {
         this.sensor,
         this.stylesConf
       )} ${SensorStyles.picker(styleName, this.sensor, this.stylesConf)}`
-      //  console.log("updateStyles", styles);
-      console.log('updateStyles', this.style)
+      //  console.log('updateStyles', this.style)
       return styles
     },
 

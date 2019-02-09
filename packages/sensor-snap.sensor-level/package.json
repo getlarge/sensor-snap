@@ -6,6 +6,7 @@
     "email": "ed@getlarge.eu",
     "github": "getlarge"
   },
+  "version": "0.1.12",
   "license": "MIT",
   "homepage": "https://www.npmjs.com/package/sensor-snap.sensor-level",
   "repository": {
@@ -20,6 +21,7 @@
   "unpkg": "umd/index.min.js",
   "jsdelivr": "umd/index.min.js",
   "peerDependencies": {
+    "animejs": "^3.0.1",
     "vue": ">=2.0.0"
   }
 }
