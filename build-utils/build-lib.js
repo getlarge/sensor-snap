@@ -1,9 +1,10 @@
+/* eslint-disable no-console */
 const fs = require('fs-extra')
 const path = require('path')
 const { execSync } = require('child_process')
 const libConfig = require('../lib')
 const _ = require('lodash')
-const parseComponent = require('@vue/component-compiler-utils').parse
+//  const parseComponent = require('@vue/component-compiler-utils').parse
 
 console.info("🚀 Let's build this thing!", process.env.VUE_APP_E2E)
 // Update the index file
@@ -126,23 +127,22 @@ export * from './src${componentName ? '/' + componentName + '.vue' : ''}'
 
   let description = libConfig.description
   let example
-  if (componentName) {
-    const srcFilePath = getPath(`../src/${componentName}.vue`)
-    // const result = parseComponent({
-    //   source: fs.readFileSync(srcFilePath, { encoding: 'utf8' }),
-    //   filename: srcFilePath,
-    //   compiler: require('vue-template-compiler')
-    // })
-    // description = JSON.parse(
-    //   result.customBlocks.find(block => block.type === 'info').content
-    // ).description
-    // example = result.customBlocks
-    //   .find(block => block.type === 'example')
-    //   .content.trim()
-  }
+  // if (componentName) {
+  //   const srcFilePath = getPath(`../src/${componentName}.vue`)
+  //   const result = parseComponent({
+  //     source: fs.readFileSync(srcFilePath, { encoding: 'utf8' }),
+  //     filename: srcFilePath,
+  //     compiler: require('vue-template-compiler')
+  //   })
+  //   description = JSON.parse(
+  //     result.customBlocks.find(block => block.type === 'info').content
+  //   ).description
+  //   example = result.customBlocks
+  //     .find(block => block.type === 'example')
+  //     .content.trim()
+  // }
   const packageConfig = {
     name: packageName,
-    // version,
     moduleName: componentName || _.upperFirst(_.camelCase(packageName)),
     description,
     example
@@ -205,7 +205,8 @@ export * from '${path.join('../src', componentName || '')}'
 }
 
 function generatePackageJson(package) {
-  const repoName = libConfig.author.github + '/' + libConfig.name
+  //  const repoName = libConfig.author.github + '/' + libConfig.name
+  const repoName = `aloes/${libConfig.name}`
   return JSON.stringify(
     {
       name: package.name,
@@ -246,7 +247,6 @@ Application based on :
 -   [VueJS](https://vuejs.org/)
 -   [Vue-cli](https://cli.vuejs.org/)
 -   [Open Mobile Alliance](http://www.openmobilealliance.org/wp/OMNA/LwM2M/LwM2MRegistry.html)
--   [Aloes-handlers](https://www.npmjs.com/package/aloes-handlers)
 
 ## Installation
 

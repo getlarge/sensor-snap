@@ -1,6 +1,6 @@
 {
   "name": "sensor-snap",
-  "version": "0.1.11",
+  "version": "0.1.13",
   "private": false,
   "scripts": {
     "dev": "node build-utils/update-index-file.js && vue-cli-service serve",
@@ -170,7 +170,6 @@
   "eslintIgnore": [
     "/dist/",
     "/WIP/",
-    "/build-utils/",
     "/packages/",
     "/tests/e2e/fixtures/public/packages/",
     "/tests/unit/coverage/"

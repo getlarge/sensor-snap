@@ -10,7 +10,6 @@ Application based on :
 -   [VueJS](https://vuejs.org/)
 -   [Vue-cli](https://cli.vuejs.org/)
 -   [Open Mobile Alliance](http://www.openmobilealliance.org/wp/OMNA/LwM2M/LwM2MRegistry.html)
--   [Aloes-handlers](https://www.npmjs.com/package/aloes-handlers)
 
 ## Installation
 

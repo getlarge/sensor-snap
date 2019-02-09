@@ -41,7 +41,7 @@ export default {
 
   data() {
     return {
-      sensor: deviceTree.children[3],
+      sensor: deviceTree.children[5],
       width: 450,
       height: 480
     }
