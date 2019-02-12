@@ -1,6 +1,6 @@
 {
   "name": "sensor-snap",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Vue library to generate Sensors Widget with Open Mobile Alliance references as inputs.",
   "author": {
     "name": "Edouard",

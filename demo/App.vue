@@ -34,6 +34,7 @@
 
 <script>
 /* eslint-disable no-console */
+import { updateAloesSensors } from 'aloes-handlers'
 import deviceTree from '@/assets/device-tree.json'
 
 export default {
@@ -41,9 +42,17 @@ export default {
 
   data() {
     return {
-      sensor: deviceTree.children[5],
+      sensor: deviceTree.children[6],
       width: 450,
-      height: 480
+      height: 480,
+      randomPics: [
+        '/icons/aloes/dither.png',
+        '/icons/aloes/camera.png',
+        '/icons/aloes/electrons.png',
+        '/icons/aloes/clock.png',
+        '/icons/aloes/pattern.png',
+        '/icons/aloes/arduino.png'
+      ]
     }
   },
 
@@ -60,14 +69,18 @@ export default {
 
   mounted() {
     //  this.measurementTest()
-    //  this.cameraTest();
   },
 
   methods: {
-    onUpdateSensor(...args) {
+    async onUpdateSensor(...args) {
       if (args[0] && args[0].id) {
         console.log('aloes-sensor updateSensor()', args)
-        this.sensor = args[0]
+        if (args[0].type === 3349 && args[1] === 5911) {
+          const result = await this.cameraTest(2)
+          args[1] = 5910
+          args[2] = result
+        }
+        this.sensor = await updateAloesSensors(args[0], args[1], args[2])
       }
     },
 
@@ -88,10 +101,18 @@ export default {
       }, 3000)
     },
 
-    cameraTest() {
-      const sensor = JSON.parse(JSON.stringify(this.sensor))
-      console.log('oldSensor', sensor.resources['5910'])
-      return fetch('/icons/aloes/clock.png')
+    arrayBufferToBase64(buffer) {
+      let binary = ''
+      const bytes = [].slice.call(new Uint8Array(buffer))
+      bytes.forEach(b => (binary += String.fromCharCode(b)))
+      return window.btoa(binary)
+    },
+
+    async cameraTest(testNumber) {
+      const randomPic = this.randomPics[
+        Math.floor(Math.random() * this.randomPics.length)
+      ]
+      const result = await fetch(`${randomPic}`)
         .then(response => {
           if (!response.ok) {
             throw new Error('HTTP error, status = ' + response.status)
@@ -99,12 +120,14 @@ export default {
           return response.arrayBuffer()
         })
         .then(buffer => {
-          // this.$refs[`sensorSnap-${this.sensor.id}`].sendCommand("getImage", new Blob([buffer]));
-          sensor.value = Buffer.from(buffer)
-          sensor.resources['5910'] = Buffer.from(buffer)
-          this.sensor = sensor
-          console.log('newSensor', this.sensor.resources['5910'])
+          if (testNumber === 1) {
+            return Buffer.from(buffer)
+          } else if (testNumber === 2) {
+            return this.arrayBufferToBase64(buffer)
+          }
+          return buffer
         })
+      return result
     }
   }
 }

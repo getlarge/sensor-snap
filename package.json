@@ -1,6 +1,6 @@
 {
   "name": "sensor-snap",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "private": false,
   "scripts": {
     "dev": "node build-utils/update-index-file.js && vue-cli-service serve",
@@ -30,6 +30,7 @@
     "url": "https://framagit.org/aloes/sensor-snap"
   },
   "dependencies": {
+    "aloes-handlers": "^1.0.19",
     "animejs": "^3.0.1"
   },
   "devDependencies": {

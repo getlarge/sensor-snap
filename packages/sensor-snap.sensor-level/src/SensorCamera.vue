@@ -125,23 +125,18 @@ export default {
       immediate: true
     },
     value: {
-      handler(value) {
+      async handler(value) {
         if (!value || value === null) return null
-        if (value.type === 'Buffer') {
-          console.log('camera value', Buffer.from(value.data).buffer)
-          const blob = new Blob([Buffer.from(value.data).buffer])
-          this.getImage(blob)
-        }
+        return this.parseImage(value)
       },
       immediate: true
     }
   },
 
-  mounted() {
-    this.mountElements()
-    if (this.value && this.value.type === 'Buffer') {
-      const blob = new Blob([Buffer.from(this.value.data).buffer])
-      this.getImage(blob)
+  async mounted() {
+    await this.mountElements()
+    if (this.value && this.value !== null) {
+      await this.parseImage(this.value)
     }
   },
 
@@ -167,6 +162,18 @@ export default {
     mountElements() {
       this.image = this.$refs[`streamViewer-${this.updatedSensor.id}`]
       this.elementsMounted = true
+    },
+
+    async parseImage(value) {
+      console.log('parseImage', typeof value)
+      if (value && typeof value === 'string') {
+        const base64Flag = 'data:image/jpeg;base64,'
+        const blob = await (await fetch(`${base64Flag}${value}`)).blob()
+        return this.getImage(blob)
+      } else if (value.type && value.type === 'Buffer') {
+        const blob = new Blob([Buffer.from(value.data).buffer])
+        this.getImage(blob)
+      }
     },
 
     getImage(blob) {
