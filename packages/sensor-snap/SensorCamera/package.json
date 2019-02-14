@@ -6,7 +6,7 @@
     "email": "ed@getlarge.eu",
     "github": "getlarge"
   },
-  "version": "0.1.14",
+  "version": "0.1.15",
   "license": "MIT",
   "homepage": "https://www.npmjs.com/package/sensor-snap.sensor-camera",
   "repository": {

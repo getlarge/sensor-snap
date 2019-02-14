@@ -1235,75 +1235,20 @@ if (typeof window !== 'undefined' && window.Vue) {
       immediate: true
     },
     value: {
-      handler: function () {
-        var _handler = _asyncToGenerator(
-        /*#__PURE__*/
-        regeneratorRuntime.mark(function _callee(value) {
-          return regeneratorRuntime.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  if (!(!value || value === null)) {
-                    _context.next = 2;
-                    break;
-                  }
-
-                  return _context.abrupt("return", null);
-
-                case 2:
-                  return _context.abrupt("return", this.parseImage(value));
-
-                case 3:
-                case "end":
-                  return _context.stop();
-              }
-            }
-          }, _callee, this);
-        }));
-
-        function handler(_x) {
-          return _handler.apply(this, arguments);
-        }
-
-        return handler;
-      }(),
+      handler: function handler(value) {
+        if (!value || value === null) return null;
+        return this.parseImage(value);
+      },
       immediate: true
     }
   },
-  mounted: function () {
-    var _mounted = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee2() {
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.next = 2;
-              return this.mountElements();
+  mounted: function mounted() {
+    this.mountElements();
 
-            case 2:
-              if (!(this.value && this.value !== null)) {
-                _context2.next = 5;
-                break;
-              }
-
-              _context2.next = 5;
-              return this.parseImage(this.value);
-
-            case 5:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2, this);
-    }));
-
-    function mounted() {
-      return _mounted.apply(this, arguments);
+    if (this.value && this.value !== null) {
+      this.parseImage(this.value);
     }
-
-    return mounted;
-  }(),
+  },
   beforeDestroy: function beforeDestroy() {
     this.counter = 0;
     this.timelapse = false;
@@ -1334,31 +1279,31 @@ if (typeof window !== 'undefined' && window.Vue) {
     parseImage: function () {
       var _parseImage = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee3(value) {
+      regeneratorRuntime.mark(function _callee(value) {
         var base64Flag, blob, _blob;
 
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context.prev = _context.next) {
               case 0:
                 console.log('parseImage', _typeof(value));
 
                 if (!(value && typeof value === 'string')) {
-                  _context3.next = 11;
+                  _context.next = 11;
                   break;
                 }
 
                 base64Flag = 'data:image/jpeg;base64,';
-                _context3.next = 5;
+                _context.next = 5;
                 return fetch("".concat(base64Flag).concat(value));
 
               case 5:
-                _context3.next = 7;
-                return _context3.sent.blob();
+                _context.next = 7;
+                return _context.sent.blob();
 
               case 7:
-                blob = _context3.sent;
-                return _context3.abrupt("return", this.getImage(blob));
+                blob = _context.sent;
+                return _context.abrupt("return", this.getImage(blob));
 
               case 11:
                 if (value.type && value.type === 'Buffer') {
@@ -1368,13 +1313,13 @@ if (typeof window !== 'undefined' && window.Vue) {
 
               case 12:
               case "end":
-                return _context3.stop();
+                return _context.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee, this);
       }));
 
-      function parseImage(_x2) {
+      function parseImage(_x) {
         return _parseImage.apply(this, arguments);
       }
 
@@ -6299,12 +6244,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4e1c35d0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorCamera.vue?vue&type=template&id=289389fa&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"63ba3774-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorCamera.vue?vue&type=template&id=f477c144&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.updatedSensor.type && _vm.updatedSensor.type === 3349)?_c('svg',{staticClass:"sensor-camera",attrs:{"height":_vm.updatedHeight,"width":_vm.updatedWidth,"xmlns":"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink","viewBox":_vm.viewBox}},[_c('text',{staticClass:"sensor-title",attrs:{"transform":("translate(" + (_vm.updatedWidth / 2) + ", " + (_vm.updatedHeight / 10) + ")"),"text-anchor":"middle","x":"0"},on:{"click":function($event){_vm.flipSide(!_vm.aSide)}}},[_vm._v("\n    "+_vm._s(_vm.updatedSensor.name)+"\n  ")]),_c('circle',{staticClass:"delete-button",attrs:{"transform":("translate(" + (_vm.updatedWidth / 1.2) + ", " + (_vm.updatedHeight / 10) + ")"),"r":("" + (_vm.updatedWidth / 15))},on:{"click":function($event){_vm.deleteSensor(_vm.updatedSensor)}}}),_c('circle',{staticClass:"stream-button",attrs:{"transform":("translate(" + (_vm.updatedWidth / 7) + ", " + (_vm.updatedHeight / 10) + ")"),"r":_vm.updatedWidth / 15},on:{"click":function($event){_vm.updateSensor(_vm.updatedSensor, 5911, !_vm.updatedSensor.resources['5911'])}}}),_c('image',_vm._b({directives:[{name:"show",rawName:"v-show",value:(!_vm.imageUrl || _vm.imageUrl === null),expression:"!imageUrl || imageUrl === null"}],staticClass:"sensor-icon",attrs:{"transform":("translate(" + (_vm.updatedWidth / 4) + ", " + (_vm.updatedHeight / 4) + ")"),"height":_vm.updatedHeight / 2,"width":_vm.updatedWidth / 2}},'image',{ 'xlink:href': _vm.updatedSensor.icons[0] },false)),_c('image',_vm._b({directives:[{name:"show",rawName:"v-show",value:(_vm.imageUrl && _vm.imageUrl !== null),expression:"imageUrl && imageUrl !== null"}],ref:("streamViewer-" + (_vm.updatedSensor.id)),staticClass:"stream-viewer",attrs:{"transform":("translate(" + (_vm.updatedWidth / 8) + ", " + (_vm.updatedHeight / 4) + ")"),"height":_vm.updatedHeight / 1.6,"width":_vm.updatedWidth / 1.4}},'image',{ 'xlink:href': _vm.imageUrl },false))]):_vm._e()}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/SensorCamera.vue?vue&type=template&id=289389fa&
+// CONCATENATED MODULE: ./src/SensorCamera.vue?vue&type=template&id=f477c144&
 
 // EXTERNAL MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorCamera.vue?vue&type=script&lang=js&
 var SensorCameravue_type_script_lang_js_ = __webpack_require__("3218");
@@ -6429,7 +6374,7 @@ if (typeof window !== 'undefined' && window.Vue) {
   window.Vue.component('SensorCamera', SensorCamera_component.exports)
 }
 /* harmony default export */ var SensorCamera = (SensorCamera_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4e1c35d0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorGauge.vue?vue&type=template&id=07b9f6d9&lang=html&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"63ba3774-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorGauge.vue?vue&type=template&id=07b9f6d9&lang=html&
 var SensorGaugevue_type_template_id_07b9f6d9_lang_html_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.updatedSensor.type && _vm.hasRightType(_vm.updatedSensor.type))?_c('svg',{ref:("gaugeContainer-" + (_vm.updatedSensor.id)),class:("sensor-gauge " + _vm.gaugeClass),attrs:{"viewBox":_vm.viewBox,"height":_vm.updatedHeight,"width":_vm.updatedWidth,"xmlns":"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink"}},[_c('text',{staticClass:"sensor-title",attrs:{"transform":("translate(" + (_vm.updatedWidth / 2) + ", " + (_vm.updatedHeight / 10) + ")"),"text-anchor":"middle","x":"0"},on:{"click":function($event){_vm.flipSide(!_vm.aSide)}}},[_vm._v("\n    "+_vm._s(_vm.updatedSensor.name)+"\n  ")]),_c('circle',{staticClass:"delete-button",attrs:{"transform":("translate(" + (_vm.updatedWidth / 1.2) + ", " + (_vm.updatedHeight / 10) + ")"),"r":("" + (_vm.updatedWidth / 15))},on:{"click":function($event){_vm.deleteSensor(_vm.updatedSensor)}}}),_c('path',{ref:("dialContainer-" + (_vm.updatedSensor.id)),class:("dial " + _vm.dialClass),attrs:{"fill":"none","stroke":"","d":_vm.dialContainerPath}}),_c('text',{ref:("valueTextContainer-" + (_vm.updatedSensor.id)),class:("value-text " + _vm.valueTextClass),attrs:{"id":("valueTextContainer-" + (_vm.updatedSensor.id)),"x":_vm.centerX,"y":_vm.centerY,"fill":"#999"}}),_c('path',{ref:("valueDialContainer-" + (_vm.updatedSensor.id)),class:("value " + _vm.valueDialClass),attrs:{"d":_vm.valueDialContainerPath}}),_c('g',{attrs:{"transform":("translate(" + (_vm.updatedWidth / 2.5) + ", " + (_vm.updatedHeight / 8) + ")")},on:{"click":function($event){_vm.updatedSensor.resources['5650']
         ? _vm.updateSensor(_vm.updatedSensor, 5650, _vm.updatedSensor.resources['5650'])
         : null}}},[_c('image',_vm._b({staticClass:"sensor-icon",attrs:{"transform":("translate(0, " + (_vm.updatedHeight / 8) + ")"),"height":("" + (_vm.updatedHeight / 5.3)),"width":("" + (_vm.updatedWidth / 5))}},'image',{ 'xlink:href': _vm.updatedSensor.icons[0] },false)),(_vm.displayNeedle)?_c('g',{attrs:{"transform":("rotate(" + _vm.value + " " + (_vm.updatedWidth / 2) + " " + (_vm.updatedHeight / 2) + ")")}},[_c('image',_vm._b({ref:("gaugeNeedle-" + (_vm.updatedSensor.id)),staticClass:"meter-needle",attrs:{"transform":("translate(0, " + (_vm.updatedHeight / 8) + ")"),"height":("" + (_vm.updatedHeight / 2.28)),"width":("" + (_vm.updatedWidth / 7.5))}},'image',{ 'xlink:href': _vm.gaugeNeedle },false))]):_vm._e(),_c('text',{staticClass:"sensor-resources",attrs:{"transform":("translate(" + (_vm.updatedWidth / 10) + ", " + (_vm.updatedHeight / 1.8) + ")")}},[_c('tspan',{attrs:{"x":"0","y":("" + (_vm.updatedHeight / 10))}},[_vm._v("\n        Min range : "+_vm._s(_vm.minRangeValue)+"\n      ")]),_c('tspan',{attrs:{"x":"0","y":("" + ((_vm.updatedHeight / 10) * 1.4))}},[_vm._v("\n        Max range : "+_vm._s(_vm.maxRangeValue)+"\n      ")]),_c('tspan',{attrs:{"x":"0","y":("" + ((_vm.updatedHeight / 10) * 1.8))}},[_vm._v("\n        Min measurment : "+_vm._s(_vm.minMeasuredValue)+"\n      ")]),_c('tspan',{attrs:{"x":"0","y":("" + ((_vm.updatedHeight / 10) * 2.2))}},[_vm._v("\n        Max measurment : "+_vm._s(_vm.maxMeasuredValue)+"\n      ")]),_c('tspan',{attrs:{"x":"0","y":("" + ((_vm.updatedHeight / 10) * 2.5))}},[_vm._v("\n        Unit : "+_vm._s(_vm.resourceUnit)+"\n      ")])])])]):_vm._e()}
@@ -6946,7 +6891,7 @@ if (typeof window !== 'undefined' && window.Vue) {
   window.Vue.component('SensorGauge', SensorGauge_component.exports)
 }
 /* harmony default export */ var SensorGauge = (SensorGauge_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4e1c35d0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorLevel.vue?vue&type=template&id=0c6c12b0&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"63ba3774-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorLevel.vue?vue&type=template&id=0c6c12b0&
 var SensorLevelvue_type_template_id_0c6c12b0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.hasRightType(_vm.updatedSensor.type))?_c('svg',{ref:("rangeWrapper-" + (_vm.updatedSensor.id)),staticClass:"sensor-level",attrs:{"width":_vm.updatedWidth,"height":_vm.updatedHeight,"viewBox":_vm.viewBox,"xmlns":"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink"}},[_c('text',{staticClass:"sensor-title",attrs:{"transform":("translate(" + (_vm.updatedWidth / 2) + ", " + (_vm.updatedHeight / 10) + ")"),"text-anchor":"middle","x":"0"},on:{"click":function($event){_vm.flipSide(!_vm.aSide)}}},[_vm._v("\n    "+_vm._s(_vm.updatedSensor.name)+"\n  ")]),_c('circle',{staticClass:"delete-button",attrs:{"transform":("translate(" + (_vm.updatedWidth / 1.2) + ", " + (_vm.updatedHeight / 10) + ")"),"r":("" + (_vm.updatedWidth / 15))},on:{"click":function($event){_vm.deleteSensor(_vm.updatedSensor)}}}),_c('g',{attrs:{"transform":("translate(0, " + (_vm.updatedHeight / 4.8) + ")")}},[_c('defs',[_c('symbol',{attrs:{"id":("rangeMarks-" + (_vm.updatedSensor.id)),"shape-rendering":"crispEdges"}},_vm._l((_vm.gradients),function(gradient){return _c('path',{key:gradient.pos,staticClass:"range-marks-path",attrs:{"d":("M " + (_vm.updatedWidth / gradient.margin) + " " + (_vm.gradientHeight(
               gradient.pos
             )) + " l " + (_vm.updatedWidth / gradient.width) + " 0")}})}),0),_c('clipPath',{ref:("rangeSliderClipPath-" + (_vm.updatedSensor.id)),attrs:{"id":("rangeSliderClipPath-" + (_vm.updatedSensor.id)),"x":"0","y":"0"}},[_c('path',{staticClass:"range-slider-path",attrs:{"d":_vm.newPath}})])]),_c('use',_vm._b({staticClass:"range-marks-colored"},'use',{ 'xlink:href': ("#rangeMarks-" + (_vm.updatedSensor.id)) },false)),_c('path',{staticClass:"range-slider-path",attrs:{"d":_vm.newPath}}),_c('use',_vm._b({staticClass:"range-marks-white",attrs:{"clip-path":("url(#rangeSliderClipPath-" + (_vm.updatedSensor.id) + ")")}},'use',{ 'xlink:href': ("#rangeMarks-" + (_vm.updatedSensor.id)) },false))]),_c('g',{ref:("rangeValues-" + (_vm.updatedSensor.id)),staticClass:"range-values",attrs:{"transfrom":("translateY(" + (_vm.rangeHeight - _vm.currentY) + "px)")}},[_c('text',{ref:("rangeValueTop-" + (_vm.updatedSensor.id)),staticClass:"range-value range-value--top",attrs:{"transform":("scale(" + (1 - _vm.scale) + ")"),"y":_vm.updatedHeight / 5.5}},[_c('tspan',{staticClass:"range-value-number range-value-number--top"}),_c('tspan',{staticClass:"range-value-text range-value-text--top"},[_c('tspan',[_vm._v(_vm._s(_vm.rangeMax - _vm.value))])])]),_c('text',{ref:("rangeValueBottom-" + (_vm.updatedSensor.id)),staticClass:"rang-value range-value--bottom",attrs:{"transform":("scale(" + (1 - (_vm.scaleMax - _vm.scale)) + ")"),"y":_vm.updatedHeight / 3.5}},[_c('tspan',{staticClass:"range-value-number range-value-number--bottom"}),_c('tspan',{staticClass:"range-value-text range-value-text--bottom"},[_c('tspan',[_vm._v(_vm._s(_vm.value))])])])])]):_vm._e()}
@@ -8739,7 +8684,7 @@ if (typeof window !== 'undefined' && window.Vue) {
   window.Vue.component('SensorLevel', SensorLevel_component.exports)
 }
 /* harmony default export */ var SensorLevel = (SensorLevel_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4e1c35d0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorSnap.vue?vue&type=template&id=02239f74&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"63ba3774-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorSnap.vue?vue&type=template&id=02239f74&
 var SensorSnapvue_type_template_id_02239f74_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"sensor-snap"},[(_vm.refName !== null && _vm.sensor)?_c(_vm.componentName,{directives:[{name:"show",rawName:"v-show",value:(_vm.aSide),expression:"aSide"}],ref:(_vm.refName + "-" + (_vm.sensor.id)),tag:"component",staticClass:"sensor-component",attrs:{"sensor":JSON.stringify(_vm.sensor),"height":_vm.updatedHeight,"width":_vm.updatedWidth},on:{"update-sensor":_vm.updateSensor,"delete-sensor":_vm.deleteSensor,"flip-side":_vm.onFlippedSide}}):_vm._e(),(_vm.sensor)?_c('svg',{directives:[{name:"show",rawName:"v-show",value:(!_vm.aSide),expression:"!aSide"}],staticClass:"sensor",attrs:{"height":_vm.updatedHeight,"width":_vm.updatedWidth,"xmlns":"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink"},on:{"click":function($event){$event.preventDefault();_vm.flipSide(!_vm.aSide)}}},[_c('g',{attrs:{"transform":("translate(" + (_vm.updatedWidth / 2) + ", " + (_vm.updatedHeight / 10) + ")")}},[_c('text',{staticClass:"sensor-details",attrs:{"text-anchor":"middle","x":"0"}},[_c('tspan',{attrs:{"x":"0","y":("" + (_vm.updatedHeight / 8))}},[_vm._v("\n          IPSO : "+_vm._s(_vm.sensor.type)+"\n        ")]),_c('tspan',{attrs:{"x":"0","y":("" + (_vm.updatedHeight / 4))}},[_vm._v("\n          counter : "+_vm._s(_vm.sensor.frameCounter)+"\n        ")]),_c('tspan',{attrs:{"x":"0","y":("" + (_vm.updatedHeight / 3))}},[_vm._v("\n          "+_vm._s(_vm.sensor.protocolName)+" "+_vm._s(_vm.sensor.protocolVersion)+"\n        ")]),_c('tspan',{attrs:{"x":"0","y":("" + (_vm.updatedHeight / 2))}},[_vm._v("\n          routes :\n        ")]),_c('tspan',{attrs:{"x":"0","y":("" + (_vm.updatedHeight / 1.7))}},[_vm._v("\n          "+_vm._s(_vm.sensor.inputPath)+"\n        ")]),_c('tspan',{attrs:{"x":"0","y":("" + (_vm.updatedHeight / 1.5))}},[_vm._v("\n          "+_vm._s(_vm.sensor.outputPath)+"\n        ")]),(_vm.sensor.resources['5750'])?_c('tspan',{attrs:{"x":"0","y":("" + (_vm.updatedHeight / 1.2))}},[_vm._v("\n          "+_vm._s(_vm.sensor.resources['5750'])+"\n        ")]):_vm._e()])])]):(_vm.refName === null || !_vm.sensor)?_c('p',[_vm._v("\n    INVALID SENSOR\n  ")]):_vm._e()],1)}
 var SensorSnapvue_type_template_id_02239f74_staticRenderFns = []
 
@@ -8874,7 +8819,7 @@ SensorStyles.time = function (conf) {
 // EXTERNAL MODULE: ./src/assets/device-tree.json
 var device_tree = __webpack_require__("e0a6");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4e1c35d0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorSwitch.vue?vue&type=template&id=5b718f8e&lang=html&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"63ba3774-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorSwitch.vue?vue&type=template&id=5b718f8e&lang=html&
 var SensorSwitchvue_type_template_id_5b718f8e_lang_html_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.updatedSensor.type && _vm.hasRightType(_vm.updatedSensor.type))?_c('svg',{staticClass:"sensor-switch",attrs:{"viewBox":_vm.viewBox,"height":_vm.updatedHeight,"width":_vm.updatedWidth,"xmlns":"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink"}},[_c('text',{staticClass:"sensor-title",attrs:{"transform":("translate(" + (_vm.updatedWidth / 2) + ", " + (_vm.updatedHeight / 10) + ")"),"text-anchor":"middle","x":"0"},on:{"click":function($event){_vm.flipSide(!_vm.aSide)}}},[_vm._v("\n    "+_vm._s(_vm.updatedSensor.name)+"\n  ")]),_c('circle',{staticClass:"delete-button",attrs:{"transform":("translate(" + (_vm.updatedWidth / 1.2) + ", " + (_vm.updatedHeight / 10) + ")"),"r":("" + (_vm.updatedWidth / 15))},on:{"click":function($event){_vm.deleteSensor(_vm.updatedSensor)}}}),(_vm.updatedSensor.type === 3200 || _vm.updatedSensor.type === 3342)?_c('g',{attrs:{"transform":("translate(" + (_vm.updatedWidth / 10) + ", " + (_vm.updatedHeight / 6.4) + ")")},on:{"click":function($event){$event.preventDefault();$event.stopPropagation();_vm.updateSensor(_vm.updatedSensor, 5500, !_vm.updatedSensor.resources['5500'])}}},[_c('image',_vm._b({staticClass:"sensor-icon",attrs:{"x":"0","y":"0","transform":("translate(" + (_vm.updatedWidth / 5) + ", " + (_vm.updatedHeight / 5.3) + ")"),"height":("" + (_vm.updatedHeight / 2.67)),"width":("" + (_vm.updatedWidth / 2.5))}},'image',{
         'xlink:href': _vm.updatedSensor.resources['5500']
           ? _vm.updatedSensor.icons[0]
@@ -9104,7 +9049,7 @@ if (typeof window !== 'undefined' && window.Vue) {
   window.Vue.component('SensorSwitch', SensorSwitch_component.exports)
 }
 /* harmony default export */ var SensorSwitch = (SensorSwitch_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4e1c35d0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorTime.vue?vue&type=template&id=55c50771&lang=html&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"63ba3774-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorTime.vue?vue&type=template&id=55c50771&lang=html&
 var SensorTimevue_type_template_id_55c50771_lang_html_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.updatedSensor.type === 3333)?_c('svg',{staticClass:"sensor-time",attrs:{"id":("sensorTime-" + (_vm.updatedSensor.id)),"height":_vm.updatedHeight,"width":_vm.updatedWidth,"viewBox":_vm.viewBox,"xmlns":"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink"}},[_c('text',{staticClass:"sensor-title",attrs:{"transform":("translate(" + (_vm.updatedWidth / 2) + ", " + (_vm.updatedHeight / 10) + ")"),"text-anchor":"middle","x":"0"},on:{"click":function($event){_vm.flipSide(!_vm.aSide)}}},[_vm._v("\n    "+_vm._s(_vm.updatedSensor.name)+"\n  ")]),_c('circle',{staticClass:"delete-button",attrs:{"transform":("translate(" + (_vm.updatedWidth / 1.2) + ", " + (_vm.updatedHeight / 10) + ")"),"r":("" + (_vm.updatedWidth / 15))},on:{"click":function($event){$event.preventDefault();$event.stopPropagation();_vm.deleteSensor(_vm.updatedSensor)}}}),_c('image',_vm._b({staticClass:"show-clock",attrs:{"transform":("translate(" + (_vm.updatedWidth / 10) + ", " + (_vm.updatedHeight / 20) + ")"),"height":("" + (_vm.updatedHeight / 10)),"width":("" + (_vm.updatedWidth / 10))},on:{"click":function($event){$event.preventDefault();$event.stopPropagation();_vm.showClock = !_vm.showClock}}},'image',{
       'xlink:href': _vm.showClock ? _vm.agendaIcon : _vm.updatedSensor.icons[0]
     },false)),_c('defs',[_c('g',{attrs:{"id":("secondHand-" + (_vm.updatedSensor.id))}},[_c('line',{attrs:{"id":("secondHandLine-" + (_vm.updatedSensor.id)),"x1":"0","y1":-_vm.radius / 1.1,"x2":"0","y2":"0","stroke":_vm.colors.secondaryColor,"stroke-width":_vm.radius / 16,"transform":"rotate(0)"}}),_c('animateTransform',{attrs:{"attributeName":"transform","attributeType":"XML","type":"rotate","from":"0","to":"360","dur":"60s","repeatCount":"indefinite"}})],1),_c('g',{attrs:{"id":("minuteHand-" + (_vm.updatedSensor.id))}},[_c('line',{attrs:{"id":("minuteHandLine-" + (_vm.updatedSensor.id)),"x1":"0","y1":-_vm.radius / 1.2,"x2":"0","y2":"0","stroke":_vm.colors.primaryColor,"stroke-width":_vm.radius / 12,"transform":"rotate(0)"}}),_c('animateTransform',{attrs:{"attributeName":"transform","attributeType":"XML","type":"rotate","from":"0","to":"360","dur":"60min","repeatCount":"indefinite"}})],1),_c('g',{attrs:{"id":("hourHand-" + (_vm.updatedSensor.id))}},[_c('line',{attrs:{"id":("hourHandLine-" + (_vm.updatedSensor.id)),"x1":"0","y1":-_vm.radius / 1.3,"x2":"0","y2":"0","stroke":_vm.colors.primaryColor,"stroke-width":_vm.radius / 10,"transform":"rotate(0)"}}),_c('animateTransform',{attrs:{"attributeName":"transform","attributeType":"XML","type":"rotate","from":"0","to":"360","dur":"12h","repeatCount":"indefinite"}})],1),_c('g',{attrs:{"id":("hourScale-" + (_vm.updatedSensor.id))}},[_c('circle',{attrs:{"id":"hourScaleLine","cx":_vm.radius / 100,"cy":-(_vm.radius / 1.2 - _vm.radius / 100),"r":_vm.radius / 15,"stroke":"none","fill":_vm.colors.primaryColor}}),_c('circle',{attrs:{"id":"hourScaleLine","cx":"0","cy":-_vm.radius / 1.2,"r":_vm.radius / 15,"stroke":"none","fill":"#ededed"}})]),_c('g',{staticClass:"clock",attrs:{"id":("clock-" + (_vm.updatedSensor.id))}},[_c('circle',{attrs:{"cx":_vm.radius / 150,"cy":_vm.radius / 100,"r":_vm.radius - _vm.radius / 100,"fill":"none","stroke":"#ededed","stroke-width":_vm.updatedWidth / 40}}),_c('circle',{attrs:{"cx":"0","cy":"0","r":_vm.radius,"fill":"none","stroke":_vm.colors.secondaryColor,"stroke-width":_vm.updatedWidth / 40}}),_c('use',_vm._b({attrs:{"transform":"rotate(30)"}},'use',{ 'xlink:href': ("#hourScale-" + (_vm.updatedSensor.id)) },false)),_c('use',_vm._b({attrs:{"transform":"rotate(60)"}},'use',{ 'xlink:href': ("#hourScale-" + (_vm.updatedSensor.id)) },false)),_c('use',_vm._b({attrs:{"transform":"rotate(90)"}},'use',{ 'xlink:href': ("#hourScale-" + (_vm.updatedSensor.id)) },false)),_c('use',_vm._b({attrs:{"transform":"rotate(120)"}},'use',{ 'xlink:href': ("#hourScale-" + (_vm.updatedSensor.id)) },false)),_c('use',_vm._b({attrs:{"transform":"rotate(150)"}},'use',{ 'xlink:href': ("#hourScale-" + (_vm.updatedSensor.id)) },false)),_c('use',_vm._b({attrs:{"transform":"rotate(180)"}},'use',{ 'xlink:href': ("#hourScale-" + (_vm.updatedSensor.id)) },false)),_c('use',_vm._b({attrs:{"transform":"rotate(210)"}},'use',{ 'xlink:href': ("#hourScale-" + (_vm.updatedSensor.id)) },false)),_c('use',_vm._b({attrs:{"transform":"rotate(240)"}},'use',{ 'xlink:href': ("#hourScale-" + (_vm.updatedSensor.id)) },false)),_c('use',_vm._b({attrs:{"transform":"rotate(270)"}},'use',{ 'xlink:href': ("#hourScale-" + (_vm.updatedSensor.id)) },false)),_c('use',_vm._b({attrs:{"transform":"rotate(300)"}},'use',{ 'xlink:href': ("#hourScale-" + (_vm.updatedSensor.id)) },false)),_c('use',_vm._b({attrs:{"transform":"rotate(330)"}},'use',{ 'xlink:href': ("#hourScale-" + (_vm.updatedSensor.id)) },false)),_c('use',_vm._b({attrs:{"transform":"translate(0, 0)"}},'use',{ 'xlink:href': ("#secondHand-" + (_vm.updatedSensor.id)) },false)),_c('use',_vm._b({attrs:{"transform":"translate(0, 0)"}},'use',{ 'xlink:href': ("#minuteHand-" + (_vm.updatedSensor.id)) },false)),_c('use',_vm._b({attrs:{"transform":"translate(0, 0)"}},'use',{ 'xlink:href': ("#hourHand-" + (_vm.updatedSensor.id)) },false)),_c('circle',{attrs:{"cx":"0","cy":"0","r":"13","fill":"","stroke":"#ededed","stroke-width":"20"}})]),_c('g',{staticClass:"calendar-weeks",attrs:{"id":("calendarWeek-" + (_vm.updatedSensor.id))}},_vm._l((_vm.weekDays),function(weekDay,index){return _c('text',{key:index,attrs:{"x":_vm.calendarDayWidth(weekDay.x),"y":"0"}},[_vm._v("\n        "+_vm._s(weekDay.value)+"\n      ")])}),0),_c('g',{staticClass:"calendar-days",attrs:{"id":("calendarDay-" + (_vm.updatedSensor.id))}},_vm._l((_vm.days),function(day,index){return _c('text',{key:index,attrs:{"id":("calendarDay-" + (index + 1) + "-" + (_vm.updatedSensor.id)),"x":_vm.calendarDayWidth(day.x),"y":_vm.calendarDayHeight(day.y)},on:{"click":function($event){$event.preventDefault();$event.stopPropagation();_vm.showDay(day, index)}}})}),0),_c('g',{attrs:{"id":("calendar-" + (_vm.updatedSensor.id))}},[_c('rect',{attrs:{"x":"0","y":"0","width":_vm.updatedWidth,"height":_vm.calendarHeight / 4,"fill":_vm.colors.secondaryColor}}),_c('rect',{attrs:{"x":"0","y":_vm.calendarHeight / 4,"width":_vm.updatedWidth,"height":_vm.calendarHeight,"fill":"#fff"}}),_c('text',{staticClass:"calendar-month",attrs:{"id":("calendarMonth-" + (_vm.updatedSensor.id)),"x":_vm.updatedWidth / 3,"y":_vm.calendarHeight / 6.5}}),_c('text',{staticClass:"calendar-year",attrs:{"id":("calendarYear-" + (_vm.updatedSensor.id)),"x":_vm.updatedWidth / 4,"y":_vm.calendarHeight / 6.5}}),_c('use',_vm._b({attrs:{"transform":("translate(" + (_vm.calendarWidth / 28) + ", " + (_vm.calendarHeight / 2.6) + ")")}},'use',{ 'xlink:href': ("#calendarWeek-" + (_vm.updatedSensor.id)) },false)),_c('use',_vm._b({attrs:{"transform":("translate(" + (_vm.calendarWidth / 28) + ", " + (_vm.calendarHeight / 2.6) + ")")}},'use',{ 'xlink:href': ("#calendarDay-" + (_vm.updatedSensor.id)) },false))])]),_c('use',_vm._b({directives:[{name:"show",rawName:"v-show",value:(_vm.showClock),expression:"showClock"}],attrs:{"transform":("translate(" + (_vm.updatedWidth / 2) + ", " + (_vm.updatedHeight / 1.8) + ")")},on:{"click":function($event){$event.preventDefault();$event.stopPropagation();_vm.updateSensor(_vm.updatedSensor, 5507, _vm.getSeconds)}}},'use',{ 'xlink:href': ("#clock-" + (_vm.updatedSensor.id)) },false)),_c('use',_vm._b({directives:[{name:"show",rawName:"v-show",value:(!_vm.showClock),expression:"!showClock"}],attrs:{"transform":("translate(0, " + (_vm.updatedHeight / 5.5) + ")")},on:{"click":function($event){$event.preventDefault();$event.stopPropagation();_vm.updateSensor(_vm.updatedSensor, 5506, Date.now())}}},'use',{ 'xlink:href': ("#calendar-" + (_vm.updatedSensor.id)) },false))]):_vm._e()}

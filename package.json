@@ -1,6 +1,6 @@
 {
   "name": "sensor-snap",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "private": false,
   "scripts": {
     "dev": "node build-utils/update-index-file.js && vue-cli-service serve",

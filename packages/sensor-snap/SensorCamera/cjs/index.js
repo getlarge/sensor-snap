@@ -791,75 +791,20 @@ if (typeof window !== 'undefined' && window.Vue) {
       immediate: true
     },
     value: {
-      handler: function () {
-        var _handler = _asyncToGenerator(
-        /*#__PURE__*/
-        regeneratorRuntime.mark(function _callee(value) {
-          return regeneratorRuntime.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  if (!(!value || value === null)) {
-                    _context.next = 2;
-                    break;
-                  }
-
-                  return _context.abrupt("return", null);
-
-                case 2:
-                  return _context.abrupt("return", this.parseImage(value));
-
-                case 3:
-                case "end":
-                  return _context.stop();
-              }
-            }
-          }, _callee, this);
-        }));
-
-        function handler(_x) {
-          return _handler.apply(this, arguments);
-        }
-
-        return handler;
-      }(),
+      handler: function handler(value) {
+        if (!value || value === null) return null;
+        return this.parseImage(value);
+      },
       immediate: true
     }
   },
-  mounted: function () {
-    var _mounted = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee2() {
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.next = 2;
-              return this.mountElements();
+  mounted: function mounted() {
+    this.mountElements();
 
-            case 2:
-              if (!(this.value && this.value !== null)) {
-                _context2.next = 5;
-                break;
-              }
-
-              _context2.next = 5;
-              return this.parseImage(this.value);
-
-            case 5:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2, this);
-    }));
-
-    function mounted() {
-      return _mounted.apply(this, arguments);
+    if (this.value && this.value !== null) {
+      this.parseImage(this.value);
     }
-
-    return mounted;
-  }(),
+  },
   beforeDestroy: function beforeDestroy() {
     this.counter = 0;
     this.timelapse = false;
@@ -890,31 +835,31 @@ if (typeof window !== 'undefined' && window.Vue) {
     parseImage: function () {
       var _parseImage = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee3(value) {
+      regeneratorRuntime.mark(function _callee(value) {
         var base64Flag, blob, _blob;
 
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context.prev = _context.next) {
               case 0:
                 console.log('parseImage', _typeof(value));
 
                 if (!(value && typeof value === 'string')) {
-                  _context3.next = 11;
+                  _context.next = 11;
                   break;
                 }
 
                 base64Flag = 'data:image/jpeg;base64,';
-                _context3.next = 5;
+                _context.next = 5;
                 return fetch("".concat(base64Flag).concat(value));
 
               case 5:
-                _context3.next = 7;
-                return _context3.sent.blob();
+                _context.next = 7;
+                return _context.sent.blob();
 
               case 7:
-                blob = _context3.sent;
-                return _context3.abrupt("return", this.getImage(blob));
+                blob = _context.sent;
+                return _context.abrupt("return", this.getImage(blob));
 
               case 11:
                 if (value.type && value.type === 'Buffer') {
@@ -924,13 +869,13 @@ if (typeof window !== 'undefined' && window.Vue) {
 
               case 12:
               case "end":
-                return _context3.stop();
+                return _context.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee, this);
       }));
 
-      function parseImage(_x2) {
+      function parseImage(_x) {
         return _parseImage.apply(this, arguments);
       }
 
@@ -5245,12 +5190,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"4e1c35d0-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorCamera.vue?vue&type=template&id=289389fa&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"63ba3774-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorCamera.vue?vue&type=template&id=f477c144&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.updatedSensor.type && _vm.updatedSensor.type === 3349)?_c('svg',{staticClass:"sensor-camera",attrs:{"height":_vm.updatedHeight,"width":_vm.updatedWidth,"xmlns":"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink","viewBox":_vm.viewBox}},[_c('text',{staticClass:"sensor-title",attrs:{"transform":("translate(" + (_vm.updatedWidth / 2) + ", " + (_vm.updatedHeight / 10) + ")"),"text-anchor":"middle","x":"0"},on:{"click":function($event){_vm.flipSide(!_vm.aSide)}}},[_vm._v("\n    "+_vm._s(_vm.updatedSensor.name)+"\n  ")]),_c('circle',{staticClass:"delete-button",attrs:{"transform":("translate(" + (_vm.updatedWidth / 1.2) + ", " + (_vm.updatedHeight / 10) + ")"),"r":("" + (_vm.updatedWidth / 15))},on:{"click":function($event){_vm.deleteSensor(_vm.updatedSensor)}}}),_c('circle',{staticClass:"stream-button",attrs:{"transform":("translate(" + (_vm.updatedWidth / 7) + ", " + (_vm.updatedHeight / 10) + ")"),"r":_vm.updatedWidth / 15},on:{"click":function($event){_vm.updateSensor(_vm.updatedSensor, 5911, !_vm.updatedSensor.resources['5911'])}}}),_c('image',_vm._b({directives:[{name:"show",rawName:"v-show",value:(!_vm.imageUrl || _vm.imageUrl === null),expression:"!imageUrl || imageUrl === null"}],staticClass:"sensor-icon",attrs:{"transform":("translate(" + (_vm.updatedWidth / 4) + ", " + (_vm.updatedHeight / 4) + ")"),"height":_vm.updatedHeight / 2,"width":_vm.updatedWidth / 2}},'image',{ 'xlink:href': _vm.updatedSensor.icons[0] },false)),_c('image',_vm._b({directives:[{name:"show",rawName:"v-show",value:(_vm.imageUrl && _vm.imageUrl !== null),expression:"imageUrl && imageUrl !== null"}],ref:("streamViewer-" + (_vm.updatedSensor.id)),staticClass:"stream-viewer",attrs:{"transform":("translate(" + (_vm.updatedWidth / 8) + ", " + (_vm.updatedHeight / 4) + ")"),"height":_vm.updatedHeight / 1.6,"width":_vm.updatedWidth / 1.4}},'image',{ 'xlink:href': _vm.imageUrl },false))]):_vm._e()}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/SensorCamera.vue?vue&type=template&id=289389fa&
+// CONCATENATED MODULE: ./src/SensorCamera.vue?vue&type=template&id=f477c144&
 
 // EXTERNAL MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./build-utils/global-vue-loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/SensorCamera.vue?vue&type=script&lang=js&
 var SensorCameravue_type_script_lang_js_ = __webpack_require__("3218");

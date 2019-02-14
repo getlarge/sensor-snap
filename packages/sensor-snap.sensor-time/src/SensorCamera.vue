@@ -125,7 +125,7 @@ export default {
       immediate: true
     },
     value: {
-      async handler(value) {
+      handler(value) {
         if (!value || value === null) return null
         return this.parseImage(value)
       },
@@ -133,10 +133,10 @@ export default {
     }
   },
 
-  async mounted() {
-    await this.mountElements()
+  mounted() {
+    this.mountElements()
     if (this.value && this.value !== null) {
-      await this.parseImage(this.value)
+      this.parseImage(this.value)
     }
   },
 
