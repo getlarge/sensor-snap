@@ -28,6 +28,11 @@
   "bugs": {
     "url": "https://framagit.org/aloes/sensor-snap/issues"
   },
+  "files": [
+    "dist/*",
+    "package.json",
+    "README.md"
+  ],
   "module": "dist/SensorSnap.common.js",
   "main": "dist/SensorSnap.umd.js",
   "unpkg": "dist/SensorSnap.umd.min.js",
