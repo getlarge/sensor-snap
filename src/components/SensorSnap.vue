@@ -65,12 +65,11 @@
 import componentsList from '../assets/components-list';
 import deviceTree from '../assets/device-tree.json';
 import {formatSensor, updateStyles} from '../methods';
-
-// import SensorCamera from './SensorCamera.vue';
-// import SensorGauge from './SensorGauge.vue';
-// import SensorLevel from './SensorLevel.vue';
-// import SensorSwitch from './SensorSwitch.vue';
-//  import SensorTime from './SensorTime.vue';
+import SensorCamera from './SensorCamera.vue';
+import SensorGauge from './SensorGauge.vue';
+import SensorLevel from './SensorLevel.vue';
+import SensorSwitch from './SensorSwitch.vue';
+import SensorTime from './SensorTime.vue';
 
 const defaultSensor = deviceTree.children[7];
 
@@ -85,16 +84,16 @@ export default {
   name: 'SensorSnap',
 
   components: {
-    // 'sensor-camera': SensorCamera,
-    // 'sensor-gauge': SensorGauge,
-    // 'sensor-level': SensorLevel,
-    // 'sensor-switch': SensorSwitch,
-    //  'sensor-time': SensorTime,
-    'sensor-camera': () => import('./SensorCamera.vue'),
-    'sensor-gauge': () => import('./SensorGauge.vue'),
-    'sensor-level': () => import('./SensorLevel.vue'),
-    'sensor-switch': () => import('./SensorSwitch.vue'),
-    'sensor-time': () => import('./SensorTime.vue'),
+    'sensor-camera': SensorCamera,
+    'sensor-gauge': SensorGauge,
+    'sensor-level': SensorLevel,
+    'sensor-switch': SensorSwitch,
+    'sensor-time': SensorTime,
+    // 'sensor-camera': () => import('./SensorCamera.vue'),
+    // 'sensor-gauge': () => import('./SensorGauge.vue'),
+    // 'sensor-level': () => import('./SensorLevel.vue'),
+    // 'sensor-switch': () => import('./SensorSwitch.vue'),
+    // 'sensor-time': () => import('./SensorTime.vue'),
   },
 
   props: {
