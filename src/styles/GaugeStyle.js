@@ -40,7 +40,7 @@ svg.sensor-gauge > g > text.sensor-resources {
 image.meter_needle {
   transform-origin: bottom center;
   transform: rotate(270deg);
-}`
-}
+}`;
+};
 
-export default gaugeStyle
+export default gaugeStyle;

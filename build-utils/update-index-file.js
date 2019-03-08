@@ -27,4 +27,4 @@ ${componentNames
 export default { install: install }
 `
 
-fs.writeFileSync(path.resolve(__dirname, '../src/index.js'), indexFileContent)
+fs.writeFileSync(path.resolve(__dirname, '../src/components/index.js'), indexFileContent)

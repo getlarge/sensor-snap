@@ -79,7 +79,7 @@ svg.sensor-level > g.range-values > text.range-value--bottom {
 }
 .range-value-text--bottom {
   margin-bottom: ${conf.height / 48}px;
-}`
-}
+}`;
+};
 
-export default levelStyle
+export default levelStyle;

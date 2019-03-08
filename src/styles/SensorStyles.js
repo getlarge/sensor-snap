@@ -1,10 +1,10 @@
-import cameraStyle from './CameraStyle'
-import gaugeStyle from './GaugeStyle'
-import levelStyle from './LevelStyle'
-import switchStyle from './SwitchStyle'
-import timeStyle from './TimeStyle'
+import cameraStyle from './CameraStyle';
+import gaugeStyle from './GaugeStyle';
+import levelStyle from './LevelStyle';
+import switchStyle from './SwitchStyle';
+import timeStyle from './TimeStyle';
 
-const SensorStyles = {}
+const SensorStyles = {};
 
 const conf = (sensor, styles) => {
   return {
@@ -18,13 +18,13 @@ const conf = (sensor, styles) => {
     secondaryColor: styles.secondaryColor || '#55ffb6',
     successColor: styles.successColor || '#69ff4f',
     warningColor: styles.warningColor || '#fff62d',
-    dangerColor: styles.dangerColor || '#ff954d'
-  }
-}
+    dangerColor: styles.dangerColor || '#ff954d',
+  };
+};
 
 SensorStyles.picker = (styleName, sensor, styles) => {
-  return SensorStyles[styleName](conf(sensor, styles))
-}
+  return SensorStyles[styleName](conf(sensor, styles));
+};
 
 SensorStyles.snap = conf => {
   return `@font-face {
@@ -103,8 +103,8 @@ div.sensor-snap > svg > circle.delete-button:hover {
 div.sensor-snap > svg > g > text.sensor-details {
   font-size: ${conf.height / 20}px;
   font-weight: 400;
-}`
-}
+}`;
+};
 
 SensorStyles.audio = conf => {
   return `svg.sensor-timer {
@@ -115,12 +115,12 @@ SensorStyles.audio = conf => {
   --warning: ${conf.warningColor};
   --danger: ${conf.dangerColor};
   text-align: center;
-}`
-}
+}`;
+};
 
 SensorStyles.camera = conf => {
-  return cameraStyle(conf)
-}
+  return cameraStyle(conf);
+};
 
 SensorStyles.color = conf => {
   return `svg.sensor-color {
@@ -134,19 +134,19 @@ SensorStyles.color = conf => {
   --box-shadow: 0 1px 2px 0px #6e6e6e;
   --box-shadow-selected: 0 0px 1px 0px #6e6e6e;
   text-align: center;
-}`
-}
+}`;
+};
 //  SensorStyles.energy = sensor => {};
 
 SensorStyles.gauge = conf => {
-  return gaugeStyle(conf)
-}
+  return gaugeStyle(conf);
+};
 
 //  SensorStyles.joystick = sensor => {};
 
 SensorStyles.level = conf => {
-  return levelStyle(conf)
-}
+  return levelStyle(conf);
+};
 
 //  SensorStyles.magnetometer = sensor => {};
 
@@ -162,14 +162,14 @@ SensorStyles.map = conf => {
   --box-shadow: 0 1px 2px 0px #6e6e6e;
   --box-shadow-selected: 0 0px 1px 0px #6e6e6e;
   text-align: center;
-}`
-}
+}`;
+};
 
 //  SensorStyles.power = sensor => {};
 
 SensorStyles.switch = conf => {
-  return switchStyle(conf)
-}
+  return switchStyle(conf);
+};
 
 //  SensorStyles.text = sensor => {};
 
@@ -185,10 +185,10 @@ SensorStyles.timer = conf => {
   --box-shadow: 0 1px 2px 0px #6e6e6e;
   --box-shadow-selected: 0 0px 1px 0px #6e6e6e;
   text-align: center;
-}`
-}
+}`;
+};
 
 SensorStyles.time = conf => {
-  return timeStyle(conf)
-}
-export default SensorStyles
+  return timeStyle(conf);
+};
+export default SensorStyles;

@@ -4,12 +4,12 @@
 //
 // YOU SHOULD NEVER UPDATE THIS FILE DIRECTLY
 
-import SensorCamera from './SensorCamera.vue'
-import SensorGauge from './SensorGauge.vue'
-import SensorLevel from './SensorLevel.vue'
-import SensorSnap from './SensorSnap.vue'
-import SensorSwitch from './SensorSwitch.vue'
-import SensorTime from './SensorTime.vue'
+import SensorCamera from './SensorCamera.vue';
+import SensorGauge from './SensorGauge.vue';
+import SensorLevel from './SensorLevel.vue';
+import SensorSnap from './SensorSnap.vue';
+import SensorSwitch from './SensorSwitch.vue';
+import SensorTime from './SensorTime.vue';
 
 // Export components individually
 export {
@@ -18,18 +18,18 @@ export {
   SensorLevel,
   SensorSnap,
   SensorSwitch,
-  SensorTime
-}
+  SensorTime,
+};
 
 // What should happen if the user installs the library as a plugin
 function install(Vue) {
-  Vue.component('SensorCamera', SensorCamera)
-  Vue.component('SensorGauge', SensorGauge)
-  Vue.component('SensorLevel', SensorLevel)
-  Vue.component('SensorSnap', SensorSnap)
-  Vue.component('SensorSwitch', SensorSwitch)
-  Vue.component('SensorTime', SensorTime)
+  Vue.component('SensorCamera', SensorCamera);
+  Vue.component('SensorGauge', SensorGauge);
+  Vue.component('SensorLevel', SensorLevel);
+  Vue.component('SensorSnap', SensorSnap);
+  Vue.component('SensorSwitch', SensorSwitch);
+  Vue.component('SensorTime', SensorTime);
 }
 
 // Export the library as a plugin
-export default { install: install }
+export default {install: install};

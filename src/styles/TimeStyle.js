@@ -36,7 +36,7 @@ text.calendar-year {
   fill: var(--font-color); 
   font-family: "arial";
   font-size: ${conf.height / 15}px;
-}`
-}
+}`;
+};
 
-export default timeStyle
+export default timeStyle;

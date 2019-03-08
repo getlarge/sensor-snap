@@ -3,7 +3,7 @@ const path = require('path')
 
 // Get all the .vue files in the src directory
 const componentFileNames = fs
-  .readdirSync(path.resolve(__dirname, '../src'))
+  .readdirSync(path.resolve(__dirname, '../src/components'))
   .filter(componentFileName => /\.vue$/.test(componentFileName))
 
 // Get the names of the components from the file names

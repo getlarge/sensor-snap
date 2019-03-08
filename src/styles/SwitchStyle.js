@@ -26,7 +26,7 @@ svg.sensor-switch > g > text.sensor-value {
   fill: var(--font-color); 
   font-size: ${conf.height / 7}px;
   font-weight: 700;
-}`
-}
+}`;
+};
 
-export default switchStyle
+export default switchStyle;

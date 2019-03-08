@@ -29,7 +29,7 @@ svg.sensor-camera > circle.stream-button:active {
 }
 canvas.stream-container {
   display: none;
-}`
-}
+}`;
+};
 
-export default cameraStyle
+export default cameraStyle;
