@@ -39,7 +39,9 @@
       :y="centerY"
       fill="#999"
       :class="`value-text ${valueTextClass}`"
-    />
+    >
+      {{ sensorValue }}
+    </text>
     <path
       :ref="`valueDialContainer-${updatedSensor.id}`"
       :class="`value ${valueDialClass}`"
@@ -54,6 +56,7 @@
       "
     >
       <image
+        v-if="displayIcon"
         :transform="`translate(0, ${updatedHeight / 8})`"
         :height="`${updatedHeight / 5.3}`"
         :width="`${updatedWidth / 5}`"
@@ -76,13 +79,26 @@
         />
       </g>
       <text
+        :ref="`resourcesDescription-${updatedSensor.id}`"
         :transform="`translate(${updatedWidth / 10}, ${updatedHeight / 1.8})`"
         class="sensor-resources"
       >
-        <tspan x="0" :y="`${updatedHeight / 10}`">
+        <tspan
+          :id="`minRangeValue-${updatedSensor.id}`"
+          x="0"
+          :y="`${updatedHeight / 10}`"
+          class="editable-resource"
+          @click.prevent.stop="editResourcesField(0, 5603)"
+        >
           Min range : {{ minRangeValue }}
         </tspan>
-        <tspan x="0" :y="`${(updatedHeight / 10) * 1.4}`">
+        <tspan
+          :id="`maxRangeValue-${updatedSensor.id}`"
+          x="0"
+          :y="`${(updatedHeight / 10) * 1.4}`"
+          class="editable-resource"
+          @click.prevent.stop="editResourcesField(1, 5604)"
+        >
           Max range : {{ maxRangeValue }}
         </tspan>
         <tspan x="0" :y="`${(updatedHeight / 10) * 1.8}`">
@@ -91,8 +107,14 @@
         <tspan x="0" :y="`${(updatedHeight / 10) * 2.2}`">
           Max measurment : {{ maxMeasuredValue }}
         </tspan>
-        <tspan x="0" :y="`${(updatedHeight / 10) * 2.5}`">
-          Unit : {{ resourceUnit }}
+        <tspan
+          :id="`unitResource-${updatedSensor.id}`"
+          x="0"
+          :y="`${(updatedHeight / 10) * 2.5}`"
+          class="editable-resource"
+          @click.prevent.stop="editResourcesField(4, 5701)"
+        >
+          Unit : {{ unitResource }}
         </tspan>
       </text>
     </g>
@@ -167,6 +189,7 @@ export default {
       previousValue: 0,
       gaugeNeedle: '/icons/aloes/meter-gauge-needle.svg',
       displayValue: true,
+      displayIcon: true,
       displayNeedle: false,
       gaugeColor: true,
       requestAnimationFrame: cb => {
@@ -229,8 +252,13 @@ export default {
       if (this.updatedSensor.type === 3203) return '5650';
       return '5700';
     },
-    resourceUnit() {
-      return this.updatedSensor.resources['5701'];
+    unitResource: {
+      get() {
+        return this.updatedSensor.resources['5701'];
+      },
+      set(value) {
+        this.updatedSensor.resources['5701'] = value;
+      },
     },
     dialContainerPath() {
       return this.pathString(
@@ -245,8 +273,12 @@ export default {
     },
     sensorValue: {
       get() {
-        return this.updatedSensor.resources[this.mainResourceId];
-        //  return normalizeNumber(this.value, this.minRangeValue, this.maxRangeValue);
+        //  return this.updatedSensor.resources[this.mainResourceId];
+        return normalizeNumber(
+          this.updatedSensor.resources[this.mainResourceId],
+          this.minRangeValue,
+          this.maxRangeValue,
+        );
       },
       set(value) {
         //  if (!value || value === null) value = 0;
@@ -338,7 +370,31 @@ export default {
       this.gaugeValueElem = this.$refs[
         `valueTextContainer-${this.updatedSensor.id}`
       ];
+      this.resourcesDescription = this.$refs[
+        `resourcesDescription-${this.updatedSensor.id}`
+      ];
       this.elementsMounted = true;
+    },
+
+    editResourcesField(index, resource) {
+      if (this.elementsMounted) {
+        const tspan = this.resourcesDescription.childNodes[index];
+        if (tspan && tspan.id) {
+          const resourceValue = tspan.id.split('-')[0];
+          const fieldName = tspan.textContent.split(':')[0];
+          if (this[resourceValue]) {
+            const newValue = prompt(
+              `Please enter ${fieldName.trim()}`,
+              this[resourceValue],
+            );
+            if (newValue && newValue !== null) {
+              tspan.textContent = `${fieldName.trim()} : ${newValue}`;
+              this[resourceValue] = newValue;
+              this.updateSensor(this.updatedSensor, resource, newValue);
+            }
+          }
+        }
+      }
     },
 
     label(val) {

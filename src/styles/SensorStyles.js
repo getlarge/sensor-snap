@@ -103,6 +103,9 @@ div.sensor-snap > svg > circle.delete-button:hover {
 div.sensor-snap > svg > g > text.sensor-details {
   font-size: ${conf.height / 20}px;
   font-weight: 400;
+}
+div.sensor-snap > svg > g > text > tspan.editable-field {
+  cursor: pointer;
 }`;
 };
 

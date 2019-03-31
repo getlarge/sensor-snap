@@ -25,15 +25,28 @@
     >
       <!-- SENSOR DESCRIPTION -->
       <g :transform="`translate(${updatedWidth / 2}, ${updatedHeight / 10})`">
-        <text text-anchor="middle" x="0" class="sensor-details">
-          <tspan x="0" :y="`${updatedHeight / 8}`">
+        <text
+          :ref="`sensorDescription-${sensor.id}`"
+          text-anchor="middle"
+          x="0"
+          class="sensor-details"
+        >
+          <tspan x="0" :y="`${updatedHeight / 9}`">
+            sensorId : {{ sensor.nativeSensorId }}
+            {{
+              sensor.nativeNodeId !== null
+                ? `- node Id : ${sensor.nativeNodeId}`
+                : ''
+            }}
+          </tspan>
+          <tspan x="0" :y="`${updatedHeight / 5.5}`">
             IPSO : {{ sensor.type }}
           </tspan>
           <tspan x="0" :y="`${updatedHeight / 4}`">
             counter : {{ sensor.frameCounter }}
           </tspan>
           <tspan x="0" :y="`${updatedHeight / 3}`">
-            {{ sensor.messageProtocol }} {{ sensor.messageProtocol }}
+            {{ sensor.messageProtocol }} {{ sensor.messageProtocolVersion }}
           </tspan>
           <tspan x="0" :y="`${updatedHeight / 2}`">
             routes :
@@ -46,8 +59,11 @@
           </tspan>
           <tspan
             v-if="sensor.resources['5750']"
+            :id="`sensorAppName-${sensor.id}`"
             x="0"
             :y="`${updatedHeight / 1.2}`"
+            class="editable-field"
+            @click.prevent.stop="editSensorField(7, 5750)"
           >
             {{ sensor.resources['5750'] }}
           </tspan>
@@ -61,7 +77,6 @@
 </template>
 
 <script>
-/* eslint-disable no-console */
 import componentsList from '../assets/components-list';
 import deviceTree from '../assets/device-tree.json';
 import {formatSensor, updateStyles} from '../methods';
@@ -127,8 +142,7 @@ export default {
       },
     },
     resource: {
-      type: Number,
-      required: true,
+      type: [Number],
       default: null,
     },
     icons: {
@@ -146,7 +160,7 @@ export default {
       },
     },
     value: {
-      type: String,
+      type: [String],
       required: true,
       default: null,
       // default: () => {
@@ -154,18 +168,18 @@ export default {
       // }
     },
     frameCounter: {
-      type: Number,
-      required: false,
+      type: [Number],
+      //  required: false,
       default: 0,
     },
     devEui: {
-      type: String,
-      required: false,
+      type: [String],
+      //  required: false,
       default: null,
     },
     devAddr: {
-      type: String,
-      required: false,
+      type: [String],
+      //  required: false,
       default: null,
     },
     transportProtocol: {
@@ -174,8 +188,7 @@ export default {
       default: defaultSensor.transportProtocol,
     },
     transportProtocolVersion: {
-      type: String,
-      required: false,
+      type: [String],
       default: null,
     },
     messageProtocol: {
@@ -184,28 +197,23 @@ export default {
       default: defaultSensor.messageProtocol,
     },
     messageProtocolVersion: {
-      type: String,
-      required: false,
+      type: [String],
       default: null,
     },
     inputPath: {
-      type: String,
-      required: false,
+      type: [String],
       default: null,
     },
     outputPath: {
-      type: String,
-      required: false,
+      type: [String],
       default: null,
     },
     inPrefix: {
-      type: String,
-      required: true,
+      type: [String],
       default: null,
     },
     outPrefix: {
-      type: String,
-      required: true,
+      type: [String],
       default: null,
     },
     nativeSensorId: {
@@ -214,8 +222,7 @@ export default {
       default: defaultSensor.nativeSensorId,
     },
     nativeNodeId: {
-      type: String,
-      required: false,
+      type: [String],
       default: null,
     },
     width: {
@@ -235,6 +242,7 @@ export default {
       updatedSensor: null,
       updatedWidth: null,
       updatedHeight: null,
+      elementsMounted: false,
       aSide: true,
     };
   },
@@ -354,12 +362,17 @@ export default {
         //  const styles = this.updateStyles(this.componentName);
         this.style.innerHTML = styles;
         this.$el.prepend(this.style);
+        this.sensorDescription = this.$refs[
+          `sensorDescription-${this.sensor.id}`
+        ];
+        this.elementsMounted = true;
       }
     });
   },
 
   beforeDestroy() {
     //  this.$el.removeChild(this.style);
+    this.elementsMounted = false;
   },
 
   methods: {
@@ -371,6 +384,29 @@ export default {
 
     deleteSensor(...args) {
       this.$emit('delete-sensor', ...args);
+    },
+
+    editSensorField(index, resource) {
+      if (this.elementsMounted) {
+        const tspan = this.sensorDescription.childNodes[index];
+        if (tspan && tspan.id) {
+          const fieldName = tspan.id.split('-')[0];
+          if (this.sensor.resources[resource]) {
+            const newValue = prompt(
+              `Please enter ${fieldName.trim()}`,
+              this.sensor.resources[resource],
+            );
+            if (newValue && newValue !== null) {
+              if (tspan.textContent.startsWith(`${fieldName.trim()}`)) {
+                tspan.textContent = `${fieldName.trim()} : ${newValue}`;
+              } else {
+                tspan.textContent = `${newValue}`;
+              }
+              this.updateSensor(this.sensor, resource, newValue);
+            }
+          }
+        }
+      }
     },
 
     flipSide(value) {

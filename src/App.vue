@@ -122,25 +122,29 @@ export default {
     },
 
     async cameraTest(testNumber) {
-      const randomPic = this.randomPics[
-        Math.floor(Math.random() * this.randomPics.length)
-      ];
-      const result = await fetch(`${randomPic}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('HTTP error, status = ' + response.status);
-          }
-          return response.arrayBuffer();
-        })
-        .then(buffer => {
-          if (testNumber === 1) {
-            return Buffer.from(buffer);
-          } else if (testNumber === 2) {
-            return this.arrayBufferToBase64(buffer);
-          }
-          return buffer;
-        });
-      return result;
+      try {
+        const randomPic = this.randomPics[
+          Math.floor(Math.random() * this.randomPics.length)
+        ];
+        const result = await fetch(`${randomPic}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('HTTP error, status = ' + response.status);
+            }
+            return response.arrayBuffer();
+          })
+          .then(buffer => {
+            if (testNumber === 1) {
+              return Buffer.from(buffer);
+            } else if (testNumber === 2) {
+              return this.arrayBufferToBase64(buffer);
+            }
+            return buffer;
+          });
+        return result;
+      } catch (error) {
+        return error;
+      }
     },
   },
 };

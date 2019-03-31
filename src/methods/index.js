@@ -81,7 +81,10 @@ export const getValueInPercentage = (value, min, max) => {
  */
 export const updateStyles = (sensor, stylesConf, componentName) => {
   try {
-    if (!componentName || componentName === null) return null;
+    if (!componentName || componentName === null) {
+      //  throw new Error('No component name');
+      return null;
+    }
     const styleName = componentName.split('-')[1];
     const styles = `${SensorStyles.picker(
       'snap',
@@ -91,7 +94,7 @@ export const updateStyles = (sensor, stylesConf, componentName) => {
     //  console.log('updateStyles', this.style)
     return styles;
   } catch (error) {
-    throw error;
+    return error;
   }
 };
 
@@ -105,13 +108,14 @@ export const updateStyles = (sensor, stylesConf, componentName) => {
 export const checkComponentType = (componentType, sensorType) => {
   try {
     if (!Object.prototype.hasOwnProperty.call(componentsList, componentType)) {
-      return new Error('Error : Unknown component type');
+      return null;
+      //  throw new Error('Unknown component type');
     }
     return componentsList[componentType].list.find(
       objectId => objectId === sensorType,
     );
   } catch (error) {
-    throw error;
+    return error;
   }
 };
 
@@ -125,7 +129,8 @@ export const checkComponentType = (componentType, sensorType) => {
 export const getComponentResource = (componentType, componentResource) => {
   try {
     if (!Object.prototype.hasOwnProperty.call(componentsList, componentType)) {
-      return new Error('Error : Unknown component type');
+      return null;
+      //  throw new Error('Unknown component type');
     }
     if (
       !Object.prototype.hasOwnProperty.call(
@@ -133,11 +138,11 @@ export const getComponentResource = (componentType, componentResource) => {
         componentResource,
       )
     ) {
-      return new Error('Error : Unknown component resource');
+      throw new Error('Unknown component resource');
     }
     return componentsList[componentType][componentResource];
   } catch (error) {
-    throw error;
+    return error;
   }
 };
 
@@ -155,6 +160,6 @@ export const setRangeColors = (value, minRangeValue, maxRangeValue) => {
     }
     return c;
   } catch (error) {
-    throw error;
+    return error;
   }
 };

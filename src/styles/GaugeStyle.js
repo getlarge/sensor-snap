@@ -37,6 +37,9 @@ svg.sensor-gauge > g > text.sensor-resources {
   alignment-baseline: middle:
   dominant-baseline: central;
 }
+svg.sensor-gauge > g > text > tspan.editable-resource {
+  cursor: pointer;
+}
 image.meter_needle {
   transform-origin: bottom center;
   transform: rotate(270deg);
