@@ -10,6 +10,7 @@
       :width="updatedWidth"
       class="sensor-component"
       @update-sensor="updateSensor"
+      @update-setting="updateSetting"
       @delete-sensor="deleteSensor"
       @flip-side="onFlippedSide"
     />
@@ -80,10 +81,12 @@
 import componentsList from '../assets/components-list';
 import deviceTree from '../assets/device-tree.json';
 import {formatSensor, updateStyles} from '../methods';
+import SensorAudio from './SensorAudio.vue';
 import SensorCamera from './SensorCamera.vue';
 import SensorGauge from './SensorGauge.vue';
 import SensorLevel from './SensorLevel.vue';
 import SensorSwitch from './SensorSwitch.vue';
+import SensorText from './SensorText.vue';
 import SensorTime from './SensorTime.vue';
 
 const defaultSensor = deviceTree.children[7];
@@ -94,15 +97,37 @@ const defaultSensor = deviceTree.children[7];
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string} id - Required, sensorId
+ * @param {string} deviceId - Parent device id
+ * @param {string} name
+ * @param {string} type - OMA ObjectId
+ * @param {string} resources - OMA Resources corresponding to sensor.type (JSON Object)
+ * @param {string} resource - OMA ResourceId
+ * @param {string} value - last savec sensor value
+ * @param {string[]} icons - OMA viewResources icons
+ * @param {string] colors - OMA viewResources colors - (JSON Object)
+ * @param {string} [frameCounter] - sensor message counter
+ * @param {string} devEui - device unique hardware id
+ * @param {string} nativeSensorId - sensor id from device tree
+ * @param {string} [nativeNodeId] - node id from device tree
+ * @param {string} transportProtocol
+ * @param {string} transportProtocolVersion
+ * @param {string} messageProtocol
+ * @param {string} messageProtocolVersion
+ * @param {string} [inputPath] - MQTT route pattern
+ * @param {string} [outputPath] - MQTT route pattern
+ * @param {string} [inPrefix]
+ * @param {string} [outPrefix]
  */
 export default {
   name: 'SensorSnap',
 
   components: {
+    'sensor-audio': SensorAudio,
     'sensor-camera': SensorCamera,
     'sensor-gauge': SensorGauge,
     'sensor-level': SensorLevel,
     'sensor-switch': SensorSwitch,
+    'sensor-text': SensorText,
     'sensor-time': SensorTime,
     // 'sensor-camera': () => import('./SensorCamera.vue'),
     // 'sensor-gauge': () => import('./SensorGauge.vue'),
@@ -145,6 +170,14 @@ export default {
       type: [Number],
       default: null,
     },
+    value: {
+      type: [String],
+      required: true,
+      default: null,
+      // default: () => {
+      //   return defaultSensor.value.toString()
+      // }
+    },
     icons: {
       type: String,
       required: false,
@@ -159,27 +192,16 @@ export default {
         return JSON.stringify(defaultSensor.colors);
       },
     },
-    value: {
-      type: [String],
-      required: true,
-      default: null,
-      // default: () => {
-      //   return defaultSensor.value.toString()
-      // }
-    },
     frameCounter: {
       type: [Number],
-      //  required: false,
       default: 0,
     },
     devEui: {
       type: [String],
-      //  required: false,
       default: null,
     },
     devAddr: {
       type: [String],
-      //  required: false,
       default: null,
     },
     transportProtocol: {
@@ -255,8 +277,7 @@ export default {
      */
     componentType() {
       if (this.$props.type === componentsList.audio.list[0]) {
-        //  return "audio"
-        //  return null;
+        return 'audio';
       } else if (
         componentsList.camera.list.find(
           objectId => objectId === this.$props.type,
@@ -287,6 +308,8 @@ export default {
         )
       ) {
         return 'switch';
+      } else if (this.$props.type === componentsList.text.list[0]) {
+        return 'text';
       } else if (
         componentsList.time.list.find(objectId => objectId === this.$props.type)
       ) {
@@ -382,6 +405,12 @@ export default {
       }
     },
 
+    updateSetting(...args) {
+      if (args[0] && args[0].id) {
+        this.$emit('update-setting', ...args);
+      }
+    },
+
     deleteSensor(...args) {
       this.$emit('delete-sensor', ...args);
     },
@@ -402,7 +431,7 @@ export default {
               } else {
                 tspan.textContent = `${newValue}`;
               }
-              this.updateSensor(this.sensor, resource, newValue);
+              this.updateSetting(this.sensor, resource, newValue);
             }
           }
         }

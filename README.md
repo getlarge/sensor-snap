@@ -10,7 +10,6 @@ Application based on :
 - [VueJS](https://vuejs.org/)
 - [Vue-cli](https://cli.vuejs.org/)
 - [Open Mobile Alliance](http://www.openmobilealliance.org/wp/OMNA/LwM2M/LwM2MRegistry.html)
-- [Aloes-handlers](https://www.npmjs.com/package/aloes-handlers)
 
 ## Folder structure
 
@@ -70,31 +69,31 @@ npm install
 
 ### Compiles and hot-reloads for development
 
-```
+```bash
 npm run start:dev
 ```
 
 ### Compiles and minifies for production
 
-```
-npm run build
+```bash
+npm run lib:build
 ```
 
 ### Generate documentation
 
-```
+```bash
 npm run docs:dev
 ```
 
 ### Run your tests
 
-```
+```bash
 npm run test
 ```
 
 ### Lints and fixes files
 
-```
+```bash
 npm run lint
 ```
 

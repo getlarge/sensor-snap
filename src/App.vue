@@ -30,6 +30,7 @@
       :height="height"
       class="sensor-snap"
       @update-sensor="onUpdateSensor"
+      @update-setting="onUpdateSetting"
       @delete-sensor="onDeleteSensor"
     />
   </div>
@@ -51,7 +52,7 @@ export default {
 
   data() {
     return {
-      sensor: deviceTree.children[3],
+      sensor: deviceTree.children[8],
       width: 450,
       height: 480,
       randomPics: [
@@ -62,6 +63,7 @@ export default {
         '/icons/aloes/pattern.png',
         '/icons/aloes/arduino.png',
       ],
+      randomSounds: ['/sounds/fire.mp3', '/sounds/wind.mp3'],
     };
   },
 
@@ -78,6 +80,7 @@ export default {
 
   mounted() {
     this.measurementTest();
+    this.audioTest();
   },
 
   methods: {
@@ -89,10 +92,18 @@ export default {
           args[1] = 5910;
           args[2] = result;
         }
-        this.sensor = await updateAloesSensors(args[0], args[1], args[2]);
-        return this.sensor;
+        this.updatedSensor = await updateAloesSensors(
+          args[0],
+          args[1],
+          args[2],
+        );
+        return this.updatedSensor;
       }
       return null;
+    },
+
+    onUpdateSetting(...args) {
+      console.log('aloes-sensor updateSetting()', args);
     },
 
     onDeleteSensor(...args) {
@@ -110,8 +121,44 @@ export default {
         sensor.value =
           this.sensor.resources[resource] + Math.floor(Math.random() + 1);
         sensor.resources[resource] = sensor.value;
-        this.sensor = sensor;
+        this.updatedSensor = sensor;
       }, 3000);
+    },
+
+    async audioTest() {
+      try {
+        const sensorIsAudio = componentsList.audio.list.find(
+          objectId => objectId === this.sensor.type,
+        );
+        if (!sensorIsAudio) return null;
+        const randomSound = this.randomSounds[
+          Math.floor(Math.random() * this.randomSounds.length)
+        ];
+        const buf = await fetch(`${randomSound}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('HTTP error, status = ' + response.status);
+            }
+            return response.arrayBuffer();
+          })
+          .then(res => Buffer.from(res));
+        this.updatedSensor = await updateAloesSensors(
+          this.updatedSensor,
+          5522,
+          buf,
+        );
+        return this.updatedSensor;
+        // window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        // const context = new AudioContext();
+        // const result = await context.decodeAudioData(buf.buffer);
+        // //  console.log('audio test 3', result);
+        // return this.$refs[`sensorSnap-${this.updatedSensor.id}`].sendCommand(
+        //   'playSound',
+        //   result,
+        // );
+      } catch (error) {
+        return error;
+      }
     },
 
     arrayBufferToBase64(buffer) {

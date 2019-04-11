@@ -43,6 +43,11 @@
  * @property {array}  switch.list - OMA Object Id references
  * @property {array}  switch.resources - OMA Resources Id references
  * @property {object}  switch.colors - OMA Views colors references
+ * @property {object}  text - Load SensorText component
+ * @property {string}  text.name - Sensor name
+ * @property {array}  text.list - OMA Object Id references
+ * @property {array}  text.resources - OMA Resources Id references
+ * @property {object}  text.colors - OMA Views colors references
  * @property {object}  time - Load SensorTime component
  * @property {string}  time.name - Sensor name
  * @property {array}  time.list - OMA Object Id references

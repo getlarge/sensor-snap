@@ -353,6 +353,100 @@
       "inPrefix": "-in",
       "nativeType": 3333,
       "nativeResource": 5506
+    },
+    {
+      "id": "29",
+      "group": 2,
+      "icons": [
+        "/icons/aloes/text.svg",
+        "/icons/aloes/text.png",
+        "/icons/aloes/text-white.png"
+      ],
+      "size": 40,
+      "colors": {
+        "5527": "#000",
+        "5528": "#cc3333",
+        "5529": "#97ef87",
+        "5530": "#00FF00",
+        "5531": "#000",
+        "5545": "#cc3333",
+        "5546": "#97ef87",
+        "5548": "#000",
+        "5750": "#000",
+        "5850": "#000"
+      },
+      "name": "Text Display",
+      "type": 3341,
+      "devEui": "1456278",
+      "deviceId": "2",
+      "resource": 5527,
+      "resources": {
+        "5527": "some_bad_ass_text",
+        "5528": 0,
+        "5529": 0,
+        "5530": null,
+        "5531": 100,
+        "5545": 0,
+        "5546": 0,
+        "5548": 100,
+        "5750": "app_name",
+        "5850": 1
+      },
+      "value": "some_bad_ass_text",
+      "frameCounter": 0,
+      "transportProtocol": "aloesLight",
+      "messageProtocol": "aloesLight",
+      "messageProtocolVersion": "1.0",
+      "nativeSensorId": "4",
+      "nativeNodeId": null,
+      "outPrefix": "-out",
+      "inPrefix": "-in",
+      "nativeType": 3341,
+      "nativeResource": 5527
+    },
+    {
+      "id": "30",
+      "group": 2,
+      "icons": [
+        "/icons/aloes/loudness.svg",
+        "/icons/aloes/loudness.png",
+        "/icons/aloes/loudness-white.png"
+      ],
+      "size": 40,
+      "colors": {
+        "5601": "#5ae2e2",
+        "5602": "#ff3535",
+        "5603": "#5ae2e2",
+        "5604": "#ff3535",
+        "5605": "#000",
+        "5700": "#000",
+        "5701": "#000",
+        "5750": "#000",
+        "5821": "#434b77"
+      },
+      "name": "Loudness",
+      "type": 3339,
+      "devEui": "1456278",
+      "deviceId": "2",
+      "resource": 5522,
+      "resources": {
+        "5522": [],
+        "5523": null,
+        "5524": 0,
+        "5548": 100,
+        "5750": "app_name"
+      },
+      "value": [],
+      "frameCounter": 0,
+      "transportProtocol": "aloesLight",
+      "messageProtocol": "aloesLight",
+      "messageProtocolVersion": "1.0",
+      "nativeSensorId": "4",
+      "nativeNodeId": null,
+      "outPrefix": "-out",
+      "inPrefix": "-in",
+      "nativeType": 3339,
+      "nativeResource": 5522
     }
   ]
 }

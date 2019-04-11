@@ -1,7 +1,9 @@
+import audioStyle from './AudioStyle';
 import cameraStyle from './CameraStyle';
 import gaugeStyle from './GaugeStyle';
 import levelStyle from './LevelStyle';
 import switchStyle from './SwitchStyle';
+import textStyle from './TextStyle';
 import timeStyle from './TimeStyle';
 
 const SensorStyles = {};
@@ -110,15 +112,7 @@ div.sensor-snap > svg > g > text > tspan.editable-field {
 };
 
 SensorStyles.audio = conf => {
-  return `svg.sensor-timer {
-  --font-color: ${conf.fontColor};
-  --primary-color: ${conf.primaryColor};
-  --secondary-color: ${conf.secondaryColor};
-  --success: ${conf.successColor};
-  --warning: ${conf.warningColor};
-  --danger: ${conf.dangerColor};
-  text-align: center;
-}`;
+  return audioStyle(conf);
 };
 
 SensorStyles.camera = conf => {
@@ -174,7 +168,9 @@ SensorStyles.switch = conf => {
   return switchStyle(conf);
 };
 
-//  SensorStyles.text = sensor => {};
+SensorStyles.text = conf => {
+  return textStyle(conf);
+};
 
 SensorStyles.timer = conf => {
   return `svg.sensor-timer {

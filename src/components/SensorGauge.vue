@@ -354,6 +354,10 @@ export default {
       this.$emit('update-sensor', ...args);
     },
 
+    updateSetting(...args) {
+      this.$emit('update-setting', ...args);
+    },
+
     deleteSensor(...args) {
       this.$emit('delete-sensor', ...args);
     },
@@ -390,7 +394,7 @@ export default {
             if (newValue && newValue !== null) {
               tspan.textContent = `${fieldName.trim()} : ${newValue}`;
               this[resourceValue] = newValue;
-              this.updateSensor(this.updatedSensor, resource, newValue);
+              this.updateSetting(this.updatedSensor, resource, newValue);
             }
           }
         }

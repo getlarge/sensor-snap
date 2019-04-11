@@ -1,7 +1,7 @@
 <template>
   <svg
-    v-if="updatedSensor.type && updatedSensor.type === 3349"
-    class="sensor-camera"
+    v-if="updatedSensor.type && updatedSensor.type === 3339"
+    class="sensor-audio"
     :height="updatedHeight"
     :width="updatedWidth"
     xmlns="http://www.w3.org/2000/svg"
@@ -27,43 +27,42 @@
       :transform="`translate(${updatedWidth / 7}, ${updatedHeight / 10})`"
       :r="updatedWidth / 15"
       class="stream-button"
-      @click="
-        updateSensor(updatedSensor, 5911, !updatedSensor.resources['5911'])
+      @click.prevent.stop="
+        !isPlaying ? playSound(audioClipBuffer) : stopSound()
       "
     />
-    <!-- :stroke="updatedResources['5850'] ? updatedColors[0] : updatedColors[1]" -->
     <image
-      v-show="!imageUrl || imageUrl === null"
+      v-show="!isPlaying"
       :transform="`translate(${updatedWidth / 4}, ${updatedHeight / 4})`"
       :height="updatedHeight / 2"
       :width="updatedWidth / 2"
-      v-bind="{'xlink:href': updatedSensor.icons[0]}"
+      v-bind="{'xlink:href': updatedSensor.icons[1]}"
       class="sensor-icon"
     />
     <image
-      v-show="imageUrl && imageUrl !== null"
-      :ref="`streamViewer-${updatedSensor.id}`"
-      :transform="`translate(${updatedWidth / 8}, ${updatedHeight / 4})`"
-      :height="updatedHeight / 1.6"
-      :width="updatedWidth / 1.4"
-      v-bind="{'xlink:href': imageUrl}"
-      class="stream-viewer"
+      v-show="isPlaying"
+      :transform="`translate(${updatedWidth / 4}, ${updatedHeight / 4})`"
+      :height="updatedHeight / 2"
+      :width="updatedWidth / 2"
+      v-bind="{'xlink:href': updatedSensor.icons[2]}"
+      class="sensor-icon"
     />
   </svg>
 </template>
 
 <script>
 /**
- * Child component called when Object Id : 3349
+ * Child component called when Object Id : 3339
  *
- * Resources : Bitmap input : 5910, Bitmap input reset : 5911, appType : 5750
- * @module components/SensorCamera
+ * Resources : Clip : 5522, Trigger : 5523, Duration : 5524
+ * Level : 5548, appType : 5750
+ * @module components/SensorAudio
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance
  */
 export default {
-  name: 'SensorCamera',
+  name: 'SensorAudio',
 
   props: {
     sensor: {
@@ -86,8 +85,11 @@ export default {
       updatedHeight: null,
       updatedWidth: null,
       aSide: true,
-      imageUrl: null,
-      fpm: [1, 2, 4, 6],
+      elementsMounted: false,
+      audioContext: null,
+      audioSource: null,
+      audioClipBuffer: null,
+      isPlaying: false,
     };
   },
 
@@ -95,12 +97,12 @@ export default {
     viewBox() {
       return `0 0 ${this.updatedWidth} ${this.updatedHeight}`;
     },
-    bitmapInput: {
+    audioClip: {
       get() {
-        return this.updatedSensor.resources['5910'];
+        return this.updatedSensor.resources['5522'];
       },
       set(value) {
-        this.updatedSensor.resources['5910'] = value;
+        this.updatedSensor.resources['5522'] = value;
       },
     },
   },
@@ -124,10 +126,17 @@ export default {
       },
       immediate: true,
     },
-    bitmapInput: {
-      handler(value) {
-        if (!value || value === null) return null;
-        return this.parseImage(value);
+    audioClip: {
+      async handler(value) {
+        if (!value || value === null || !this.audioContext) return null;
+        if (value.type && value.data) {
+          this.audioClipBuffer = await this.audioContext.decodeAudioData(
+            Buffer.from(value.data).buffer,
+          );
+        } else if (value instanceof ArrayBuffer) {
+          this.audioClipBuffer = await this.audioContext.decodeAudioData(value);
+        }
+        return null;
       },
       immediate: true,
     },
@@ -135,13 +144,10 @@ export default {
 
   mounted() {
     this.mountElements();
-    if (this.bitmapInput && this.bitmapInput !== null) {
-      this.parseImage(this.bitmapInput);
-    }
   },
 
   beforeDestroy() {
-    this.timelapse = false;
+    this.isPlaying = false;
     this.elementsMounted = false;
   },
 
@@ -159,39 +165,33 @@ export default {
     },
 
     mountElements() {
-      this.image = this.$refs[`streamViewer-${this.updatedSensor.id}`];
-      this.elementsMounted = true;
-    },
-
-    async parseImage(value) {
       try {
-        if (value && typeof value === 'string') {
-          const base64Flag = 'data:image/jpeg;base64,';
-          const blob = await (await fetch(`${base64Flag}${value}`)).blob();
-          return this.getImage(blob);
-        } else if (value.type && value.type === 'Buffer') {
-          const blob = new Blob([Buffer.from(value.data).buffer]);
-          return this.getImage(blob);
-        }
-        return null;
-      } catch (error) {
-        return error;
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        this.audioContext = new AudioContext();
+        this.elementsMounted = true;
+      } catch (e) {
+        this.elementsMounted = false;
+        throw 'Web Audio API is not supported in this browser';
       }
     },
 
-    getImage(blob) {
-      if (!this.elementsMounted) return null;
-      return new Promise((resolve, reject) => {
-        const fReader = new FileReader();
-        fReader.onload = () => {
-          if (!fReader.result) reject(new Error('no result from file reader'));
-          this.imageUrl = fReader.result;
-          resolve(this.imageUrl);
-        };
-        if (blob instanceof Blob) {
-          fReader.readAsDataURL(blob);
-        }
-      });
+    playSound(buffer) {
+      if (!this.elementsMounted || !buffer) return null;
+      this.audioSource = this.audioContext.createBufferSource();
+      this.audioSource.buffer = buffer;
+      this.audioSource.connect(this.audioContext.destination);
+      this.audioSource.start(0);
+      this.isPlaying = true;
+    },
+
+    stopSound() {
+      if (!this.audioSource.stop) {
+        this.audioSource.noteOff(0);
+        this.isPlaying = false;
+      } else {
+        this.audioSource.stop(0);
+        this.isPlaying = false;
+      }
     },
   },
 };
