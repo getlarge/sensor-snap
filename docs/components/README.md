@@ -185,7 +185,7 @@ Parent component handling data flow and sub components selection
 | resource | <code>string</code> | OMA ResourceId |
 | value | <code>string</code> | last savec sensor value |
 | icons | <code>Array.&lt;string&gt;</code> | OMA viewResources icons |
-| {string |  | colors - OMA viewResources colors - (JSON Object) |
+| colors | <code>string</code> | OMA viewResources colors - (JSON Object) |
 | [frameCounter] | <code>string</code> | sensor message counter |
 | devEui | <code>string</code> | device unique hardware id |
 | nativeSensorId | <code>string</code> | sensor id from device tree |
@@ -316,7 +316,7 @@ Parent component handling data flow and sub components selection
 | resource | <code>string</code> | OMA ResourceId |
 | value | <code>string</code> | last savec sensor value |
 | icons | <code>Array.&lt;string&gt;</code> | OMA viewResources icons |
-| {string |  | colors - OMA viewResources colors - (JSON Object) |
+| colors | <code>string</code> | OMA viewResources colors - (JSON Object) |
 | [frameCounter] | <code>string</code> | sensor message counter |
 | devEui | <code>string</code> | device unique hardware id |
 | nativeSensorId | <code>string</code> | sensor id from device tree |

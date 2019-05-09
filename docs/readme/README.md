@@ -77,7 +77,6 @@ npm run start:dev
 
 ```bash
 npm run lib:build
-npm run lib:build-min
 ```
 
 ### Generate documentation
