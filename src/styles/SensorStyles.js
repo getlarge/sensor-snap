@@ -12,8 +12,8 @@ const conf = (sensor, styles) => {
   return {
     width: styles.width || 450,
     height: styles.height || 480,
-    fontFamily: styles.fontFamily || 'Aloes-Rg',
-    fontFamily2: styles.fontFamily2 || 'Aloes-Bd',
+    fontFamily: styles.fontFamily || 'JosefinSlab-SemiBold',
+    //  fontFamily2: styles.fontFamily2 || 'Aloes-Bd',
     fontColor: styles.fontColor || '#1C1C1C',
     grey: styles.grey || '#565656',
     primaryColor: styles.primaryColor || '#1dc0ff',
@@ -30,25 +30,16 @@ SensorStyles.picker = (styleName, sensor, styles) => {
 
 SensorStyles.snap = conf => {
   return `@font-face {
-  /* Aloes Regular - latin */
-  font-family: 'Aloes-Rg';
+  font-family: 'JosefinSlab-SemiBold';
+  src: url('/fonts/Josefin-Slab/JosefinSlab-SemiBold.eot');
+  src: url('/fonts/Josefin-Slab/JosefinSlab-SemiBold.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/Josefin-Slab/JosefinSlab-SemiBold.svg#JosefinSlab-SemiBold') format('svg'),
+    url('/fonts/Josefin-Slab/JosefinSlab-SemiBold.woff') format('woff'),
+    url('/fonts/Josefin-Slab/JosefinSlab-SemiBold.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
-  src: url('/fonts/Aloes/Aloes-Rg.woff2') format('woff2'),
-    url('/fonts/Aloes/Aloes-Rg.woff') format('woff'),
-    url('/fonts/Aloes/Aloes-Rg.eot') format('embedded-opentype'),
-    url('/fonts/Aloes/Aloes-Rg.ttf') format('truetype');
 }
-@font-face {
-  /* Aloes Bold - latin */
-  font-family: 'Aloes-Bd';
-  font-weight: normal;
-  font-style: normal;
-  src: url('/fonts/Aloes/Aloes-Bd.woff2') format('woff2'),
-    url('/fonts/Aloes/Aloes-Bd.woff') format('woff'),
-    url('/fonts/Aloes/Aloes-Bd.eot') format('embedded-opentype'),
-    url('/fonts/Aloes/Aloes-Bd.ttf') format('truetype');
-}
+
 div.sensor-snap {
   --font-color: ${conf.fontColor};
   --grey: ${conf.grey};
@@ -57,7 +48,7 @@ div.sensor-snap {
   --success: ${conf.successColor};
   --warning: ${conf.warningColor};
   --danger: ${conf.dangerColor};
-  --border-radius: ${conf.width / 30}px;
+  --border-radius: 0px;
   --border: 1px solid transparent;
   --box-shadow: 0 ${conf.width / 70}px ${conf.width / 35}px 0px #6e6e6e;
   --box-shadow-selected: 0 ${conf.width / 75}px ${conf.width /
@@ -77,7 +68,7 @@ div.sensor-snap > svg.sensor:hover {
   box-shadow: var(--box-shadow-selected);
 }
 div.sensor-snap > .sensor-component {
-  border-radius: var(--border-radius);
+  border-radius: 1px;
   border: var(--border);
   box-shadow: var(--box-shadow);
   -webkit-transition: box-shadow 150ms ease;

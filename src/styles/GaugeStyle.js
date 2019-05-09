@@ -11,17 +11,17 @@ const gaugeStyle = conf => {
   text-align: center;
   font-family: ${conf.fontFamily};
 }
-svg.sensor-gauge > .dial {
+svg.sensor-gauge > path.dial {
   stroke: #eee;
   stroke-width: ${conf.width / 40}px;
   fill: rgba(0,0,0,0);
 }
-svg.sensor-gauge > .value {
+svg.sensor-gauge > path.value {
   stroke: rgb(47, 227, 255);
   stroke-width: ${conf.width / 30}px;
   fill: rgba(0,0,0,0);
 }
-svg.sensor-gauge > .value-text {
+svg.sensor-gauge > text.value-text {
   text-anchor: middle;
   alignment-baseline: middle;
   dominant-baseline: central;

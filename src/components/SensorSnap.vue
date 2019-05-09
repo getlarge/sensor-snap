@@ -104,7 +104,7 @@ const defaultSensor = deviceTree.children[7];
  * @param {string} resource - OMA ResourceId
  * @param {string} value - last savec sensor value
  * @param {string[]} icons - OMA viewResources icons
- * @param {string] colors - OMA viewResources colors - (JSON Object)
+ * @param {string} colors - OMA viewResources colors - (JSON Object)
  * @param {string} [frameCounter] - sensor message counter
  * @param {string} devEui - device unique hardware id
  * @param {string} nativeSensorId - sensor id from device tree
@@ -260,8 +260,6 @@ export default {
   data() {
     return {
       style: null,
-      updatedResource: null,
-      updatedSensor: null,
       updatedWidth: null,
       updatedHeight: null,
       elementsMounted: false,
@@ -371,17 +369,47 @@ export default {
       },
       immediate: true,
     },
+    sensor: {
+      handler(newValue, oldValue) {
+        if (!newValue || !newValue.id || !oldValue || !oldValue.id) {
+          return null;
+        }
+        if (oldValue.id !== newValue.id) {
+          this.$el.removeChild(this.style);
+          this.elementsMounted = false;
+          this.style = document.createElement('style');
+          //  this.$nextTick(() => {
+          this.mountElements();
+          //  });
+        }
+      },
+      immediate: true,
+    },
   },
 
   mounted() {
     this.style = document.createElement('style');
     this.$nextTick(() => {
-      if (this.style !== null) {
+      this.mountElements();
+    });
+  },
+
+  updated() {},
+
+  beforeDestroy() {
+    //  this.$el.removeChild(this.style);
+    this.elementsMounted = false;
+  },
+
+  methods: {
+    mountElements() {
+      if (this.style && this.style !== null) {
         const styles = updateStyles(
           this.sensor,
           this.stylesConf,
           this.componentName,
         );
+        //  console.log('update styles', styles);
         //  const styles = this.updateStyles(this.componentName);
         this.style.innerHTML = styles;
         this.$el.prepend(this.style);
@@ -390,15 +418,8 @@ export default {
         ];
         this.elementsMounted = true;
       }
-    });
-  },
+    },
 
-  beforeDestroy() {
-    //  this.$el.removeChild(this.style);
-    this.elementsMounted = false;
-  },
-
-  methods: {
     updateSensor(...args) {
       if (args[0] && args[0].id) {
         this.$emit('update-sensor', ...args);

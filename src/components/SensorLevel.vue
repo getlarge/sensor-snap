@@ -342,6 +342,11 @@ export default {
           if (this.loading) return null;
           this.loading = true;
           this.updateSensor(this.updatedSensor, 5851, this.value);
+          if (this.value === this.rangeMax) {
+            this.updateSensor(this.updatedSensor, 5850, true);
+          } else if (this.value === this.rangeMin) {
+            this.updateSensor(this.updatedSensor, 5850, false);
+          }
         }, 100);
       }
       this.mouseY = this.mouseDy = 0;

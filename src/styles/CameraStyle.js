@@ -26,9 +26,6 @@ svg.sensor-camera > circle.stream-button:active {
   fill: var(--primary-color);
   stroke: var(--secondary-color);
   stroke-width: ${conf.width / 25}px;
-}
-canvas.stream-container {
-  display: none;
 }`;
 };
 

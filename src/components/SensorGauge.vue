@@ -27,7 +27,7 @@
     />
     <path
       :ref="`dialContainer-${updatedSensor.id}`"
-      :class="`dial ${dialClass}`"
+      :class="`${dialClass}`"
       :fill="`none`"
       stroke=""
       :d="dialContainerPath"
@@ -38,13 +38,13 @@
       :x="centerX"
       :y="centerY"
       fill="#999"
-      :class="`value-text ${valueTextClass}`"
+      :class="`${valueTextClass}`"
     >
       {{ sensorValue }}
     </text>
     <path
       :ref="`valueDialContainer-${updatedSensor.id}`"
-      :class="`value ${valueDialClass}`"
+      :class="`${valueDialClass}`"
       :d="valueDialContainerPath"
     />
     <g
