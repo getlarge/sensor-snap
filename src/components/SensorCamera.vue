@@ -57,6 +57,7 @@
  * Child component called when Object Id : 3349
  *
  * Resources : Bitmap input : 5910, Bitmap input reset : 5911, appType : 5750
+ *
  * @module components/SensorCamera
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
@@ -163,6 +164,21 @@ export default {
       this.elementsMounted = true;
     },
 
+    getImage(blob) {
+      if (!this.elementsMounted) return null;
+      return new Promise((resolve, reject) => {
+        const fReader = new FileReader();
+        fReader.onload = () => {
+          if (!fReader.result) reject(new Error('no result from file reader'));
+          this.imageUrl = fReader.result;
+          resolve(this.imageUrl);
+        };
+        if (blob instanceof Blob) {
+          fReader.readAsDataURL(blob);
+        }
+      });
+    },
+
     async parseImage(value) {
       try {
         if (value && typeof value === 'string') {
@@ -177,21 +193,6 @@ export default {
       } catch (error) {
         return error;
       }
-    },
-
-    getImage(blob) {
-      if (!this.elementsMounted) return null;
-      return new Promise((resolve, reject) => {
-        const fReader = new FileReader();
-        fReader.onload = () => {
-          if (!fReader.result) reject(new Error('no result from file reader'));
-          this.imageUrl = fReader.result;
-          resolve(this.imageUrl);
-        };
-        if (blob instanceof Blob) {
-          fReader.readAsDataURL(blob);
-        }
-      });
     },
   },
 };

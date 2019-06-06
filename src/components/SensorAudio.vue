@@ -27,9 +27,7 @@
       :transform="`translate(${updatedWidth / 7}, ${updatedHeight / 10})`"
       :r="updatedWidth / 15"
       class="stream-button"
-      @click.prevent.stop="
-        !isPlaying ? playSound(audioClipBuffer) : stopSound()
-      "
+      @click.prevent.stop="updateSensor(updatedSensor, 5523, true)"
     />
     <image
       v-show="!isPlaying"
@@ -38,6 +36,7 @@
       :width="updatedWidth / 2"
       v-bind="{'xlink:href': updatedSensor.icons[1]}"
       class="sensor-icon"
+      @click.prevent.stop="playSound(audioClipBuffer)"
     />
     <image
       v-show="isPlaying"
@@ -46,6 +45,7 @@
       :width="updatedWidth / 2"
       v-bind="{'xlink:href': updatedSensor.icons[2]}"
       class="sensor-icon"
+      @click.prevent.stop="stopSound()"
     />
   </svg>
 </template>
@@ -56,6 +56,7 @@
  *
  * Resources : Clip : 5522, Trigger : 5523, Duration : 5524
  * Level : 5548, appType : 5750
+ *
  * @module components/SensorAudio
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
@@ -127,16 +128,9 @@ export default {
       immediate: true,
     },
     audioClip: {
-      async handler(value) {
+      handler(value) {
         if (!value || value === null || !this.audioContext) return null;
-        if (value.type && value.data) {
-          this.audioClipBuffer = await this.audioContext.decodeAudioData(
-            Buffer.from(value.data).buffer,
-          );
-        } else if (value instanceof ArrayBuffer) {
-          this.audioClipBuffer = await this.audioContext.decodeAudioData(value);
-        }
-        return null;
+        return this.parseAudio(value);
       },
       immediate: true,
     },
@@ -144,6 +138,9 @@ export default {
 
   mounted() {
     this.mountElements();
+    if (this.audioClip && this.audioClip !== null) {
+      this.parseAudio(this.audioClip);
+    }
   },
 
   beforeDestroy() {
@@ -192,6 +189,21 @@ export default {
         this.audioSource.stop(0);
         this.isPlaying = false;
       }
+    },
+    async parseAudio(value) {
+      //  console.log('parseAudio', typeof value);
+      if (value.type && value.data) {
+        this.audioClipBuffer = await this.audioContext.decodeAudioData(
+          Buffer.from(value.data).buffer,
+        );
+      } else if (value instanceof ArrayBuffer) {
+        this.audioClipBuffer = await this.audioContext.decodeAudioData(value);
+      } else if (typeof value === 'string') {
+        this.audioClipBuffer = await this.audioContext.decodeAudioData(
+          Buffer.from(value, 'base64').buffer,
+        );
+      }
+      return null;
     },
   },
 };

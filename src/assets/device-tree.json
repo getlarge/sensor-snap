@@ -447,6 +447,51 @@
       "inPrefix": "-in",
       "nativeType": 3339,
       "nativeResource": 5522
+    },
+    {
+      "id": "31",
+      "group": 2,
+      "icons": [
+        "/icons/aloes/timer.svg",
+        "/icons/aloes/timer.png",
+        "/icons/aloes/timer-white.png"
+      ],
+      "size": 40,
+      "colors": {
+        "5601": "#5ae2e2",
+        "5602": "#ff3535",
+        "5603": "#5ae2e2",
+        "5604": "#ff3535",
+        "5605": "#000",
+        "5700": "#000",
+        "5701": "#000",
+        "5750": "#000",
+        "5821": "#434b77"
+      },
+      "name": "Timer",
+      "type": 3340,
+      "devEui": "1456278",
+      "deviceId": "2",
+      "resource": 5538,
+      "resources": {
+        "5521": 3500,
+        "5523": null,
+        "5526": 0,
+        "5538": 100,
+        "5850": false,
+        "5750": "app_name"
+      },
+      "value": [],
+      "frameCounter": 0,
+      "transportProtocol": "aloesLight",
+      "messageProtocol": "aloesLight",
+      "messageProtocolVersion": "1.0",
+      "nativeSensorId": "4",
+      "nativeNodeId": null,
+      "outPrefix": "-out",
+      "inPrefix": "-in",
+      "nativeType": 3340,
+      "nativeResource": 5538
     }
   ]
 }

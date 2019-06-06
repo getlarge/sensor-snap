@@ -1,15 +1,17 @@
 const gaugeStyle = conf => {
   return `svg.sensor-gauge {
+  font-family: ${conf.fontFamily};
   --font-color: ${conf.fontColor};
   --primary-color: ${conf.primaryColor};
   --secondary-color: ${conf.secondaryColor};
   --success: ${conf.successColor};
   --warning: ${conf.warningColor};
   --danger: ${conf.dangerColor};
-  --box-shadow: 0 1px 2px 0px #6e6e6e;
-  --box-shadow-selected: 0 0px 1px 0px #6e6e6e;
+  --border: 1px solid transparent;
+  --box-shadow: 0 ${conf.width / 50}px ${conf.width / 35}px 0px #6e6e6e;
+  --box-shadow-selected: 0 ${conf.width / 75}px ${conf.width /
+    100}px 0px #6e6e6e;
   text-align: center;
-  font-family: ${conf.fontFamily};
 }
 svg.sensor-gauge > path.dial {
   stroke: #eee;

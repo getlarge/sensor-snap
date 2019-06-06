@@ -21,7 +21,7 @@
       :width="updatedWidth"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
-      class="sensor"
+      class="sensor-settings"
       @click.prevent="flipSide(!aSide)"
     >
       <!-- SENSOR DESCRIPTION -->
@@ -88,6 +88,7 @@ import SensorLevel from './SensorLevel.vue';
 import SensorSwitch from './SensorSwitch.vue';
 import SensorText from './SensorText.vue';
 import SensorTime from './SensorTime.vue';
+import SensorTimer from './SensorTimer.vue';
 
 const defaultSensor = deviceTree.children[7];
 
@@ -129,6 +130,7 @@ export default {
     'sensor-switch': SensorSwitch,
     'sensor-text': SensorText,
     'sensor-time': SensorTime,
+    'sensor-timer': SensorTimer,
     // 'sensor-camera': () => import('./SensorCamera.vue'),
     // 'sensor-gauge': () => import('./SensorGauge.vue'),
     // 'sensor-level': () => import('./SensorLevel.vue'),
@@ -317,8 +319,7 @@ export default {
           objectId => objectId === this.$props.type,
         )
       ) {
-        //  return "timer"
-        return null;
+        return 'timer';
       }
       return null;
     },
@@ -332,7 +333,6 @@ export default {
     },
     sensor: {
       get() {
-        //  return this.formatSensor();
         return formatSensor(this.$props);
       },
       // set(value) {

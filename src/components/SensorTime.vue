@@ -285,7 +285,9 @@ import {getComponentResource} from '../methods';
 
 /**
  * Child component called when catching these ID :3333
+ *
  * Resources : 3333 : TIME 5506*, FRACTIONAL TIME 5507, appType 5750
+ *
  * @module components/SensorTime
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height

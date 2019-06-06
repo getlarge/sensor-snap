@@ -12,9 +12,10 @@ import SensorSnap from './SensorSnap.vue'
 import SensorSwitch from './SensorSwitch.vue'
 import SensorText from './SensorText.vue'
 import SensorTime from './SensorTime.vue'
+import SensorTimer from './SensorTimer.vue'
 
 // Export components individually
-export { SensorAudio, SensorCamera, SensorGauge, SensorLevel, SensorSnap, SensorSwitch, SensorText, SensorTime }
+export { SensorAudio, SensorCamera, SensorGauge, SensorLevel, SensorSnap, SensorSwitch, SensorText, SensorTime, SensorTimer }
 
 // What should happen if the user installs the library as a plugin
 function install(Vue) {
@@ -26,6 +27,7 @@ function install(Vue) {
   Vue.component('SensorSwitch', SensorSwitch)
   Vue.component('SensorText', SensorText)
   Vue.component('SensorTime', SensorTime)
+  Vue.component('SensorTimer', SensorTimer)
 }
 
 // Export the library as a plugin

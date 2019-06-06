@@ -2,7 +2,7 @@
 
 Vue library to generate Sensors Widget with Open Mobile Alliance references as inputs.
 
-- [Demo](https://getlarge.eu/#aloes)
+- [Demo](https://aloes.io)
 - [Docs](https://aloes.frama.io/sensor-snap/)
 
 Application based on :

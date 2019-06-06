@@ -62,7 +62,7 @@ const componentsList = {
     colors: {
       primaryColor: '#528fa2',
       secondaryColor: '#ededed',
-      successColor: '#528fa2',
+      successColor: '#77d1bf',
       warningColor: '#ffc85f',
       dangerColor: '#f94b39',
     },
@@ -74,7 +74,7 @@ const componentsList = {
     colors: {
       primaryColor: '#528fa2',
       secondaryColor: '#ededed',
-      successColor: '#528fa2',
+      successColor: '#77d1bf',
       warningColor: '#ffc85f',
       dangerColor: '#f94b39',
     },
@@ -86,7 +86,7 @@ const componentsList = {
     colors: {
       primaryColor: '#528fa2',
       secondaryColor: '#ededed',
-      successColor: '#528fa2',
+      successColor: '#77d1bf',
       warningColor: '#ffc85f',
       dangerColor: '#f94b39',
     },
@@ -98,7 +98,7 @@ const componentsList = {
     colors: {
       primaryColor: '#528fa2',
       secondaryColor: '#ededed',
-      successColor: '#528fa2',
+      successColor: '#77d1bf',
       warningColor: '#ffc85f',
       dangerColor: '#f94b39',
     },
@@ -136,7 +136,7 @@ const componentsList = {
     colors: {
       primaryColor: '#528fa2',
       secondaryColor: '#ededed',
-      successColor: '#528fa2',
+      successColor: '#77d1bf',
       warningColor: '#ffc85f',
       dangerColor: '#f94b39',
     },
@@ -148,7 +148,7 @@ const componentsList = {
     colors: {
       primaryColor: '#528fa2',
       secondaryColor: '#ededed',
-      successColor: '#528fa2',
+      successColor: '#77d1bf',
       warningColor: '#ffc85f',
       dangerColor: '#f94b39',
     },
@@ -160,7 +160,7 @@ const componentsList = {
     colors: {
       primaryColor: '#528fa2',
       secondaryColor: '#ededed',
-      successColor: '#528fa2',
+      successColor: '#77d1bf',
       warningColor: '#ffc85f',
       dangerColor: '#f94b39',
     },
@@ -172,7 +172,7 @@ const componentsList = {
     colors: {
       primaryColor: '#528fa2',
       secondaryColor: '#ededed',
-      successColor: '#528fa2',
+      successColor: '#77d1bf',
       warningColor: '#ffc85f',
       dangerColor: '#f94b39',
     },
@@ -184,7 +184,7 @@ const componentsList = {
     colors: {
       primaryColor: '#528fa2',
       secondaryColor: '#ededed',
-      successColor: '#528fa2',
+      successColor: '#77d1bf',
       warningColor: '#ffc85f',
       dangerColor: '#f94b39',
     },
@@ -196,7 +196,7 @@ const componentsList = {
     colors: {
       primaryColor: '#528fa2',
       secondaryColor: '#ededed',
-      successColor: '#528fa2',
+      successColor: '#77d1bf',
       warningColor: '#ffc85f',
       dangerColor: '#f94b39',
     },
@@ -208,7 +208,7 @@ const componentsList = {
     colors: {
       primaryColor: '#528fa2',
       secondaryColor: '#ededed',
-      successColor: '#528fa2',
+      successColor: '#77d1bf',
       warningColor: '#ffc85f',
       dangerColor: '#f94b39',
     },
@@ -232,7 +232,7 @@ const componentsList = {
     colors: {
       primaryColor: '#528fa2',
       secondaryColor: '#ededed',
-      successColor: '#528fa2',
+      successColor: '#77d1bf',
       warningColor: '#ffc85f',
       dangerColor: '#f94b39',
     },

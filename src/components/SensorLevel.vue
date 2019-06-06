@@ -20,6 +20,14 @@
       {{ updatedSensor.name }}
     </text>
     <circle
+      :transform="`translate(${updatedWidth / 7}, ${updatedHeight / 10})`"
+      :r="updatedWidth / 15"
+      :class="switchButtonClass"
+      @click="
+        updateSensor(updatedSensor, 5850, !updatedSensor.resources['5850'])
+      "
+    />
+    <circle
       :transform="`translate(${updatedWidth / 1.2}, ${updatedHeight / 10})`"
       :r="`${updatedWidth / 15}`"
       class="delete-button"
@@ -79,7 +87,7 @@
       >
         <tspan class="range-value-number range-value-number--top" />
         <tspan class="range-value-text range-value-text--top">
-          <tspan>{{ rangeMax - value }}</tspan>
+          <tspan>{{ rangeMax - sliderValue }}</tspan>
         </tspan>
       </text>
       <text
@@ -90,7 +98,7 @@
       >
         <tspan class="range-value-number range-value-number--bottom" />
         <tspan class="range-value-text range-value-text--bottom">
-          <tspan>{{ value }}</tspan>
+          <tspan>{{ sliderValue }}</tspan>
         </tspan>
       </text>
     </g>
@@ -103,7 +111,9 @@ import {checkComponentType} from '../methods';
 
 /**
  * Child component called when catching these IDs : 3306, 3311, 3312
+ *
  * Resources : output state : 5850,  dimmer  : 5851, on time: 5852, UNIT : 5701 appType 5750
+ *
  * @module components/SensorLevel
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
@@ -176,10 +186,11 @@ export default {
     viewBox() {
       return `0 0 ${this.updatedWidth} ${this.updatedHeight}`;
     },
+
     rangeHeight() {
       return this.updatedHeight - this.updatedHeight / 6;
     },
-    value: {
+    sliderValue: {
       get() {
         return this.updatedSensor.resources['5851'];
       },
@@ -187,6 +198,21 @@ export default {
         //  this.updatedSensor.resources["5851"] = parseInt(value);
         this.updatedSensor.resources['5851'] = value;
       },
+    },
+    switchValue: {
+      get() {
+        return this.updatedSensor.resources['5850'];
+      },
+      set(value) {
+        //  this.updatedSensor.resources["5851"] = parseInt(value);
+        this.updatedSensor.resources['5850'] = value;
+      },
+    },
+    switchButtonClass() {
+      if (this.switchValue) {
+        return `switch-button switched-on`;
+      }
+      return `switch-button switched-off`;
     },
     rangeMin() {
       if (!this.updatedSensor || !this.updatedSensor.resources) return 0;
@@ -206,7 +232,7 @@ export default {
     },
     scale() {
       const scale =
-        ((this.value - this.rangeMin) / (this.rangeMax - this.rangeMin)) *
+        ((this.sliderValue - this.rangeMin) / (this.rangeMax - this.rangeMin)) *
         this.scaleMax;
       return scale;
     },
@@ -217,12 +243,12 @@ export default {
       return this.currentY + this.mouseY - this.pageY;
     },
     newPath() {
-      if (this.value > this.rangeMax)
+      if (this.sliderValue > this.rangeMax)
         return this.buildPath(
           this.lastMouseDy,
           this.rangeHeight - this.rangeMaxY,
         );
-      if (this.value < this.minRange)
+      if (this.sliderValue < this.minRange)
         return this.buildPath(
           this.lastMouseDy,
           this.rangeHeight - this.rangeMinY,
@@ -253,7 +279,7 @@ export default {
       },
       immediate: true,
     },
-    value: {
+    sliderValue: {
       handler(value) {
         this.currentY = (this.rangeHeight * value) / this.rangeMax;
         this.afterUpdate();
@@ -266,7 +292,7 @@ export default {
   mounted() {
     this.mountElements();
     // todo define parseInt accuracy based on oma unit resource [5701]
-    this.currentY = (this.rangeHeight * this.value) / this.rangeMax;
+    this.currentY = (this.rangeHeight * this.sliderValue) / this.rangeMax;
     this.$nextTick(() => {
       this.setListeners();
       // this.updateValue();
@@ -329,7 +355,7 @@ export default {
           this.currentY =
             this.newY < this.rangeMinY ? this.rangeMinY : this.rangeMaxY;
         }
-        this.value = parseInt(
+        this.sliderValue = parseInt(
           (this.currentY * this.rangeMax) / this.rangeHeight,
         );
       }
@@ -341,10 +367,10 @@ export default {
         setTimeout(() => {
           if (this.loading) return null;
           this.loading = true;
-          this.updateSensor(this.updatedSensor, 5851, this.value);
-          if (this.value === this.rangeMax) {
+          this.updateSensor(this.updatedSensor, 5851, this.sliderValue);
+          if (this.sliderValue === this.rangeMax) {
             this.updateSensor(this.updatedSensor, 5850, true);
-          } else if (this.value === this.rangeMin) {
+          } else if (this.sliderValue === this.rangeMin) {
             this.updateSensor(this.updatedSensor, 5850, false);
           }
         }, 100);
@@ -389,8 +415,8 @@ export default {
 
     afterUpdate() {
       if (!this.elementsMounted) return null;
-      if (this.value > this.rangeMax) return null;
-      if (this.value < this.rangeMin) return null;
+      if (this.sliderValue > this.rangeMax) return null;
+      if (this.sliderValue < this.rangeMin) return null;
       anime.remove([
         this.rangeValues,
         this.rangeSliderPaths[0],

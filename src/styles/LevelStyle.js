@@ -1,5 +1,6 @@
 const levelStyle = conf => {
   return `svg.sensor-level {
+   font-family: ${conf.fontFamily};
   --font-color: ${conf.fontColor};
   --primary-color: ${conf.primaryColor};
   --secondary-color: ${conf.secondaryColor};
@@ -13,6 +14,24 @@ const levelStyle = conf => {
     100}px 0px #6e6e6e;
   cursor: pointer;
   overflow: hidden;
+}
+svg.sensor-level > circle.switch-button {
+  stroke-width: ${conf.width / 50}px;
+  cursor: pointer;
+}
+svg.sensor-level > circle.switch-button:hover {
+  stroke-width: ${conf.width / 35}px;
+}
+svg.sensor-level > circle.switch-button:active {
+  stroke-width: ${conf.width / 25}px;
+}
+svg.sensor-level > circle.switched-on {
+  fill: var(--primary-color);
+  stroke: var(--secondary-color);
+}
+svg.sensor-level > circle.switched-off {
+  fill: var(--secondary-color);
+  stroke: var(--primary-color);
 }
 svg.sensor-level > g > path.range-slider-path {
   fill: var(--primary-color);

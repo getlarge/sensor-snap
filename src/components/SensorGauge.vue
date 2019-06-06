@@ -131,8 +131,11 @@ import {
 
 /**
  * Child component called when catching these IDs : 3300 until 3305 - 3315 - 3316 until 3330 - 3346
- * input state : 5600, minMeasuredValue 5601, maxMeasuredValue 5602,
+ *
+ * Resources : input state : 5600, minMeasuredValue 5601, maxMeasuredValue 5602,
+ *
  * output state : 5650, maxRange : 5604, minRange : 5603, appType 5750, sensorType 5751
+ *
  * @module components/SensorGauge
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height

@@ -54,7 +54,9 @@
  * Child component called when Object Id : 3341
  *
  * Resources : text : 5527, X coord : 5528, Y coord : 5529, clear Display : 5530, contrast : 5531
+ *
  * max X : 5545, max Y: 5546, level control: 5548, switch : 5850, appType 5750
+ *
  * @module components/SensorText
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height

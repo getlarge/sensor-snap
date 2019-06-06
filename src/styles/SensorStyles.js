@@ -5,8 +5,16 @@ import levelStyle from './LevelStyle';
 import switchStyle from './SwitchStyle';
 import textStyle from './TextStyle';
 import timeStyle from './TimeStyle';
+import timerStyle from './TimerStyle';
 
 const SensorStyles = {};
+
+// const colors = {
+//   blue: '#29abe2',
+//   lightgreen: '#d6e6dc',
+//   green: '#77d1bf',
+//   lightblue: '#98d4ee',
+// };
 
 const conf = (sensor, styles) => {
   return {
@@ -39,7 +47,6 @@ SensorStyles.snap = conf => {
   font-weight: normal;
   font-style: normal;
 }
-
 div.sensor-snap {
   --font-color: ${conf.fontColor};
   --grey: ${conf.grey};
@@ -56,7 +63,7 @@ div.sensor-snap {
   text-align: center;
   font-family: ${conf.fontFamily};
 }
-div.sensor-snap > svg.sensor {
+div.sensor-snap > svg.sensor-settings {
   border-radius: var(--border-radius);
   border: var(--border);
   box-shadow: var(--box-shadow);
@@ -64,7 +71,7 @@ div.sensor-snap > svg.sensor {
   transition: box-shadow 150ms ease;
   point-event: none;
 }
-div.sensor-snap > svg.sensor:hover {
+div.sensor-snap > svg.sensor-settings:hover {
   box-shadow: var(--box-shadow-selected);
 }
 div.sensor-snap > .sensor-component {
@@ -119,8 +126,9 @@ SensorStyles.color = conf => {
   --warning: ${conf.warningColor};
   --danger: ${conf.dangerColor};
   --border: 1px solid transparent;
-  --box-shadow: 0 1px 2px 0px #6e6e6e;
-  --box-shadow-selected: 0 0px 1px 0px #6e6e6e;
+  --box-shadow: 0 ${conf.width / 50}px ${conf.width / 35}px 0px #6e6e6e;
+  --box-shadow-selected: 0 ${conf.width / 75}px ${conf.width /
+    100}px 0px #6e6e6e;
   text-align: center;
 }`;
 };
@@ -147,8 +155,9 @@ SensorStyles.map = conf => {
   --warning: ${conf.warningColor};
   --danger: ${conf.dangerColor};
   --border: 1px solid transparent;
-  --box-shadow: 0 1px 2px 0px #6e6e6e;
-  --box-shadow-selected: 0 0px 1px 0px #6e6e6e;
+  --box-shadow: 0 ${conf.width / 50}px ${conf.width / 35}px 0px #6e6e6e;
+  --box-shadow-selected: 0 ${conf.width / 75}px ${conf.width /
+    100}px 0px #6e6e6e;
   text-align: center;
 }`;
 };
@@ -164,21 +173,11 @@ SensorStyles.text = conf => {
 };
 
 SensorStyles.timer = conf => {
-  return `svg.sensor-timer {
-  --font-color: ${conf.fontColor};
-  --primary-color: ${conf.primaryColor};
-  --secondary-color: ${conf.secondaryColor};
-  --success: ${conf.successColor};
-  --warning: ${conf.warningColor};
-  --danger: ${conf.dangerColor};
-  --border: 1px solid transparent;
-  --box-shadow: 0 1px 2px 0px #6e6e6e;
-  --box-shadow-selected: 0 0px 1px 0px #6e6e6e;
-  text-align: center;
-}`;
+  return timerStyle(conf);
 };
 
 SensorStyles.time = conf => {
   return timeStyle(conf);
 };
+
 export default SensorStyles;

@@ -52,7 +52,7 @@ export default {
 
   data() {
     return {
-      sensor: deviceTree.children[5],
+      sensor: deviceTree.children[1],
       width: 450,
       height: 480,
       randomPics: [
@@ -80,7 +80,6 @@ export default {
 
   mounted() {
     this.measurementTest();
-    this.audioTest();
   },
 
   methods: {
@@ -90,6 +89,10 @@ export default {
         if (args[0].type === 3349 && args[1] === 5911) {
           const result = await this.cameraTest(2);
           args[1] = 5910;
+          args[2] = result;
+        } else if (args[0].type === 3339 && args[1] === 5523) {
+          const result = await this.audioTest(2);
+          args[1] = 5522;
           args[2] = result;
         }
         this.updatedSensor = await updateAloesSensors(
@@ -125,12 +128,19 @@ export default {
       }, 3000);
     },
 
-    async audioTest() {
+    arrayBufferToBase64(buffer) {
+      let binary = '';
+      const bytes = [].slice.call(new Uint8Array(buffer));
+      bytes.forEach(b => (binary += String.fromCharCode(b)));
+      return window.btoa(binary);
+    },
+
+    async audioTest(testNumber) {
       try {
-        const sensorIsAudio = componentsList.audio.list.find(
-          objectId => objectId === this.sensor.type,
-        );
-        if (!sensorIsAudio) return null;
+        // const sensorIsAudio = componentsList.audio.list.find(
+        //   objectId => objectId === this.sensor.type,
+        // );
+        // if (!sensorIsAudio) return null;
         const randomSound = this.randomSounds[
           Math.floor(Math.random() * this.randomSounds.length)
         ];
@@ -141,17 +151,15 @@ export default {
             }
             return response.arrayBuffer();
           })
-          .then(res => Buffer.from(res));
-        this.updatedSensor = await updateAloesSensors(
-          this.updatedSensor,
-          5522,
-          buf,
-        );
-        return this.updatedSensor;
-        // window.AudioContext = window.AudioContext || window.webkitAudioContext;
-        // const context = new AudioContext();
-        // const result = await context.decodeAudioData(buf.buffer);
-        // //  console.log('audio test 3', result);
+          .then(res => {
+            if (testNumber === 1) {
+              return Buffer.from(res);
+            } else if (testNumber === 2) {
+              return this.arrayBufferToBase64(res);
+            }
+          });
+        console.log('audioTest, buffer', testNumber, buf);
+        return buf;
         // return this.$refs[`sensorSnap-${this.updatedSensor.id}`].sendCommand(
         //   'playSound',
         //   result,
@@ -159,13 +167,6 @@ export default {
       } catch (error) {
         return error;
       }
-    },
-
-    arrayBufferToBase64(buffer) {
-      let binary = '';
-      const bytes = [].slice.call(new Uint8Array(buffer));
-      bytes.forEach(b => (binary += String.fromCharCode(b)));
-      return window.btoa(binary);
     },
 
     async cameraTest(testNumber) {
@@ -188,6 +189,8 @@ export default {
             }
             return buffer;
           });
+        console.log('cameraTest, buffer', testNumber, result);
+
         return result;
       } catch (error) {
         return error;
