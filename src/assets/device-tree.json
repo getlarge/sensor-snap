@@ -3,6 +3,7 @@
   "name": "Device 1",
   "type": "Gateway",
   "devEui": "1456278",
+  "ownerId": "1",
   "appKey": "okdF2wUbnInCbUJpr4013S4Agn96wC30d4iD3wbU8oFIc1eLP5qyW3GeU9bMFG1T",
   "description": "",
   "status": true,
@@ -42,6 +43,7 @@
       "type": 3202,
       "devEui": "1456278",
       "deviceId": "2",
+      "ownerId": "1",
       "resource": 5600,
       "resources": {
         "5600": 125,
@@ -87,6 +89,7 @@
       "type": 3315,
       "devEui": "1456278",
       "deviceId": "2",
+      "ownerId": "1",
       "resource": 5700,
       "resources": {
         "5700": 1015,
@@ -130,6 +133,7 @@
       "type": 3336,
       "devEui": "1456278",
       "deviceId": "2",
+      "ownerId": "1",
       "resource": 5515,
       "resources": {
         "5514": "45.60011",
@@ -174,6 +178,7 @@
       "type": 3342,
       "devEui": "1456278",
       "deviceId": "2",
+      "ownerId": "1",
       "resource": 5500,
       "resources": {
         "5500": 1,
@@ -216,6 +221,7 @@
       "type": 3303,
       "devEui": "1456278",
       "deviceId": "2",
+      "ownerId": "1",
       "resource": 5700,
       "resources": {
         "5700": 22,
@@ -258,6 +264,7 @@
       "type": 3306,
       "devEui": "1456278",
       "deviceId": "2",
+      "ownerId": "1",
       "resource": 5851,
       "resources": {
         "5701": "%",
@@ -296,6 +303,7 @@
       "type": 3349,
       "devEui": "1456278",
       "deviceId": "2",
+      "ownerId": "1",
       "resource": 5910,
       "resources": {
         "5910": [],
@@ -336,6 +344,7 @@
       "type": 3333,
       "devEui": "1456278",
       "deviceId": "2",
+      "ownerId": "1",
       "resource": 5506,
       "resources": {
         "5506": 1548724188,
@@ -379,6 +388,7 @@
       "type": 3341,
       "devEui": "1456278",
       "deviceId": "2",
+      "ownerId": "1",
       "resource": 5527,
       "resources": {
         "5527": "some_bad_ass_text",
@@ -428,6 +438,7 @@
       "type": 3339,
       "devEui": "1456278",
       "deviceId": "2",
+      "ownerId": "1",
       "resource": 5522,
       "resources": {
         "5522": [],
@@ -472,6 +483,7 @@
       "type": 3340,
       "devEui": "1456278",
       "deviceId": "2",
+      "ownerId": "1",
       "resource": 5538,
       "resources": {
         "5521": 3500,

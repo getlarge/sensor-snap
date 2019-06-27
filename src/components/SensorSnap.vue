@@ -99,6 +99,7 @@ const defaultSensor = deviceTree.children[7];
  * @param {number} [height] - Component height
  * @param {string} id - Required, sensorId
  * @param {string} deviceId - Parent device id
+ * @param {string} ownerId - Account owner
  * @param {string} name
  * @param {string} type - OMA ObjectId
  * @param {string} resources - OMA Resources corresponding to sensor.type (JSON Object)
@@ -145,6 +146,11 @@ export default {
       default: () => {
         return defaultSensor.id.toString();
       },
+    },
+    ownerId: {
+      type: String,
+      required: true,
+      default: '1',
     },
     deviceId: {
       type: String,

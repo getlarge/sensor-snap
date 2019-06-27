@@ -3,6 +3,7 @@
     <SensorSnap
       :id="updatedSensor.id.toString()"
       :ref="`sensorSnap-${updatedSensor.id}`"
+      :owner-id="updatedSensor.ownerId"
       :device-id="updatedSensor.deviceId"
       :dev-eui="updatedSensor.devEui"
       :dev-addr="updatedSensor.devAddr"

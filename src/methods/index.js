@@ -13,6 +13,7 @@ export const formatSensor = props => {
     const sensor = {
       id: props.id,
       deviceId: props.deviceId,
+      ownerId: props.ownerId,
       devEui: props.devEui || null,
       devAddr: props.devAddr || null,
       frameCounter: props.frameCounter,
