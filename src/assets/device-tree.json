@@ -402,7 +402,7 @@
         "5750": "app_name",
         "5850": 1
       },
-      "value": "some_bad_ass_text",
+      "value": "some_bad_a**_text",
       "frameCounter": 0,
       "transportProtocol": "aloesLight",
       "messageProtocol": "aloesLight",

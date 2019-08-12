@@ -24,6 +24,9 @@ svg.sensor-text > g > text.sensor-value {
   font-weight: 700;
   cursor: pointer;
 }
+svg.sensor-text > g > rect.sensor-value {
+  cursor: pointer;
+}
 svg.sensor-text > g > text > tspan.editable-resource {
   cursor: pointer;
 }`;

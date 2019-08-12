@@ -31,6 +31,15 @@ svg.sensor-timer > circle.switched-off {
   fill: var(--secondary-color);
   stroke: var(--primary-color);
 }
+svg.sensor-timer > g.timer-modes > text {
+  background: transparent;
+  text-shadow: ${conf.width / 250}px ${conf.width / 250}px ${conf.width /
+    300}px #6e6e6e;
+  font-weight: 300;
+  font-size: ${conf.width / 10}px;
+  fill: var(--secondary-color);
+  cursor: pointer;
+}
 svg.sensor-timer > g.setters > g > text[data-setter] {
   background: transparent;
   text-shadow: ${conf.width / 250}px ${conf.width / 250}px ${conf.width /
@@ -49,6 +58,7 @@ svg.sensor-timer > g.controls > text.display-remain-time {
   font-weight: 100;
   font-size: ${conf.width / 5}px;
   fill: var(--primary-color);
+  cursor: pointer;
 }
 svg.sensor-timer > g.controls > g > text#pause {
   cursor: pointer;

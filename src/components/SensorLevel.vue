@@ -451,8 +451,8 @@ export default {
           anime({
             targets: this.rangeSliderPaths,
             d: this.buildPath(0, this.rangeHeight - this.currentY),
-            duration: 2000,
-            elasticity: 500,
+            duration: 1000,
+            elasticity: 200,
           });
         },
       });
@@ -469,8 +469,8 @@ export default {
           anime({
             targets: this.rangeValues,
             translateY: this.rangeHeight - this.currentY,
-            duration: 2000,
-            elasticity: 500,
+            duration: 1000,
+            elasticity: 200,
           });
         },
       });

@@ -22,9 +22,7 @@
       :transform="`translate(${updatedWidth / 7}, ${updatedHeight / 10})`"
       :r="updatedWidth / 15"
       :class="switchButtonClass"
-      @click="
-        updateSensor(updatedSensor, 5850, !updatedSensor.resources['5850'])
-      "
+      @click="updateSensor(updatedSensor, 5850, !timerState)"
     />
     <circle
       :transform="`translate(${updatedWidth / 1.2}, ${updatedHeight / 10})`"
@@ -32,6 +30,36 @@
       class="delete-button"
       @click="deleteSensor(updatedSensor)"
     />
+
+    <g
+      class="timer-modes"
+      :transform="`translate(${updatedWidth / 6},${updatedHeight / 3.5})`"
+    >
+      <text
+        :id="`timerMode-${updatedSensor.id}-0`"
+        y="0"
+        :x="`${updatedWidth / 6}`"
+        @click.prevent.stop="setTimerMode(0)"
+      >
+        0
+      </text>
+      <text
+        :id="`timerMode-${updatedSensor.id}-1`"
+        y="0"
+        :x="`${updatedWidth / 3.2}`"
+        @click.prevent.stop="setTimerMode(1)"
+      >
+        1
+      </text>
+      <text
+        :id="`timerMode-${updatedSensor.id}-2`"
+        y="0"
+        :x="`${updatedWidth / 2.4}`"
+        @click.prevent.stop="setTimerMode(2)"
+      >
+        2
+      </text>
+    </g>
 
     <g
       class="setters"
@@ -93,8 +121,16 @@
       class="controls"
       :transform="`translate(${updatedWidth / 2},${updatedHeight / 1.6})`"
     >
-      <text :x="-updatedWidth / 4.1" :y="0" class="display-remain-time">
-        {{ setTimeString(wholeTime) || '60:00' }}
+      <text
+        :ref="`timerClock-${updatedSensor.id}`"
+        :id="`timer-clock-${updatedSensor.id}`"
+        text-anchor="middle"
+        :y="0"
+        class="display-remain-time"
+        @click.prevent.stop="editTimerField()"
+      >
+        <!--  {{ setTimeString(wholeTime) || '60:00' }}-->
+        {{ setTimeString(wholeTime) }}
       </text>
       <g :transform="`translate(0,${updatedHeight / 15})`" text-anchor="middle">
         <text
@@ -121,7 +157,7 @@
 </template>
 
 <script>
-import {getComponentResource} from '../methods';
+import {getComponentResource, DeltaTimer} from '../methods';
 
 /**
  * Child component called when catching these ID: 3340
@@ -158,13 +194,19 @@ export default {
       updatedHeight: null,
       showClock: true,
       aSide: true,
+      pointer: null,
+      pointerGroup: null,
+      length: 0,
+      progressBar: null,
+      displayOutput: null,
+      timerClock: null,
+      setterBtns: [],
+      timerModeBtns: [],
       elementsMounted: false,
-      toggleTimer: true,
       intervalTimer: null,
-      isPaused: false,
+      isPaused: true,
       isStarted: false,
-      internalTimer: true,
-      externalTimer: false,
+      timerModes: [0, 1, 2],
     };
   },
 
@@ -177,7 +219,7 @@ export default {
     },
     wholeTime: {
       get() {
-        return this.updatedSensor.resources['5521'] || 60 * 60;
+        return this.updatedSensor.resources['5521'];
       },
       set(value) {
         this.updatedSensor.resources['5521'] = value;
@@ -199,23 +241,35 @@ export default {
         this.updatedSensor.resources['5850'] = value;
       },
     },
+    timerOutput: {
+      get() {
+        return this.updatedSensor.resources['5543'];
+      },
+      set(value) {
+        this.updatedSensor.resources['5543'] = value;
+      },
+    },
+    timerMode: {
+      get() {
+        return this.updatedSensor.resources['5526'];
+      },
+      set(value) {
+        this.updatedSensor.resources['5526'] = value;
+      },
+    },
+    timerEvent: {
+      get() {
+        return this.updatedSensor.resources['5523'];
+      },
+      set(value) {
+        this.updatedSensor.resources['5523'] = value;
+      },
+    },
     switchButtonClass() {
       if (this.timerState) {
         return `switch-button switched-on`;
       }
       return `switch-button switched-off`;
-    },
-    radius() {
-      return this.updatedWidth / 2.5;
-    },
-    dateConverter() {
-      //  const d = new Date(this.updatedSensor.resources["5506"] * 1000) || new Date();
-      const d = new Date();
-      return `${d.getDate()} ${this.months[d.getMonth()]} ${d.getFullYear()}`;
-    },
-    getSeconds() {
-      const d = new Date();
-      return d.getSeconds();
     },
     playButton() {
       if (this.isStarted && !this.isPaused) {
@@ -245,37 +299,117 @@ export default {
       immediate: true,
     },
     timeLeft: {
+      handler(value, oldValue) {
+        if (value !== oldValue && value !== null) {
+          if (value < 0) value = 0;
+          if (value > 0) {
+            if (this.isStarted && !this.isPaused && !this.timerOutput) {
+              this.stopTime = Date.now() + value * 1000;
+              this.displayTimeLeft(value);
+            } else if (!this.timerOutput && !this.isStarted) {
+              //  this.startCron();
+            } else if (this.timerState && !this.timerOutput && this.isPaused) {
+              this.restartCron();
+            }
+          } else if (value === 0) {
+            if (this.isStarted) {
+              this.stopCron();
+            }
+          }
+        }
+      },
+      immediate: true,
+    },
+    wholeTime: {
       handler(value) {
         if (value !== null) {
-          this.displayTimeLeft(value);
+          if (value < 0) value = 0;
+          if (!this.isStarted) {
+            this.displayTimeLeft(value);
+          }
+        }
+      },
+      immediate: true,
+    },
+    timerOutput: {
+      handler(value) {
+        if (this.elementsMounted) {
+          // if (
+          //   oldValue &&
+          //   oldValue !== value &&
+          //   (value === false || value === 0)
+          // ) {
+          //   if (!this.isStarted && !this.isPaused) {
+          //     this.startCron();
+          //   } else if (this.isPaused && this.isStarted) {
+          //     this.restartCron();
+          //   }
+          // }
+          if (
+            !this.isPaused &&
+            this.isStarted &&
+            (value === true || value === 1)
+          ) {
+            this.stopCron();
+            //  this.pauseCron();
+          }
         }
       },
       immediate: true,
     },
     timerState: {
+      handler(value, oldValue) {
+        if (this.elementsMounted && oldValue !== value) {
+          if (value === true || value === 1) {
+            if (!this.isStarted && !this.timeLeft) {
+              this.startCron();
+            } else if (this.isPaused && this.isStarted) {
+              this.restartCron();
+            }
+          }
+        }
+      },
+      immediate: true,
+    },
+    timerMode: {
       handler(value) {
-        if (value === false || value === 0) {
-          if (this.timeLeft > 5) {
-            this.pauseCron();
-          } else {
-            this.stopCron();
+        if (this.elementsMounted && value !== null) {
+          this.timerModeBtns.forEach((btn, index) => {
+            if (index === value) {
+              btn.style.fill = this.colors.primaryColor;
+            } else {
+              btn.style.fill = this.colors.secondaryColor;
+            }
+          });
+        }
+      },
+      immediate: true,
+    },
+    timerEvent: {
+      handler(value) {
+        if (this.elementsMounted && value !== null) {
+          switch (value) {
+            case 'start':
+              if (!this.isStarted) {
+                this.startCron();
+              }
+              break;
+            case 'restart':
+              if (!this.isStarted) {
+                this.restartCron();
+              }
+              break;
+            case 'stop':
+              if (this.isStarted) {
+                this.stopCron();
+              }
+              break;
+            case 'pause':
+              if (this.isStarted && !this.isPaused) {
+                this.pauseCron();
+              }
+              break;
           }
-        } else if (value === true || value === 1) {
-          if (
-            this.isStarted === false &&
-            (!this.timeLeft || this.timeLeft === 0)
-          ) {
-            this.startCron();
-          } else if (
-            this.isPaused ||
-            (this.isStarted === false && this.timeLeft > 0)
-          ) {
-            this.restartCron();
-          }
-          // if (!this.isStarted) {
-          //   this.isStarted = true;
-          //   this.restartCron();
-          // }
         }
       },
       immediate: true,
@@ -292,12 +426,20 @@ export default {
   },
 
   beforeDestroy() {
+    this.isStarted = false;
+    this.isPaused = true;
     this.elementsMounted = false;
   },
 
   methods: {
     updateSensor(...args) {
       this.$emit('update-sensor', ...args);
+    },
+
+    updateSetting(...args) {
+      if (args[0] && args[0].id) {
+        this.$emit('update-setting', ...args);
+      }
     },
 
     deleteSensor(...args) {
@@ -310,13 +452,18 @@ export default {
 
     mountElements() {
       this.progressBar = this.$el.querySelector('.cron-progress');
-      //  this.indicator = this.$el.getElementById('e-indicator');
       this.pointer = this.$el.querySelector('.cron-dot');
       this.pointerGroup = this.$el.getElementById('cron-pointer');
       this.length = Math.PI * 2 * (this.updatedWidth / 2.3);
       this.progressBar.style.strokeDasharray = this.length;
       this.displayOutput = this.$el.querySelector('.display-remain-time');
+      this.timerClock = this.$refs[`timerClock-${this.updatedSensor.id}`];
       this.setterBtns = this.$el.querySelectorAll('text[data-setter]');
+      this.timerModeBtns = this.timerModes.map(mode =>
+        this.$el.getElementById(`timerMode-${this.updatedSensor.id}-${mode}`),
+      );
+      this.timerModeBtns[this.timerMode].style.fill = this.colors.primaryColor;
+      this.setClock(1000);
       this.elementsMounted = true;
     },
 
@@ -350,20 +497,27 @@ export default {
       if (this.isStarted && !this.isPaused) {
         this.pointer.style.stroke = this.colors.successColor;
         this.progressBar.style.stroke = this.colors.successColor;
-      } else {
-        // this.pointer.style.stroke = this.colors.secondaryColor;
-        // this.progressBar.style.stroke = this.colors.secondaryColor;
       }
       this.pointerGroup.style.transform = `rotate(${(360 * value) /
         timePercent}deg)`;
     },
 
     setTimeString(timeLeft) {
+      let timeIsValid = true;
       const minutes = Math.floor(timeLeft / 60);
       const seconds = timeLeft % 60;
-      return `${minutes < 10 ? '0' : ''}${minutes}:${
-        seconds < 10 ? '0' : ''
-      }${seconds}`;
+      if (typeof seconds !== 'number' || seconds < 0 || seconds > 59) {
+        timeIsValid = false;
+      }
+      if (typeof minutes !== 'number' || minutes < 0 || minutes > 500) {
+        timeIsValid = false;
+      }
+      if (timeIsValid) {
+        return `${minutes < 10 ? '0' : ''}${minutes}:${
+          seconds < 10 ? '0' : ''
+        }${seconds}`;
+      }
+      return this.setTimeString(0);
     },
 
     displayTimeLeft(timeLeft) {
@@ -377,58 +531,92 @@ export default {
     setWholeTime(seconds) {
       if (this.wholeTime + seconds > 0) {
         this.wholeTime += seconds;
-        this.updateSensor(this.updatedSensor, 5523, 'updated');
-        this.updateSensor(this.updatedSensor, 5521, this.wholeTime);
-        //  this.displayTimeLeft(this.wholeTime);
+        this.displayTimeLeft(this.wholeTime);
+        this.updateSetting(this.updatedSensor, 5521, this.wholeTime);
       }
     },
 
     setTimeLeft(seconds) {
       if (this.timeLeft + seconds > 0) {
         this.timeLeft += seconds;
-        //  this.displayTimeLeft(this.timeLeft);
-        this.updateSensor(this.updatedSensor, 5538, this.timeLeft);
+        this.displayTimeLeft(this.timeLeft);
+        this.updateSetting(this.updatedSensor, 5538, this.timeLeft);
       }
     },
 
     setTimer(seconds) {
-      //  console.log('changeTime', seconds, isPaused);
-      if (this.isPaused) {
+      if (this.isStarted && this.isPaused) {
         this.setTimeLeft(seconds);
-      } else {
+      } else if (!this.isStarted && this.isPaused) {
         this.setWholeTime(seconds);
       }
     },
 
-    startTimer(seconds) {
-      const remainTime = Date.now() + seconds * 1000;
-      //  this.displayTimeLeft(seconds);
-      if (this.internalTimer) {
-        if (this.intervalTimer && this.intervalTimer !== null) {
-          clearInterval(this.intervalTimer);
-          this.intervalTimer = null;
-        }
-
-        this.intervalTimer = setInterval(() => {
-          this.timeLeft = Math.round((remainTime - Date.now()) / 1000);
-          if (this.timeLeft < 0) {
-            this.updateSensor(this.updatedSensor, 5850, false);
-            //  this.updateSensor(this.updatedSensor, 5538, this.timeLeft);
-            return;
+    editTimerField() {
+      if (!this.isStarted && this.elementsMounted) {
+        const text = this.timerClock;
+        if (text && text.id) {
+          const newValue = prompt(
+            `Please enter new time : `,
+            this.setTimeString(this.wholeTime),
+          );
+          if (newValue && newValue !== null) {
+            let timeIsValid = true;
+            const parts = newValue.split(':');
+            const seconds = Number(parts[1]);
+            if (typeof seconds !== 'number' || seconds < 0 || seconds > 59) {
+              timeIsValid = false;
+            }
+            const minutes = Number(parts[0]);
+            if (typeof minutes !== 'number' || minutes < 0 || minutes > 500) {
+              timeIsValid = false;
+            }
+            if (timeIsValid) {
+              //  text.textContent = `${newValue}`;
+              const timeLeft = minutes * 60 + seconds;
+              if (this.isPaused) {
+                //  this.timeLeft = timeLeft;
+                this.updateSetting(this.updatedSensor, 5538, timeLeft);
+              } else {
+                //  this.wholeTime = timeLeft;
+                this.updateSetting(this.updatedSensor, 5521, timeLeft);
+              }
+            }
           }
-          this.updateSensor(this.updatedSensor, 5538, this.timeLeft);
-        }, 1000);
+        }
       }
-      // if (externalTimer) updateSensor
-      //  this.updateSensor(this.sensor, 5538, remainTime);
+    },
+
+    setTimerMode(mode) {
+      try {
+        if (this.isStarted) return null;
+        switch (mode) {
+          case 0:
+            this.timerMode = 0;
+            break;
+          case 1:
+            this.timerMode = 1;
+            break;
+          case 2:
+            this.timerMode = 2;
+            break;
+          default:
+            throw new Error('Unsupported mode');
+        }
+        this.updateSetting(this.updatedSensor, 5526, mode);
+      } catch (error) {
+        return error;
+      }
     },
 
     startCron() {
-      this.updateSensor(this.updatedSensor, 5523, 'started');
-      this.startTimer(this.wholeTime);
       this.isStarted = true;
       this.isPaused = false;
+      this.timerOutput = 0;
+      this.timeLeft = this.wholeTime;
+      //  console.log('startCron', this.timeLeft);
       if (this.elementsMounted) {
+        this.intervalTimer.start();
         this.pointer.style.stroke = this.colors.successColor;
         this.progressBar.style.stroke = this.colors.successColor;
         this.setterBtns.forEach(btn => {
@@ -439,13 +627,19 @@ export default {
     },
 
     restartCron() {
-      this.updateSensor(this.updatedSensor, 5523, 'restarted');
-      this.updateSensor(this.updatedSensor, 5538, this.timeLeft);
-      this.startTimer(this.timeLeft);
-      this.isPaused = false;
       this.isStarted = true;
-
+      this.isPaused = false;
+      this.timerOutput = 0;
+      if (this.timeLeft <= 0) {
+        this.timeLeft = this.wholeTime;
+      }
+      let timeLeft = this.timeLeft;
+      if (timeLeft <= 0) {
+        timeLeft = this.wholeTime;
+      }
+      //  console.log('restartCron', this.timeLeft);
       if (this.elementsMounted) {
+        this.intervalTimer.start();
         this.pointer.style.stroke = this.colors.successColor;
         this.progressBar.style.stroke = this.colors.successColor;
         this.setterBtns.forEach(btn => {
@@ -456,17 +650,11 @@ export default {
     },
 
     pauseCron() {
-      this.isPaused = true;
       this.isStarted = true;
-      if (this.internalTimer) {
-        if (this.intervalTimer && this.intervalTimer !== null) {
-          clearInterval(this.intervalTimer);
-        }
-        this.intervalTimer = null;
-      }
-      this.updateSensor(this.updatedSensor, 5523, 'paused');
-      this.updateSensor(this.updatedSensor, 5538, this.timeLeft);
+      this.isPaused = true;
+      //  console.log('pauseCron', this.timeLeft);
       if (this.elementsMounted) {
+        this.intervalTimer.stop();
         this.pointer.style.stroke = this.colors.primaryColor;
         this.progressBar.style.stroke = this.colors.primaryColor;
         this.setterBtns.forEach(btn => {
@@ -477,18 +665,13 @@ export default {
     },
 
     stopCron() {
-      if (this.internalTimer) {
-        if (this.intervalTimer && this.intervalTimer !== null) {
-          clearInterval(this.intervalTimer);
-        }
-        this.intervalTimer = null;
-      }
       this.isStarted = false;
-      this.isPaused = false;
-      this.updateSensor(this.updatedSensor, 5523, 'stopped');
-      this.updateSensor(this.updatedSensor, 5538, this.timeLeft);
-      this.displayTimeLeft(this.wholeTime);
+      this.isPaused = true;
+      //  this.timeLeft = 0;
+      //  console.log('stopCron', this.timeLeft);
       if (this.elementsMounted) {
+        this.intervalTimer.stop();
+        this.displayTimeLeft(this.wholeTime);
         this.pointer.style.stroke = this.colors.primaryColor;
         this.progressBar.style.stroke = this.colors.primaryColor;
         this.setterBtns.forEach(btn => {
@@ -498,25 +681,50 @@ export default {
       }
     },
 
-    stopTimer() {
-      if (this.toggleTimer) {
-        this.timeLeft = 0;
-        this.updateSensor(this.updatedSensor, 5850, false);
+    updateCron(data) {
+      try {
+        // const payload = {
+        //   date: new Date(data.time),
+        //   time: data.time,
+        //   lastTime: data.lastTime,
+        // };
+        if (this.timeLeft <= 0) {
+          //          this.stopCron();
+        } else if (this.timeLeft > 0) {
+          this.timeLeft -= 1;
+          this.displayTimeLeft(this.timeLeft);
+        }
+        return data;
+      } catch (error) {
+        return error;
       }
     },
 
+    setClock(interval) {
+      if (this.intervalTimer && this.intervalTimer !== null) {
+        this.intervalTimer.stop();
+      }
+      this.intervalTimer = new DeltaTimer(this.updateCron, {}, interval);
+      // const start = this.intervalTimer.start();
+      // console.log('Set clock :', start);
+      return this.intervalTimer;
+    },
+
+    stopTimer() {
+      this.updateSensor(this.updatedSensor, 5523, 'stop');
+      this.stopCron();
+    },
+
     pauseTimer() {
-      if (this.toggleTimer) {
-        if (this.isStarted === false && !this.timeLeft) {
-          this.updateSensor(this.updatedSensor, 5850, true);
-        } else if (
-          this.isPaused ||
-          (this.isStarted === false && this.timeLeft > 0)
-        ) {
-          this.updateSensor(this.updatedSensor, 5850, true);
-        } else {
-          this.updateSensor(this.updatedSensor, 5850, false);
-        }
+      if (!this.isStarted && this.isPaused) {
+        this.updateSensor(this.updatedSensor, 5523, 'start');
+        this.startCron();
+      } else if (this.isPaused && this.isStarted) {
+        this.updateSensor(this.updatedSensor, 5523, 'restart');
+        this.restartCron();
+      } else if (!this.isPaused && this.isStarted) {
+        this.updateSensor(this.updatedSensor, 5523, 'pause');
+        this.pauseCron();
       }
     },
   },

@@ -24,6 +24,15 @@
       @click="deleteSensor(updatedSensor)"
     />
     <g>
+      <rect
+        x="0"
+        :y="updatedHeight / 3"
+        :height="updatedWidth / 1.5"
+        :width="updatedWidth / 1.2"
+        class="sensor-value"
+        @click.prevent.stop="editSensorValue()"
+      />
+
       <text
         :id="`textResource-${updatedSensor.id}`"
         :ref="`sensorValue-${updatedSensor.id}`"
