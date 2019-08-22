@@ -1,4 +1,4 @@
-import SensorStyles from '../styles/SensorStyles';
+import SensorStyles from '../assets/sensor-styles';
 import componentsList from '../assets/components-list';
 
 /**
@@ -199,6 +199,13 @@ export const setRangeColors = (value, minRangeValue, maxRangeValue) => {
   }
 };
 
+/**
+ * Expose a timer module based on setTimeout
+ * @module methods/getComponentResource
+ * @param  {function} cb - Callback to trigger at timeout
+ * @param  {object} data - Data to share between caller and callee
+ * @param {number} interval - Timeout interval
+ */
 export function DeltaTimer(cb, data, interval) {
   try {
     let timeout, lastTime;

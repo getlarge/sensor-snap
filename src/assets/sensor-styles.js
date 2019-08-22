@@ -1,21 +1,18 @@
-import audioStyle from './AudioStyle';
-import cameraStyle from './CameraStyle';
-import gaugeStyle from './GaugeStyle';
-import levelStyle from './LevelStyle';
-import mapStyle from './MapStyle';
-import switchStyle from './SwitchStyle';
-import textStyle from './TextStyle';
-import timeStyle from './TimeStyle';
-import timerStyle from './TimerStyle';
+import audioStyle from './audio-style';
+import cameraStyle from './camera-tyle';
+import gaugeStyle from './gauge-style';
+import levelStyle from './level-style';
+import mapStyle from './map-style';
+import switchStyle from './switch-style';
+import textStyle from './text-style';
+import timeStyle from './time-style';
+import timerStyle from './timer-style';
 
+/**
+ * Build CSS file from configuration corresponding to detected sensor type
+ * @exports SensorStyles
+ */
 const SensorStyles = {};
-
-// const colors = {
-//   blue: '#29abe2',
-//   lightgreen: '#d6e6dc',
-//   green: '#77d1bf',
-//   lightblue: '#98d4ee',
-// };
 
 const conf = (sensor, styles) => {
   return {

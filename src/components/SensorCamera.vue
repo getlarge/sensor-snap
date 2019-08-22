@@ -58,7 +58,7 @@ import debounce from 'lodash.debounce';
  *
  * Resources : Bitmap input : 5910, Bitmap input reset : 5911, appType : 5750
  *
- * @module components/SensorCamera
+ * @exports components/SensorCamera
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance
@@ -168,6 +168,11 @@ export default {
   },
 
   methods: {
+    /**
+     * Update sensor event
+     *
+     * @param {array} args - Array containing sensor instance, resource and value to update
+     */
     updateSensor(...args) {
       this.$emit('update-sensor', ...args);
     },

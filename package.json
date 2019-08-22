@@ -11,7 +11,10 @@
   "scripts": {
     "start:dev": "node build-utils/update-index-file.js && vue-cli-service serve",
     "lint": "vue-cli-service lint",
-    "docs:md": "jsdoc2md -c .jsdoc-conf.json src/ > ./docs/documentation/README.md",
+    "docs:resources": "rm -rf ./docs/resources/* ; node_modules/.bin/jsdoc2md ./src/assets/* > ./docs/resources/README.md",
+    "docs:methods": "rm -rf ./docs/methods/* ; node_modules/.bin/jsdoc2md ./src/methods/index.js > ./docs/methods/README.md",
+    "docs:components": "rm -rf ./docs/components/* ; node_modules/.bin/jsdoc2md -c .jsdoc-conf.json ./src/components/* > ./docs/components/README.md",
+    "docs:md": "npm run docs:methods ; npm run docs:resources ; npm run docs:components ",
     "docs:dev": "npm run docs:md; cp ./README.md ./docs/readme/. ; vuepress dev docs",
     "docs:build": "npm run docs:md ; cp ./README.md ./docs/readme/. ; vuepress build docs",
     "docs:serve": "light-server -s public -p 7000 --servePrefix /sensor-snap/",
@@ -35,13 +38,6 @@
   "module": "dist/SensorSnap.common.js",
   "main": "dist/SensorSnap.umd.js",
   "unpkg": "dist/SensorSnap.umd.min.js",
-  "peerDependencies": {
-    "@amcharts/amcharts4": "^4.5.14",
-    "@amcharts/amcharts4-geodata": "^4.1.7",
-    "animejs": "^3.0.1",
-    "lodash.debounce": "^4.0.8",
-    "vue": "^2.6.6"
-  },
   "dependencies": {
     "@amcharts/amcharts4": "^4.5.14",
     "@amcharts/amcharts4-geodata": "^4.1.7",

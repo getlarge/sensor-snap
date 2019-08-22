@@ -136,7 +136,7 @@ import {
  *
  * output state : 5650, maxRange : 5604, minRange : 5603, appType 5750, sensorType 5751
  *
- * @module components/SensorGauge
+ * @exports components/SensorGauge
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance

@@ -53,7 +53,7 @@ export default {
 
   data() {
     return {
-      sensor: deviceTree.children[5],
+      sensor: deviceTree.children[11],
       width: 450,
       height: 480,
       randomPics: [
@@ -80,8 +80,8 @@ export default {
   },
 
   mounted() {
-    this.measurementTest();
-    this.locationTest();
+    this.gaugeTest();
+    this.mapTest();
   },
 
   methods: {
@@ -89,11 +89,11 @@ export default {
       if (args[0] && args[0].id) {
         console.log('aloes-sensor updateSensor()', args);
         if (args[0].type === 3349 && args[1] === 5911) {
-          const result = await this.cameraTest(2);
+          const result = await this.cameraTest(1);
           args[1] = 5910;
           args[2] = result;
         } else if (args[0].type === 3339 && args[1] === 5523) {
-          const result = await this.audioTest(2);
+          const result = await this.audioTest(1);
           args[1] = 5522;
           args[2] = result;
         }
@@ -115,8 +115,8 @@ export default {
       console.log('aloes-sensor deleteSensor()', args);
     },
 
-    measurementTest() {
-      const sensorIsGauge = componentsList.gauge.list.find(
+    gaugeTest() {
+      const sensorIsGauge = componentsList.gauge.list.some(
         objectId => objectId === this.sensor.type,
       );
       if (!sensorIsGauge) return null;
@@ -130,8 +130,8 @@ export default {
       }, 3000);
     },
 
-    locationTest() {
-      const sensorIsMap = componentsList.map.list.find(
+    mapTest() {
+      const sensorIsMap = componentsList.map.list.some(
         objectId => objectId === this.sensor.type,
       );
       if (!sensorIsMap) return null;
@@ -145,7 +145,7 @@ export default {
         ).toString();
         sensor.resources['5518'] = new Date().getTime();
         this.updatedSensor = sensor;
-      }, 10000);
+      }, 3000);
     },
 
     arrayBufferToBase64(buffer) {
@@ -157,7 +157,7 @@ export default {
 
     async audioTest(testNumber) {
       try {
-        const sensorIsAudio = componentsList.audio.list.find(
+        const sensorIsAudio = componentsList.audio.list.some(
           objectId => objectId === this.sensor.type,
         );
         if (!sensorIsAudio) return null;
@@ -191,9 +191,14 @@ export default {
 
     async cameraTest(testNumber) {
       try {
+        const sensorIsCamera = componentsList.camera.list.some(
+          objectId => objectId === this.sensor.type,
+        );
+        if (!sensorIsCamera) return null;
         const randomPic = this.randomPics[
           Math.floor(Math.random() * this.randomPics.length)
         ];
+
         const result = await fetch(`${randomPic}`)
           .then(response => {
             if (!response.ok) {

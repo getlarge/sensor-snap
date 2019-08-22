@@ -60,12 +60,12 @@ circle.delete-button {
     border-radius: ${conf.width / 7}px;
     height: ${conf.width / 8}px;
     width: ${conf.width / 8}px;
-    -webkit-animation: pulse 2s ease-out;
-    -moz-animation: pulse 2s ease-out;
-    animation: pulse 2s ease-out;
-    -webkit-animation-iteration-count: 5;
-    -moz-animation-iteration-count: 5;
-    animation-iteration-count: 5;
+    -webkit-animation: pulse 1s ease-out;
+    -moz-animation: pulse 1s ease-out;
+    animation: pulse 1s ease-out;
+    -webkit-animation-iteration-count: 10;
+    -moz-animation-iteration-count: 10;
+    animation-iteration-count: 10;
     position: absolute;
     top: -${conf.width / 20}px;
     left: -${conf.width / 20}px;

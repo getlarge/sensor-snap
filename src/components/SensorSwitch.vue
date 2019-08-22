@@ -100,7 +100,7 @@ import {checkComponentType, getComponentResource} from '../methods';
  *
  * output state : 5550, output polarity : 5551 appType 5750
  *
- * @module components/SensorSwitch
+ * @exports components/SensorSwitch
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance

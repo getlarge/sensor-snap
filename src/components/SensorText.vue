@@ -66,7 +66,7 @@
  *
  * max X : 5545, max Y: 5546, level control: 5548, switch : 5850, appType 5750
  *
- * @module components/SensorText
+ * @exports components/SensorText
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance

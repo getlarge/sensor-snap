@@ -57,7 +57,7 @@
  * Resources : Clip : 5522, Trigger : 5523, Duration : 5524
  * Level : 5548, appType : 5750
  *
- * @module components/SensorAudio
+ * @exports components/SensorAudio
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance
@@ -191,7 +191,7 @@ export default {
       }
     },
     async parseAudio(value) {
-      //  console.log('parseAudio', typeof value);
+      // console.log('parseAudio', typeof value);
       if (value.type && value.data) {
         this.audioClipBuffer = await this.audioContext.decodeAudioData(
           Buffer.from(value.data).buffer,

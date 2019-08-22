@@ -165,12 +165,11 @@ import {getComponentResource, DeltaTimer} from '../methods';
  *
  * Resources : whole_time : 5521, remain_time: 5538, appType: 5750
  *
- * @module components/SensorTimer
+ * @exports components/SensorTimer
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance
  */
-
 export default {
   name: 'SensorTimer',
 

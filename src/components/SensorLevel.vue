@@ -114,7 +114,7 @@ import {checkComponentType} from '../methods';
  *
  * Resources : output state : 5850,  dimmer  : 5851, on time: 5852, UNIT : 5701 appType 5750
  *
- * @module components/SensorLevel
+ * @exports components/SensorLevel
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance

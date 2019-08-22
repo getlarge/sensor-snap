@@ -1,16 +1,14 @@
 {
-  "tags": {
-    "allowUnknownTags": true,
-    "dictionaries": ["jsdoc", "closure"]
-  },
-  "source": {
-    "include": ["src/*"],
-    "exclude": ["dist", "node_modules", "tests"],
-    "includePattern": "\\.(vue|js)$"
-  },
   "plugins": ["node_modules/jsdoc-vue"],
+  "recurseDepth": 10,
+  "source": {
+    "includePattern": "\\.(vue|js)$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "sourceType": "module",
   "opts": {
     "encoding": "utf8",
-    "destination": "./docs/",
+    "recurse": true,
+    "readme": "README.md"
   }
 }

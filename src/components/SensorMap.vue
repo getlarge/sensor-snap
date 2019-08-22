@@ -29,6 +29,7 @@ am4core.useTheme(am4themes_dataviz);
  *
  * Velocity 5517, Timestamp : 5518, Compass direction : 5705, appType : 5750
  *
+ * @exports components/SensorMap
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance
@@ -70,6 +71,8 @@ export default {
       lastPoint: null,
       activeDistance: 1, // distance in meter to be considered active between each message
       activeDelay: 10, // delay in seconds to be considered active between each message
+      autoZoom: true,
+      markerMaxCount: 20,
       aSide: true,
     };
   },
@@ -121,11 +124,6 @@ export default {
         this.currentLocation = value;
       },
     },
-    zoomLevel: {
-      get() {
-        return this.updatedHeight / 15;
-      },
-    },
   },
 
   watch: {
@@ -166,7 +164,9 @@ export default {
     },
     location: {
       handler(newValue, oldValue) {
-        this.updateLocationSeries(newValue, oldValue);
+        if (this.deboucedUpdateLocationSeries) {
+          this.deboucedUpdateLocationSeries(newValue, oldValue);
+        }
       },
       immediate: true,
     },
@@ -175,12 +175,29 @@ export default {
   created() {
     this.debouncedUpdateSensor = debounce(this.updateSensor, 100);
     this.debouncedUpdateCustomMarkers = debounce(this.updateCustomMarkers, 20);
+    this.deboucedUpdateLocationSeries = debounce(
+      this.updateLocationSeries,
+      100,
+    );
   },
 
   mounted() {
     this.mountElements();
-    if (this.elementsMounted && this.location && this.location !== null) {
+    if (
+      this.elementsMounted &&
+      this.location &&
+      this.location !== null &&
+      this.location.timestamp
+    ) {
       this.updateLocationSeries(this.location);
+      this.chart.zoomToGeoPoint(
+        {
+          latitude: this.location.latitude + 1,
+          longitude: this.location.longitude + 1,
+        },
+        this.zoomLevel(0),
+        true,
+      );
       // this.chart.deltaLongitude = this.location.longitude;
     }
   },
@@ -316,7 +333,6 @@ export default {
 
     createCustomMarker(image) {
       const chart = image.dataItem.component.chart;
-
       const holderId = `map-marker-${image.timestamp}`;
       let holderIsNew = true;
       let holder = document.getElementById(holderId);
@@ -367,20 +383,54 @@ export default {
       return holder;
     },
 
+    removeCustomMarker(image) {
+      const chart = image.dataItem.component.chart;
+      const holderId = `map-marker-${image.timestamp}`;
+      let holder = document.getElementById(holderId);
+      if (!holder || holder === null) {
+        return null;
+      }
+      chart.svgContainer.htmlElement.removeChild(holder);
+      return holder;
+    },
+
     updateCustomMarkers() {
       if (!this.elementsMounted) return null;
+      // if (this.locationSeries.mapImages.length >= this.markerMaxCount)
       this.locationSeries.mapImages.each(image => {
         if (!image || !image.timestamp || !image.latitude) return null;
         const diff = new Date().getTime() - image.timestamp;
-        if (diff > 0 && diff < this.activeDelay * 1000) {
-          image.active = true;
+        // console.log('DIFF UPDATE', diff);
+        let updateMarker = false;
+        if (image.isNew) {
+          image.isNew = false;
+          updateMarker = true;
+        } else if (diff > this.activeDelay * 3 * 1000) {
+          this.removeCustomMarker(image);
+          this.removeLine(image);
+          image.disabled = true;
+          return;
+        }
+
+        if (image.timestamp === this.lastPoint.timestamp) {
+          if (diff > 0 && diff < this.activeDelay * 1000 && image.hasMoved) {
+            if (!image.active) updateMarker = true;
+            image.active = true;
+          } else {
+            if (image.active) updateMarker = true;
+            image.active = false;
+          }
         } else {
+          if (image.active) updateMarker = true;
           image.active = false;
         }
-        image.dummyData = {
-          externalElement: this.createCustomMarker(image),
-        };
-        // reposition the element accoridng to coordinates
+
+        if (updateMarker) {
+          image.dummyData = {
+            externalElement: this.createCustomMarker(image),
+          };
+        }
+
         const xy = this.chart.geoPointToSVG({
           longitude: image.longitude,
           latitude: image.latitude,
@@ -415,6 +465,30 @@ export default {
       }
     },
 
+    zoomLevel(rate) {
+      if (rate && rate !== null && typeof rate === 'number') {
+        return (this.updatedHeight / 15) * rate;
+      }
+      return this.updatedHeight / 15;
+    },
+
+    setZoomRate(distance) {
+      if (distance === 0) {
+        return 3;
+      } else if (distance > 0 && distance <= 50) {
+        return 2.8;
+      } else if (distance > 50 && distance <= 100) {
+        return 2.5;
+      } else if (distance > 100 && distance <= 250) {
+        return 2.3;
+      } else if (distance > 250 && distance <= 500) {
+        return 2.1;
+      } else if (distance > 500 && distance <= 1000) {
+        return 1.7;
+      }
+      return 1;
+    },
+
     checkDistance(distance) {
       if (distance > this.activeDistance) {
         return true;
@@ -428,7 +502,9 @@ export default {
       point.longitude = location.longitude;
       point.timestamp = location.timestamp;
       point.active = location.active;
-      point.tooltipText = new Date(location.timestamp);
+      point.isNew = true;
+      point.hasMoved = location.hasMoved;
+      point.tooltipText = new Date(location.timestamp * 1000);
       if (this.lastPoint && this.lastPoint !== null) {
         this.addLine(this.lastPoint, point);
       }
@@ -437,25 +513,68 @@ export default {
 
     addLine(from, to) {
       const line = this.lineSeries.mapLines.create();
+      line.timestamp1 = from.timestamp;
+      line.timestamp2 = to.timestamp;
       line.imagesToConnect = [from, to];
       line.line.controlPointDistance = -0.3;
       const shadowLine = this.shadowLineSeries.mapLines.create();
+      shadowLine.timestamp1 = from.timestamp;
+      shadowLine.timestamp2 = to.timestamp;
       shadowLine.imagesToConnect = [from, to];
       return line;
+    },
+
+    removeLine(image) {
+      this.lineSeries.mapLines.each(line => {
+        if (line.timestamp1 === image.timestamp) {
+          const parentElement = line.dom.parentElement;
+          // console.log('LINE TO DELETE', line, parentElement);
+          if (parentElement && parentElement !== null) {
+            parentElement.removeChild(line.dom);
+          }
+          line.disabled = true;
+          return;
+        } else if (line.timestamp2 === image.timestamp) {
+          const parentElement = line.dom.parentElement;
+          if (parentElement && parentElement !== null) {
+            parentElement.removeChild(line.dom);
+          }
+          line.disabled = true;
+          return;
+        }
+      });
+      this.shadowLineSeries.mapLines.each(line => {
+        if (line.timestamp1 === image.timestamp) {
+          const parentElement = line.dom.parentElement;
+          if (parentElement && parentElement !== null) {
+            parentElement.removeChild(line.dom);
+          }
+          line.disabled = true;
+          return;
+        } else if (line.timestamp2 === image.timestamp) {
+          const parentElement = line.dom.parentElement;
+          if (parentElement && parentElement !== null) {
+            parentElement.removeChild(line.dom);
+          }
+          line.disabled = true;
+          return;
+        }
+        return;
+      });
     },
 
     buildLocation() {
       if (this.latitude !== null && this.longitude !== null) {
         // check if timestamp is less than 10 seconds ago
         // if yes set active to true
-        const diff = new Date().getTime() - this.timestamp;
-        // console.log('DIFF', diff);
-        let active = false;
-        if (diff < this.activeDelay * 1000) {
-          active = true;
-        }
+        // const diff = new Date().getTime() - this.timestamp;
+        // // console.log('DIFF', diff);
+        // let active = false;
+        // if (diff < this.activeDelay * 1000) {
+        //   active = true;
+        // }
         return {
-          active,
+          // active,
           latitude: Number(this.latitude),
           longitude: Number(this.longitude),
           timestamp: this.timestamp,
@@ -473,29 +592,38 @@ export default {
       ) {
         return null;
       }
+      let zoomRate = 0;
+      newValue.hasMoved = false;
       if (oldValue && oldValue.latitude && oldValue.longitude) {
-        const distanceSinceLastMessage = getDistanceFromCoordinates(
+        const travelledDistance = getDistanceFromCoordinates(
           oldValue.latitude,
           oldValue.longitude,
           newValue.latitude,
           newValue.longitude,
         );
-        if (this.checkDistance(distanceSinceLastMessage * 1000)) {
+        if (this.checkDistance(travelledDistance * 1000)) {
+          newValue.hasMoved = true;
           newValue.active = true;
+          // lower the distance higher the zoom
+          zoomRate = this.setZoomRate(travelledDistance);
         }
+      } else {
+        newValue.hasMoved = true;
       }
       if (this.elementsMounted) {
         this.lastPoint = this.addLocation(newValue, this.updatedSensor.name);
         // set zoomLatitude and zoomLongitude based on difference between lastpoint and newpoint
-        this.chart.zoomToGeoPoint(
-          {
-            latitude: newValue.latitude + 1,
-            longitude: newValue.longitude + 1,
-          },
-          this.zoomLevel,
-          true,
-        );
-        // this.locationSeries.data.push(newValue);
+        if (this.autoZoom) {
+          this.chart.zoomToGeoPoint(
+            {
+              latitude: newValue.latitude + 1,
+              longitude: newValue.longitude + 1,
+            },
+            this.zoomLevel(zoomRate),
+            true,
+          );
+        }
+
         this.updateCustomMarkers();
       }
     },

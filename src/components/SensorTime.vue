@@ -288,7 +288,7 @@ import {getComponentResource} from '../methods';
  *
  * Resources : 3333 : TIME 5506*, FRACTIONAL TIME 5507, appType 5750
  *
- * @module components/SensorTime
+ * @exports components/SensorTime
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance
