@@ -57,6 +57,40 @@ export const normalizeNumber = (value, min, limit) => {
 };
 
 /**
+ * Transform an angle value from degree to radians ( number )
+ * @module methods/degreesToRadians
+ * @param  {float} deg - Angle in degree
+ * @return {float} angle in radians
+ */
+export const degreesToRadians = deg => {
+  return deg * (Math.PI / 180);
+};
+
+/**
+ * Calculate the distance travelled between two ccordinates using Haversine formula
+ * @module methods/getDistanceFromCoordinates
+ * @param  {float} lat1 - Latitude from first location set
+ * @param  {float} lng1 - Longitude from first location set
+ * @param  {float} lat2 - Latitude from second location set
+ * @param  {float} lng2 - Longitude from second location set
+ * @return {float} distance in kilometers
+ */
+export const getDistanceFromCoordinates = (lat1, lon1, lat2, lon2) => {
+  const earthRadius = 6371; // Radius of the earth in km
+  const dLat = degreesToRadians(lat2 - lat1);
+  const dLon = degreesToRadians(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(degreesToRadians(lat1)) *
+      Math.cos(degreesToRadians(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = earthRadius * c; // Distance in km
+  return distance;
+};
+
+/**
  * Convert input value in percentage
  * @module methods/getValueInPercentage
  * @param  {float} value - New sensor value

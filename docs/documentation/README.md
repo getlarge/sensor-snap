@@ -10,50 +10,6 @@ Level : 5548, appType : 5750</p>
 <dd><p>Child component called when Object Id : 3349</p>
 <p>Resources : Bitmap input : 5910, Bitmap input reset : 5911, appType : 5750</p>
 </dd>
-<dt><a href="#module_components/SensorGauge">components/SensorGauge</a></dt>
-<dd><p>Child component called when catching these IDs : 3300 until 3305 - 3315 - 3316 until 3330 - 3346</p>
-<p>Resources : input state : 5600, minMeasuredValue 5601, maxMeasuredValue 5602,</p>
-<p>output state : 5650, maxRange : 5604, minRange : 5603, appType 5750, sensorType 5751</p>
-</dd>
-<dt><a href="#module_components/SensorLevel">components/SensorLevel</a></dt>
-<dd><p>Child component called when catching these IDs : 3306, 3311, 3312</p>
-<p>Resources : output state : 5850,  dimmer  : 5851, on time: 5852, UNIT : 5701 appType 5750</p>
-</dd>
-<dt><a href="#module_components/SensorSnap">components/SensorSnap</a></dt>
-<dd><p>Parent component handling data flow and sub components selection</p>
-</dd>
-<dt><a href="#module_components/SensorSwitch">components/SensorSwitch</a></dt>
-<dd><p>Child component called when catching these IDs : 3200, 3201, 3342</p>
-<p>Resources : input state : 5500, counter : 5501, onTime: 5852, offtime : 5854</p>
-<p>output state : 5550, output polarity : 5551 appType 5750</p>
-</dd>
-<dt><a href="#module_components/SensorText">components/SensorText</a></dt>
-<dd><p>Child component called when Object Id : 3341</p>
-<p>Resources : text : 5527, X coord : 5528, Y coord : 5529, clear Display : 5530, contrast : 5531</p>
-<p>max X : 5545, max Y: 5546, level control: 5548, switch : 5850, appType 5750</p>
-</dd>
-<dt><a href="#module_components/SensorTime">components/SensorTime</a></dt>
-<dd><p>Child component called when catching these ID :3333</p>
-<p>Resources : 3333 : TIME 5506*, FRACTIONAL TIME 5507, appType 5750</p>
-</dd>
-<dt><a href="#module_components/SensorTimer">components/SensorTimer</a></dt>
-<dd><p>Child component called when catching these ID: 3340</p>
-<p>Resources : whole_time : 5521, remain_time: 5538, appType: 5750</p>
-</dd>
-<dt><a href="#module_components/SensorAudio">components/SensorAudio</a></dt>
-<dd><p>Child component called when Object Id : 3339</p>
-<p>Resources : Clip : 5522, Trigger : 5523, Duration : 5524
-Level : 5548, appType : 5750</p>
-</dd>
-<dt><a href="#module_components/SensorCamera">components/SensorCamera</a></dt>
-<dd><p>Child component called when Object Id : 3349</p>
-<p>Resources : Bitmap input : 5910, Bitmap input reset : 5911, appType : 5750</p>
-</dd>
-<dt><a href="#module_components/SensorGauge">components/SensorGauge</a></dt>
-<dd><p>Child component called when catching these IDs : 3300 until 3305 - 3315 - 3316 until 3330 - 3346</p>
-<p>Resources : input state : 5600, minMeasuredValue 5601, maxMeasuredValue 5602,</p>
-<p>output state : 5650, maxRange : 5604, minRange : 5603, appType 5750, sensorType 5751</p>
-</dd>
 <dt><a href="#module_components/SensorLevel">components/SensorLevel</a></dt>
 <dd><p>Child component called when catching these IDs : 3306, 3311, 3312</p>
 <p>Resources : output state : 5850,  dimmer  : 5851, on time: 5852, UNIT : 5701 appType 5750</p>
@@ -85,6 +41,12 @@ Format Sensor instance with SensorSnap props</p>
 </dd>
 <dt><a href="#module_methods/normalizeNumber">methods/normalizeNumber</a> ⇒ <code>float</code></dt>
 <dd><p>Validate new value input ( number )</p>
+</dd>
+<dt><a href="#module_methods/degreesToRadians">methods/degreesToRadians</a> ⇒ <code>float</code></dt>
+<dd><p>Transform an angle value from degree to radians ( number )</p>
+</dd>
+<dt><a href="#module_methods/getDistanceFromCoordinates">methods/getDistanceFromCoordinates</a> ⇒ <code>float</code></dt>
+<dd><p>Calculate the distance travelled between two ccordinates using Haversine formula</p>
 </dd>
 <dt><a href="#module_methods/getValueInPercentage">methods/getValueInPercentage</a> ⇒ <code>float</code></dt>
 <dd><p>Convert input value in percentage</p>
@@ -148,22 +110,6 @@ Resources : Bitmap input : 5910, Bitmap input reset : 5911, appType : 5750
 | [height] | <code>number</code> | Component height |
 | sensor | <code>Array.&lt;string&gt;</code> | Json stringified sensor instance |
 
-<a name="module_components/SensorGauge"></a>
-
-## components/SensorGauge
-Child component called when catching these IDs : 3300 until 3305 - 3315 - 3316 until 3330 - 3346
-
-Resources : input state : 5600, minMeasuredValue 5601, maxMeasuredValue 5602,
-
-output state : 5650, maxRange : 5604, minRange : 5603, appType 5750, sensorType 5751
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [width] | <code>number</code> | Component width |
-| [height] | <code>number</code> | Component height |
-| sensor | <code>Array.&lt;string&gt;</code> | Json stringified sensor instance |
-
 <a name="module_components/SensorLevel"></a>
 
 ## components/SensorLevel
@@ -190,157 +136,7 @@ Parent component handling data flow and sub components selection
 | [height] | <code>number</code> | Component height |
 | id | <code>string</code> | Required, sensorId |
 | deviceId | <code>string</code> | Parent device id |
-| name | <code>string</code> |  |
-| type | <code>string</code> | OMA ObjectId |
-| resources | <code>string</code> | OMA Resources corresponding to sensor.type (JSON Object) |
-| resource | <code>string</code> | OMA ResourceId |
-| value | <code>string</code> | last savec sensor value |
-| icons | <code>Array.&lt;string&gt;</code> | OMA viewResources icons |
-| colors | <code>string</code> | OMA viewResources colors - (JSON Object) |
-| [frameCounter] | <code>string</code> | sensor message counter |
-| devEui | <code>string</code> | device unique hardware id |
-| nativeSensorId | <code>string</code> | sensor id from device tree |
-| [nativeNodeId] | <code>string</code> | node id from device tree |
-| transportProtocol | <code>string</code> |  |
-| transportProtocolVersion | <code>string</code> |  |
-| messageProtocol | <code>string</code> |  |
-| messageProtocolVersion | <code>string</code> |  |
-| [inputPath] | <code>string</code> | MQTT route pattern |
-| [outputPath] | <code>string</code> | MQTT route pattern |
-| [inPrefix] | <code>string</code> |  |
-| [outPrefix] | <code>string</code> |  |
-
-<a name="module_components/SensorSwitch"></a>
-
-## components/SensorSwitch
-Child component called when catching these IDs : 3200, 3201, 3342
-
-Resources : input state : 5500, counter : 5501, onTime: 5852, offtime : 5854
-
-output state : 5550, output polarity : 5551 appType 5750
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [width] | <code>number</code> | Component width |
-| [height] | <code>number</code> | Component height |
-| sensor | <code>Array.&lt;string&gt;</code> | Json stringified sensor instance |
-
-<a name="module_components/SensorText"></a>
-
-## components/SensorText
-Child component called when Object Id : 3341
-
-Resources : text : 5527, X coord : 5528, Y coord : 5529, clear Display : 5530, contrast : 5531
-
-max X : 5545, max Y: 5546, level control: 5548, switch : 5850, appType 5750
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [width] | <code>number</code> | Component width |
-| [height] | <code>number</code> | Component height |
-| sensor | <code>Array.&lt;string&gt;</code> | Json stringified sensor instance |
-
-<a name="module_components/SensorTime"></a>
-
-## components/SensorTime
-Child component called when catching these ID :3333
-
-Resources : 3333 : TIME 5506*, FRACTIONAL TIME 5507, appType 5750
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [width] | <code>number</code> | Component width |
-| [height] | <code>number</code> | Component height |
-| sensor | <code>Array.&lt;string&gt;</code> | Json stringified sensor instance |
-
-<a name="module_components/SensorTimer"></a>
-
-## components/SensorTimer
-Child component called when catching these ID: 3340
-
-Resources : whole_time : 5521, remain_time: 5538, appType: 5750
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [width] | <code>number</code> | Component width |
-| [height] | <code>number</code> | Component height |
-| sensor | <code>Array.&lt;string&gt;</code> | Json stringified sensor instance |
-
-<a name="module_components/SensorAudio"></a>
-
-## components/SensorAudio
-Child component called when Object Id : 3339
-
-Resources : Clip : 5522, Trigger : 5523, Duration : 5524
-Level : 5548, appType : 5750
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [width] | <code>number</code> | Component width |
-| [height] | <code>number</code> | Component height |
-| sensor | <code>Array.&lt;string&gt;</code> | Json stringified sensor instance |
-
-<a name="module_components/SensorCamera"></a>
-
-## components/SensorCamera
-Child component called when Object Id : 3349
-
-Resources : Bitmap input : 5910, Bitmap input reset : 5911, appType : 5750
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [width] | <code>number</code> | Component width |
-| [height] | <code>number</code> | Component height |
-| sensor | <code>Array.&lt;string&gt;</code> | Json stringified sensor instance |
-
-<a name="module_components/SensorGauge"></a>
-
-## components/SensorGauge
-Child component called when catching these IDs : 3300 until 3305 - 3315 - 3316 until 3330 - 3346
-
-Resources : input state : 5600, minMeasuredValue 5601, maxMeasuredValue 5602,
-
-output state : 5650, maxRange : 5604, minRange : 5603, appType 5750, sensorType 5751
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [width] | <code>number</code> | Component width |
-| [height] | <code>number</code> | Component height |
-| sensor | <code>Array.&lt;string&gt;</code> | Json stringified sensor instance |
-
-<a name="module_components/SensorLevel"></a>
-
-## components/SensorLevel
-Child component called when catching these IDs : 3306, 3311, 3312
-
-Resources : output state : 5850,  dimmer  : 5851, on time: 5852, UNIT : 5701 appType 5750
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [width] | <code>number</code> | Component width |
-| [height] | <code>number</code> | Component height |
-| sensor | <code>Array.&lt;string&gt;</code> | Json stringified sensor instance |
-
-<a name="module_components/SensorSnap"></a>
-
-## components/SensorSnap
-Parent component handling data flow and sub components selection
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [width] | <code>number</code> | Component width |
-| [height] | <code>number</code> | Component height |
-| id | <code>string</code> | Required, sensorId |
-| deviceId | <code>string</code> | Parent device id |
+| ownerId | <code>string</code> | Account owner |
 | name | <code>string</code> |  |
 | type | <code>string</code> | OMA ObjectId |
 | resources | <code>string</code> | OMA Resources corresponding to sensor.type (JSON Object) |
@@ -446,6 +242,31 @@ Validate new value input ( number )
 | min | <code>int</code> | Min Range value |
 | limit | <code>init</code> | Max Range value |
 
+<a name="module_methods/degreesToRadians"></a>
+
+## methods/degreesToRadians ⇒ <code>float</code>
+Transform an angle value from degree to radians ( number )
+
+**Returns**: <code>float</code> - angle in radians  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| deg | <code>float</code> | Angle in degree |
+
+<a name="module_methods/getDistanceFromCoordinates"></a>
+
+## methods/getDistanceFromCoordinates ⇒ <code>float</code>
+Calculate the distance travelled between two ccordinates using Haversine formula
+
+**Returns**: <code>float</code> - distance in kilometers  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| lat1 | <code>float</code> | Latitude from first location set |
+| lng1 | <code>float</code> | Longitude from first location set |
+| lat2 | <code>float</code> | Latitude from second location set |
+| lng2 | <code>float</code> | Longitude from second location set |
+
 <a name="module_methods/getValueInPercentage"></a>
 
 ## methods/getValueInPercentage ⇒ <code>float</code>
@@ -508,8 +329,8 @@ References used to select which components to load
 | --- | --- | --- |
 | audio | <code>object</code> | Load SensorAudio component |
 | audio.name | <code>string</code> | Sensor name |
-| audio.list | <code>array</code> | [OMA Object](/components/#omaobjects) Id references |
-| audio.resources | <code>array</code> | [OMA Resources](/components/#omaresources) Id references |
+| audio.list | <code>array</code> | [OMA Object](/documentation/#omaobjects) Id references |
+| audio.resources | <code>array</code> | [OMA Resources](/documentation/#omaresources) Id references |
 | audio.colors | <code>object</code> | OMA Views colors references |
 | camera | <code>object</code> | Load SensorCamera component |
 | camera.name | <code>string</code> | Sensor name |
@@ -553,11 +374,11 @@ References used to select which components to load
 Oma Object References.
 
 **Kind**: global external  
-**See**: [https://api.aloes.io/api/omaObjects](https://api.aloes.io/api/omaObjects)  
+**See**: [https://supervisor.aloes.io/api/omaObjects](https://supervisor.aloes.io/api/omaObjects)  
 <a name="external_OmaResources"></a>
 
 ## OmaResources
 Oma Resources References.
 
 **Kind**: global external  
-**See**: [https://api.aloes.io/api/omaResources](https://api.aloes.io/api/omaResources)  
+**See**: [https://supervisor.aloes.io/api/omaResources](https://supervisor.aloes.io/api/omaResources)  

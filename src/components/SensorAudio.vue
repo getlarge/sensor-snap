@@ -168,7 +168,7 @@ export default {
         this.elementsMounted = true;
       } catch (e) {
         this.elementsMounted = false;
-        throw 'Web Audio API is not supported in this browser';
+        return 'Web Audio API is not supported in this browser';
       }
     },
 

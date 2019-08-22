@@ -16,6 +16,7 @@ test_async:
 pages:
   stage: deploy
   script:
+    - npm i -g vuepress@next
     - npm run docs:build
   artifacts:
     paths:

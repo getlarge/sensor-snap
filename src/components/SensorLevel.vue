@@ -186,7 +186,6 @@ export default {
     viewBox() {
       return `0 0 ${this.updatedWidth} ${this.updatedHeight}`;
     },
-
     rangeHeight() {
       return this.updatedHeight - this.updatedHeight / 6;
     },

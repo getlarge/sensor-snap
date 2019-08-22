@@ -30,7 +30,7 @@
         :height="updatedWidth / 1.5"
         :width="updatedWidth / 1.2"
         class="sensor-value"
-        @click.prevent.stop="editSensorValue()"
+        @click.prevent.stop="editTextInput()"
       />
 
       <text
@@ -39,7 +39,7 @@
         :y="updatedHeight / 3"
         x="0"
         class="sensor-value"
-        @click.prevent.stop="editSensorValue()"
+        @click.prevent.stop="editTextInput()"
       >
         <tspan
           v-for="(elem, index) in textContent"
@@ -96,7 +96,7 @@ export default {
       updatedHeight: null,
       aSide: true,
       elementsMounted: false,
-      sensorValue: null,
+      textInput: null,
       textWidth: this.$props.width / 2,
       textContent: null,
       charNumber: 25,
@@ -151,7 +151,7 @@ export default {
           this.textContent = [newValue];
         }
         if (this.elementsMounted) {
-          this.sensorValue.style.fill = 'black';
+          this.textInput.style.fill = 'black';
         }
       },
       immediate: true,
@@ -185,16 +185,16 @@ export default {
 
     mountElements() {
       //  this.sensorValue = this.$refs[`sensorValue-${this.updatedSensor.id}`];
-      this.sensorValue = document.getElementById(
+      this.textInput = document.getElementById(
         `textResource-${this.updatedSensor.id}`,
       );
       this.elementsMounted = true;
     },
 
-    editSensorValue() {
+    editTextInput() {
       try {
         if (!this.elementsMounted) return null;
-        const fieldName = this.sensorValue.id.split('-')[0];
+        const fieldName = this.textInput.id.split('-')[0];
         let newValue;
         if (this.textResource) {
           newValue = prompt(
@@ -206,7 +206,7 @@ export default {
         }
         if (newValue && newValue !== null) {
           newValue = newValue.trim();
-          this.sensorValue.style.fill = 'transparent';
+          this.textInput.style.fill = 'transparent';
           return this.updateSensor(this.updatedSensor, 5527, newValue);
         }
         return null;

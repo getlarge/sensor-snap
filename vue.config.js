@@ -1,18 +1,18 @@
 module.exports = {
   // publicPath: undefined,
   // outputDir: undefined,
-  // assetsDir: "public",
+  // assetsDir: "static",
   // runtimeCompiler: true,
   // productionSourceMap: undefined,
   // parallel: undefined,
-  // configureWebpack: {
-  //   output: {
-  //     libraryExport: 'default',
-  //   },
-  // },
+  configureWebpack: {
+    // trick to avoid compile error
+    externals: {canvas: {}},
+    // output: {
+    //   libraryExport: 'default',
+    // },
+  },
   css: {
-    // Optionally set this to true if you want CSS
-    // to be extracted into separate CSS files.
     extract: false,
   },
 };

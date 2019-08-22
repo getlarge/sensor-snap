@@ -22,7 +22,7 @@
       :transform="`translate(${updatedWidth / 7}, ${updatedHeight / 10})`"
       :r="updatedWidth / 15"
       :class="switchButtonClass"
-      @click="updateSensor(updatedSensor, 5850, !timerState)"
+      @click="debouncedUpdateSensor(updatedSensor, 5850, !timerState)"
     />
     <circle
       :transform="`translate(${updatedWidth / 1.2}, ${updatedHeight / 10})`"
@@ -39,7 +39,7 @@
         :id="`timerMode-${updatedSensor.id}-0`"
         y="0"
         :x="`${updatedWidth / 6}`"
-        @click.prevent.stop="setTimerMode(0)"
+        @click.prevent.stop="debouncedSetTimerMode(0)"
       >
         0
       </text>
@@ -47,7 +47,7 @@
         :id="`timerMode-${updatedSensor.id}-1`"
         y="0"
         :x="`${updatedWidth / 3.2}`"
-        @click.prevent.stop="setTimerMode(1)"
+        @click.prevent.stop="debouncedSetTimerMode(1)"
       >
         1
       </text>
@@ -55,7 +55,7 @@
         :id="`timerMode-${updatedSensor.id}-2`"
         y="0"
         :x="`${updatedWidth / 2.4}`"
-        @click.prevent.stop="setTimerMode(2)"
+        @click.prevent.stop="debouncedSetTimerMode(2)"
       >
         2
       </text>
@@ -138,7 +138,7 @@
           :y="updatedHeight / 9"
           class="play"
           id="pause"
-          @click.prevent.stop="pauseTimer"
+          @click.prevent.stop="debouncedPauseTimer"
         >
           {{ playButton }}
         </text>
@@ -147,7 +147,7 @@
           :y="updatedHeight / 9"
           class="stop"
           id="break"
-          @click.prevent.stop="stopTimer"
+          @click.prevent.stop="debouncedStopTimer"
         >
           ■
         </text>
@@ -157,6 +157,7 @@
 </template>
 
 <script>
+import debounce from 'lodash.debounce';
 import {getComponentResource, DeltaTimer} from '../methods';
 
 /**
@@ -169,6 +170,7 @@ import {getComponentResource, DeltaTimer} from '../methods';
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance
  */
+
 export default {
   name: 'SensorTimer',
 
@@ -416,6 +418,14 @@ export default {
     },
   },
 
+  created() {
+    this.debouncedUpdateSensor = debounce(this.updateSensor, 150);
+    this.debouncedSetTimer = debounce(this.setTimer, 150);
+    this.debouncedSetTimerMode = debounce(this.setTimerMode, 150);
+    this.debouncedPauseTimer = debounce(this.pauseTimer, 150);
+    this.debouncedStopTimer = debounce(this.stopTimer, 150);
+  },
+
   mounted() {
     if (this.updatedSensor.type === 3340) {
       this.mountElements();
@@ -474,16 +484,16 @@ export default {
             const param = btn.dataset.setter;
             switch (param) {
               case 'minutes-plus':
-                this.setTimer(1 * 60);
+                this.debouncedSetTimer(1 * 60);
                 break;
               case 'minutes-minus':
-                this.setTimer(-1 * 60);
+                this.debouncedSetTimer(-1 * 60);
                 break;
               case 'seconds-plus':
-                this.setTimer(1);
+                this.debouncedSetTimer(1);
                 break;
               case 'seconds-minus':
-                this.setTimer(-1);
+                this.debouncedSetTimer(-1);
                 break;
             }
           });

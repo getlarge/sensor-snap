@@ -7,8 +7,8 @@ module.exports = {
 		repo: 'https://framagit.org/aloes/sensor-snap',
 		repoLabel: 'Git',
 		docsDir: 'docs',
-		nav: [{text: 'Components', link: '/components/'}],
-		sidebar: [['/readme/', 'Readme'], ['/components/', 'Components']],
+		nav: [{text: 'Documentation', link: '/documentation/'}],
+		sidebar: [['/readme/', 'Readme'], ['/documentation/', 'Documentation']],
 		serviceWorker: {
 			updatePopup: true, // Boolean | Object, default to undefined.
 			// If set to true, the default text config will be:

@@ -1,5 +1,6 @@
 <template>
   <div class="sensor-snap">
+    <!-- <?xml version="1.0" encoding="utf-8"?> -->
     <component
       :is="componentName"
       v-if="refName !== null && sensor"
@@ -85,6 +86,7 @@ import SensorAudio from './SensorAudio.vue';
 import SensorCamera from './SensorCamera.vue';
 import SensorGauge from './SensorGauge.vue';
 import SensorLevel from './SensorLevel.vue';
+import SensorMap from './SensorMap.vue';
 import SensorSwitch from './SensorSwitch.vue';
 import SensorText from './SensorText.vue';
 import SensorTime from './SensorTime.vue';
@@ -128,15 +130,12 @@ export default {
     'sensor-camera': SensorCamera,
     'sensor-gauge': SensorGauge,
     'sensor-level': SensorLevel,
+    'sensor-map': SensorMap,
     'sensor-switch': SensorSwitch,
     'sensor-text': SensorText,
     'sensor-time': SensorTime,
     'sensor-timer': SensorTimer,
     // 'sensor-camera': () => import('./SensorCamera.vue'),
-    // 'sensor-gauge': () => import('./SensorGauge.vue'),
-    // 'sensor-level': () => import('./SensorLevel.vue'),
-    // 'sensor-switch': () => import('./SensorSwitch.vue'),
-    // 'sensor-time': () => import('./SensorTime.vue'),
   },
 
   props: {
@@ -306,8 +305,7 @@ export default {
       ) {
         return 'level';
       } else if (this.$props.type === componentsList.map.list[0]) {
-        //  return "map"
-        return null;
+        return 'map';
       } else if (
         componentsList.switch.list.find(
           objectId => objectId === this.$props.type,

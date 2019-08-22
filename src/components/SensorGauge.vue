@@ -132,7 +132,7 @@ import {
 /**
  * Child component called when catching these IDs : 3300 until 3305 - 3315 - 3316 until 3330 - 3346
  *
- * Resources : input state : 5600, minMeasuredValue 5601, maxMeasuredValue 5602,
+ * Resources : input state : 5600, minMeasuredValue 5601, maxMeasuredValue 5602
  *
  * output state : 5650, maxRange : 5604, minRange : 5603, appType 5750, sensorType 5751
  *
@@ -140,7 +140,9 @@ import {
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance
+ *
  */
+
 export default {
   name: 'SensorGauge',
 
@@ -157,30 +159,6 @@ export default {
       type: Number,
       default: 140,
     },
-    startAngle: {
-      type: Number,
-      default: 135,
-    },
-    endAngle: {
-      type: Number,
-      default: 45,
-    },
-    valueDialClass: {
-      type: String,
-      default: 'value',
-    },
-    valueTextClass: {
-      type: String,
-      default: 'value-text',
-    },
-    dialClass: {
-      type: String,
-      default: 'dial',
-    },
-    gaugeClass: {
-      type: String,
-      default: 'sensor-gauge',
-    },
   },
 
   data() {
@@ -191,6 +169,12 @@ export default {
       aSide: true,
       previousValue: 0,
       gaugeNeedle: '/icons/aloes/meter-gauge-needle.svg',
+      startAngle: 135,
+      endAngle: 45,
+      valueDialClass: 'value',
+      valueTextClass: 'value-text',
+      dialClass: 'dial',
+      gaugeClass: 'sensor-gauge',
       displayValue: true,
       displayIcon: true,
       displayNeedle: false,

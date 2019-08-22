@@ -2,6 +2,7 @@ import audioStyle from './AudioStyle';
 import cameraStyle from './CameraStyle';
 import gaugeStyle from './GaugeStyle';
 import levelStyle from './LevelStyle';
+import mapStyle from './MapStyle';
 import switchStyle from './SwitchStyle';
 import textStyle from './TextStyle';
 import timeStyle from './TimeStyle';
@@ -61,6 +62,8 @@ div.sensor-snap {
   --box-shadow-selected: 0 ${conf.width / 75}px ${conf.width /
     100}px 0px #6e6e6e;
   text-align: center;
+  justify-content: center;
+  display: flex;
   font-family: ${conf.fontFamily};
 }
 div.sensor-snap > svg.sensor-settings {
@@ -132,6 +135,7 @@ SensorStyles.color = conf => {
   text-align: center;
 }`;
 };
+
 //  SensorStyles.energy = sensor => {};
 
 SensorStyles.gauge = conf => {
@@ -147,19 +151,7 @@ SensorStyles.level = conf => {
 //  SensorStyles.magnetometer = sensor => {};
 
 SensorStyles.map = conf => {
-  return `svg.sensor-map {
-  --font-color: ${conf.fontColor};
-  --primary-color: ${conf.primaryColor};
-  --secondary-color: ${conf.secondaryColor};
-  --success: ${conf.successColor};
-  --warning: ${conf.warningColor};
-  --danger: ${conf.dangerColor};
-  --border: 1px solid transparent;
-  --box-shadow: 0 ${conf.width / 50}px ${conf.width / 35}px 0px #6e6e6e;
-  --box-shadow-selected: 0 ${conf.width / 75}px ${conf.width /
-    100}px 0px #6e6e6e;
-  text-align: center;
-}`;
+  return mapStyle(conf);
 };
 
 //  SensorStyles.power = sensor => {};

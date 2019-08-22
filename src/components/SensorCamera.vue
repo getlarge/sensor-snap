@@ -27,9 +27,7 @@
       :transform="`translate(${updatedWidth / 7}, ${updatedHeight / 10})`"
       :r="updatedWidth / 15"
       class="stream-button"
-      @click="
-        updateSensor(updatedSensor, 5911, !updatedSensor.resources['5911'])
-      "
+      @click="debouncedUpdateSensor(updatedSensor, 5911, true)"
     />
     <!-- :stroke="updatedResources['5850'] ? updatedColors[0] : updatedColors[1]" -->
     <image
@@ -53,6 +51,8 @@
 </template>
 
 <script>
+import debounce from 'lodash.debounce';
+
 /**
  * Child component called when Object Id : 3349
  *
@@ -79,6 +79,11 @@ export default {
       type: Number,
       default: 140,
     },
+    imgType: {
+      type: String,
+      required: false,
+      default: 'jpeg',
+    },
   },
 
   data() {
@@ -86,6 +91,7 @@ export default {
       updatedSensor: null,
       updatedHeight: null,
       updatedWidth: null,
+      updatedImgType: null,
       aSide: true,
       imageUrl: null,
       fpm: [1, 2, 4, 6],
@@ -128,10 +134,24 @@ export default {
     bitmapInput: {
       handler(value) {
         if (!value || value === null) return null;
-        return this.parseImage(value);
+        if (this.updatedSensor.resource === 5910) {
+          this.imageUrl = null;
+          return this.parseImage(value);
+        }
       },
       immediate: true,
     },
+    imgType: {
+      handler(value) {
+        if (!value || value === null) return null;
+        this.updatedImgType = value;
+      },
+      immediate: true,
+    },
+  },
+
+  created() {
+    this.debouncedUpdateSensor = debounce(this.updateSensor, 150);
   },
 
   mounted() {
@@ -142,6 +162,7 @@ export default {
   },
 
   beforeDestroy() {
+    this.imageUrl = null;
     this.timelapse = false;
     this.elementsMounted = false;
   },
@@ -182,7 +203,7 @@ export default {
     async parseImage(value) {
       try {
         if (value && typeof value === 'string') {
-          const base64Flag = 'data:image/jpeg;base64,';
+          const base64Flag = `data:image/${this.updatedImgType};base64,`;
           const blob = await (await fetch(`${base64Flag}${value}`)).blob();
           return this.getImage(blob);
         } else if (value.type && value.type === 'Buffer') {

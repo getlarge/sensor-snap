@@ -11,10 +11,8 @@
   "scripts": {
     "start:dev": "node build-utils/update-index-file.js && vue-cli-service serve",
     "lint": "vue-cli-service lint",
-    "docs:components1": "jsdoc2md -c jsdoc-conf.json src/* > ./docs/components/README.md",
-    "docs:components": "jsdoc2md -c jsdoc-conf.json src/components/* > ./docs/components/README.md",
-    "docs:md": "npm run docs:components",
-    "docs:dev": "npm run docs:md ; cp ./README.md ./docs/readme/. ; vuepress dev docs",
+    "docs:md": "jsdoc2md -c .jsdoc-conf.json src/ > ./docs/documentation/README.md",
+    "docs:dev": "npm run docs:md; cp ./README.md ./docs/readme/. ; vuepress dev docs",
     "docs:build": "npm run docs:md ; cp ./README.md ./docs/readme/. ; vuepress build docs",
     "docs:serve": "light-server -s public -p 7000 --servePrefix /sensor-snap/",
     "test": "vue-cli-service test:unit",
@@ -38,12 +36,20 @@
   "main": "dist/SensorSnap.umd.js",
   "unpkg": "dist/SensorSnap.umd.min.js",
   "peerDependencies": {
+    "@amcharts/amcharts4": "^4.5.14",
+    "@amcharts/amcharts4-geodata": "^4.1.7",
     "animejs": "^3.0.1",
+    "lodash.debounce": "^4.0.8",
     "vue": "^2.6.6"
   },
   "dependencies": {
+    "@amcharts/amcharts4": "^4.5.14",
+    "@amcharts/amcharts4-geodata": "^4.1.7",
     "animejs": "^3.0.1",
-    "vue": "^2.6.6"
+    "canvas": "^2.6.0",
+    "lodash.debounce": "^4.0.8",
+    "vue": "^2.6.6",
+    "xmldom": "^0.1.27"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",
@@ -57,10 +63,11 @@
     "chai": "^4.1.2",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
+    "jsdoc": "^3.6.3",
     "jsdoc-to-markdown": "^5.0.0",
     "jsdoc-vue": "^1.0.0",
-    "vue-template-compiler": "^2.5.21",
-    "vuepress": "^1.0.0-alpha.47"
+    "light-server": "^2.6.3",
+    "vue-template-compiler": "^2.6.6"
   },
   "eslintConfig": {
     "root": true,

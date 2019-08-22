@@ -53,7 +53,7 @@ export default {
 
   data() {
     return {
-      sensor: deviceTree.children[10],
+      sensor: deviceTree.children[5],
       width: 450,
       height: 480,
       randomPics: [
@@ -81,6 +81,7 @@ export default {
 
   mounted() {
     this.measurementTest();
+    this.locationTest();
   },
 
   methods: {
@@ -129,6 +130,24 @@ export default {
       }, 3000);
     },
 
+    locationTest() {
+      const sensorIsMap = componentsList.map.list.find(
+        objectId => objectId === this.sensor.type,
+      );
+      if (!sensorIsMap) return null;
+      setInterval(() => {
+        const sensor = JSON.parse(JSON.stringify(this.sensor));
+        sensor.resources['5514'] = (
+          Number(sensor.resources['5514']) + Math.floor(Math.random() + 1)
+        ).toString();
+        sensor.resources['5515'] = (
+          Number(sensor.resources['5515']) + Math.floor(Math.random() + 1)
+        ).toString();
+        sensor.resources['5518'] = new Date().getTime();
+        this.updatedSensor = sensor;
+      }, 10000);
+    },
+
     arrayBufferToBase64(buffer) {
       let binary = '';
       const bytes = [].slice.call(new Uint8Array(buffer));
@@ -138,10 +157,10 @@ export default {
 
     async audioTest(testNumber) {
       try {
-        // const sensorIsAudio = componentsList.audio.list.find(
-        //   objectId => objectId === this.sensor.type,
-        // );
-        // if (!sensorIsAudio) return null;
+        const sensorIsAudio = componentsList.audio.list.find(
+          objectId => objectId === this.sensor.type,
+        );
+        if (!sensorIsAudio) return null;
         const randomSound = this.randomSounds[
           Math.floor(Math.random() * this.randomSounds.length)
         ];
@@ -159,7 +178,7 @@ export default {
               return this.arrayBufferToBase64(res);
             }
           });
-        console.log('audioTest, buffer', testNumber, buf);
+        // console.log('audioTest, buffer', testNumber, buf);
         return buf;
         // return this.$refs[`sensorSnap-${this.updatedSensor.id}`].sendCommand(
         //   'playSound',
@@ -190,8 +209,7 @@ export default {
             }
             return buffer;
           });
-        console.log('cameraTest, buffer', testNumber, result);
-
+        // console.log('cameraTest, buffer', testNumber, result);
         return result;
       } catch (error) {
         return error;

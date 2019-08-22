@@ -1,13 +1,13 @@
 /**
  * Oma Object References.
  * @external OmaObjects
- * @see {@link https://api.aloes.io/api/omaObjects}
+ * @see {@link https://supervisor.aloes.io/api/omaObjects}
  */
 
 /**
  * Oma Resources References.
  * @external OmaResources
- * @see {@link https://api.aloes.io/api/omaResources}
+ * @see {@link https://supervisor.aloes.io/api/omaResources}
  */
 
 /**
@@ -15,8 +15,8 @@
  * @namespace
  * @property {object}  audio - Load SensorAudio component
  * @property {string}  audio.name - Sensor name
- * @property {array}  audio.list - [OMA Object]{@link /components/#omaobjects} Id references
- * @property {array}  audio.resources - [OMA Resources]{@link /components/#omaresources} Id references
+ * @property {array}  audio.list - [OMA Object]{@link /documentation/#omaobjects} Id references
+ * @property {array}  audio.resources - [OMA Resources]{@link /documentation/#omaresources} Id references
  * @property {object}  audio.colors - OMA Views colors references
  * @property {object}  camera - Load SensorCamera component
  * @property {string}  camera.name - Sensor name
