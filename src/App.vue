@@ -53,7 +53,7 @@ export default {
 
   data() {
     return {
-      sensor: deviceTree.children[11],
+      sensor: deviceTree.children[10],
       width: 450,
       height: 480,
       randomPics: [
@@ -65,6 +65,7 @@ export default {
         '/icons/aloes/arduino.png',
       ],
       randomSounds: ['/sounds/fire.mp3', '/sounds/wind.mp3'],
+      testInterval: 1,
     };
   },
 
@@ -79,29 +80,59 @@ export default {
     },
   },
 
-  mounted() {
-    this.gaugeTest();
-    this.mapTest();
+  watch: {
+    updatedSensor: {
+      handler(value, oldValue) {
+        if (value && value !== null) {
+          if (oldValue && oldValue.id === value.id) {
+            return;
+          }
+          if (value.type === 3336) this.startMapTest();
+          // if (value.type === 3340) this.startTimerTest();
+          if (value.resource === 5700) this.startGaugeTest();
+        }
+      },
+      immediate: true,
+    },
   },
 
   methods: {
+    updateSensorView(sensor) {
+      this.updatedSensor = sensor;
+    },
+
     async onUpdateSensor(...args) {
       if (args[0] && args[0].id) {
+        const sensor = args[0];
         console.log('aloes-sensor updateSensor()', args);
-        if (args[0].type === 3349 && args[1] === 5911) {
+        if (sensor.type === 3349 && args[1] === 5911) {
           const result = await this.cameraTest(1);
           args[1] = 5910;
           args[2] = result;
-        } else if (args[0].type === 3339 && args[1] === 5523) {
+        } else if (sensor.type === 3339 && args[1] === 5523) {
           const result = await this.audioTest(1);
           args[1] = 5522;
           args[2] = result;
+        } else if (sensor.type === 3340) {
+          if (args[1] === 5523) {
+            if (args[2] === 'start') {
+              this.startTimerTest(1000, sensor.resources['5521']);
+            } else if (args[2] === 'restart') {
+              this.startTimerTest(1000, sensor.resources['5538']);
+            } else if (args[2] === 'stop') {
+              this.stopTimerTest();
+            } else if (args[2] === 'pause') {
+              this.stopTimerTest();
+            }
+          } else if (args[1] === 5850) {
+            // if (args[2] === true) {
+            //   this.startTimerTest(1000, sensor.resources['5538']);
+            // } else if (args[2] === false) {
+            //   this.stopTimerTest();
+            // }
+          }
         }
-        this.updatedSensor = await updateAloesSensors(
-          args[0],
-          args[1],
-          args[2],
-        );
+        this.updatedSensor = updateAloesSensors(sensor, args[1], args[2]);
         return this.updatedSensor;
       }
       return null;
@@ -109,33 +140,69 @@ export default {
 
     onUpdateSetting(...args) {
       console.log('aloes-sensor updateSetting()', args);
+      if (!args || !args[0].id) return null;
+      const sensor = args[0];
+      sensor[args[1].toString()] = args[2];
+      sensor.resource = args[1];
+      sensor.value = args[2];
+      this.updateSensorView(sensor);
+      return sensor;
     },
 
     onDeleteSensor(...args) {
       console.log('aloes-sensor deleteSensor()', args);
     },
 
-    gaugeTest() {
-      const sensorIsGauge = componentsList.gauge.list.some(
-        objectId => objectId === this.sensor.type,
-      );
-      if (!sensorIsGauge) return null;
-      setInterval(() => {
+    stopGaugeTest() {
+      if (this.gaugeTimer && this.gaugeTimer !== null) {
+        console.log('aloes-sensor stopGaugeTest()');
+        clearInterval(this.gaugeTimer);
+      }
+    },
+
+    startGaugeTest(interval) {
+      // if (
+      //   !this.$refs[`sensorSnap-${this.sensor.id}`] ||
+      //   this.$refs[`sensorSnap-${this.sensor.id}`].componentsType !== 'gauge'
+      // ) {
+      //   return;
+      // }
+      if (!this.sensor || this.sensor.resource !== 5700) return;
+      interval = interval || this.testInterval * 1000;
+      this.stopGaugeTest();
+      console.log('aloes-sensor startGaugeTest()');
+      this.gaugeTimer = setInterval(() => {
+        if (!this.sensor || this.sensor.resource !== 5700) {
+          this.stopGaugeTest();
+          return;
+        }
         const resource = this.sensor.resource.toString();
         const sensor = JSON.parse(JSON.stringify(this.sensor));
         sensor.value =
           this.sensor.resources[resource] + Math.floor(Math.random() + 1);
         sensor.resources[resource] = sensor.value;
-        this.updatedSensor = sensor;
-      }, 3000);
+        // console.log('GAUGE UPDATE', sensor.value);
+        this.updateSensorView(sensor);
+      }, interval);
     },
 
-    mapTest() {
-      const sensorIsMap = componentsList.map.list.some(
-        objectId => objectId === this.sensor.type,
-      );
-      if (!sensorIsMap) return null;
-      setInterval(() => {
+    stopMapTest() {
+      if (this.mapTimer && this.mapTimer !== null) {
+        console.log('aloes-sensor stopMapTest()');
+        clearInterval(this.mapTimer);
+      }
+    },
+
+    startMapTest(interval) {
+      if (!this.sensor || this.sensor.type !== 3336) return;
+      interval = interval || this.testInterval * 1000;
+      this.stopMapTest();
+      console.log('aloes-sensor startMapTest()');
+      this.mapTimer = setInterval(() => {
+        if (!this.sensor || this.sensor.type !== 3336) {
+          this.stopMapTest();
+          return;
+        }
         const sensor = JSON.parse(JSON.stringify(this.sensor));
         sensor.resources['5514'] = (
           Number(sensor.resources['5514']) + Math.floor(Math.random() + 1)
@@ -144,8 +211,50 @@ export default {
           Number(sensor.resources['5515']) + Math.floor(Math.random() + 1)
         ).toString();
         sensor.resources['5518'] = new Date().getTime();
-        this.updatedSensor = sensor;
-      }, 3000);
+        // console.log('MAP UPDATE', sensor.resources);
+        this.updateSensorView(sensor);
+      }, interval);
+    },
+
+    stopTimerTest() {
+      if (this.timer && this.timer !== null) {
+        console.log('aloes-sensor stopTimerTest()');
+        clearInterval(this.timer);
+      }
+    },
+
+    startTimerTest(interval, timeLeft) {
+      if (!this.sensor || this.sensor.type !== 3340) return null;
+      interval = interval || this.testInterval * 1000;
+      timeLeft = timeLeft || 35;
+      this.stopTimerTest();
+      console.log('aloes-sensor startTimerTest()');
+      // this.sensor.resources['5521'] = timeLeft;
+      this.sensor.value = timeLeft;
+      this.sensor.resources['5538'] = timeLeft;
+      this.sensor.resources['5850'] = 1;
+      this.sensor.resources['5543'] = 0;
+      this.sensor.resources['5526'] = 1;
+      this.sensor.resources['5523'] = 'started';
+      this.timer = setInterval(() => {
+        if (!this.sensor || this.sensor.type !== 3340) {
+          this.stopTimerTest();
+          return;
+        }
+        const resource = '5538';
+        const sensor = JSON.parse(JSON.stringify(this.sensor));
+        sensor.resource = 5538;
+        sensor.value = sensor.value - interval / 1000;
+        // console.log('TIMER UPDATE', sensor.value);
+        if (sensor.value <= 0) {
+          sensor.value = 0;
+          sensor.resources['5543'] = 1;
+          sensor.resources['5523'] = 'stopped';
+          this.stopTimerTest();
+        }
+        sensor.resources[resource] = sensor.value;
+        this.updateSensorView(sensor);
+      }, interval);
     },
 
     arrayBufferToBase64(buffer) {
@@ -177,8 +286,8 @@ export default {
             } else if (testNumber === 2) {
               return this.arrayBufferToBase64(res);
             }
+            return res;
           });
-        // console.log('audioTest, buffer', testNumber, buf);
         return buf;
         // return this.$refs[`sensorSnap-${this.updatedSensor.id}`].sendCommand(
         //   'playSound',
@@ -214,7 +323,6 @@ export default {
             }
             return buffer;
           });
-        // console.log('cameraTest, buffer', testNumber, result);
         return result;
       } catch (error) {
         return error;

@@ -231,28 +231,20 @@ export function DeltaTimer(cb, data, interval) {
     };
 
     const start = () => {
-      try {
-        timeout = setTimeout(loop, 0);
-        lastTime = +new Date();
-        return lastTime;
-      } catch (error) {
-        return error;
-      }
+      timeout = setTimeout(loop, 0);
+      lastTime = +new Date();
+      return lastTime;
     };
 
     const stop = () => {
-      try {
-        clearTimeout(timeout);
-        return lastTime;
-      } catch (error) {
-        return error;
-      }
+      clearTimeout(timeout);
+      return lastTime;
     };
 
     this.start = start;
     this.stop = stop;
     return timeout;
   } catch (error) {
-    return error;
+    throw error;
   }
 }

@@ -208,6 +208,7 @@ export default {
       isPaused: true,
       isStarted: false,
       timerModes: [0, 1, 2],
+      clockInterval: 1,
     };
   },
 
@@ -301,21 +302,17 @@ export default {
     },
     timeLeft: {
       handler(value, oldValue) {
-        if (value !== oldValue && value !== null) {
+        if (this.elementsMounted && value !== oldValue && value !== null) {
           if (value < 0) value = 0;
           if (value > 0) {
             if (this.isStarted && !this.isPaused && !this.timerOutput) {
               this.stopTime = Date.now() + value * 1000;
               this.displayTimeLeft(value);
-            } else if (!this.timerOutput && !this.isStarted) {
-              //  this.startCron();
-            } else if (this.timerState && !this.timerOutput && this.isPaused) {
-              this.restartCron();
+            } else if (!this.timerOutput && this.timerState) {
+              this.pauseTimer();
             }
-          } else if (value === 0) {
-            if (this.isStarted) {
-              this.stopCron();
-            }
+          } else if (this.isStarted) {
+            this.stopCron();
           }
         }
       },
@@ -335,17 +332,6 @@ export default {
     timerOutput: {
       handler(value) {
         if (this.elementsMounted) {
-          // if (
-          //   oldValue &&
-          //   oldValue !== value &&
-          //   (value === false || value === 0)
-          // ) {
-          //   if (!this.isStarted && !this.isPaused) {
-          //     this.startCron();
-          //   } else if (this.isPaused && this.isStarted) {
-          //     this.restartCron();
-          //   }
-          // }
           if (
             !this.isPaused &&
             this.isStarted &&
@@ -472,8 +458,8 @@ export default {
         this.$el.getElementById(`timerMode-${this.updatedSensor.id}-${mode}`),
       );
       this.timerModeBtns[this.timerMode].style.fill = this.colors.primaryColor;
-      this.setClock(1000);
       this.elementsMounted = true;
+      this.setClock(this.clockInterval * 1000);
     },
 
     setListeners() {
@@ -584,10 +570,8 @@ export default {
               //  text.textContent = `${newValue}`;
               const timeLeft = minutes * 60 + seconds;
               if (this.isPaused) {
-                //  this.timeLeft = timeLeft;
                 this.updateSetting(this.updatedSensor, 5538, timeLeft);
               } else {
-                //  this.wholeTime = timeLeft;
                 this.updateSetting(this.updatedSensor, 5521, timeLeft);
               }
             }
@@ -622,8 +606,8 @@ export default {
       this.isStarted = true;
       this.isPaused = false;
       this.timerOutput = 0;
-      this.timeLeft = this.wholeTime;
-      //  console.log('startCron', this.timeLeft);
+      // this.timeLeft = this.wholeTime;
+      // console.log('startCron', this.timeLeft);
       if (this.elementsMounted) {
         this.intervalTimer.start();
         this.pointer.style.stroke = this.colors.successColor;
@@ -646,7 +630,7 @@ export default {
       if (timeLeft <= 0) {
         timeLeft = this.wholeTime;
       }
-      //  console.log('restartCron', this.timeLeft);
+      // console.log('restartCron', this.timeLeft);
       if (this.elementsMounted) {
         this.intervalTimer.start();
         this.pointer.style.stroke = this.colors.successColor;
@@ -661,7 +645,7 @@ export default {
     pauseCron() {
       this.isStarted = true;
       this.isPaused = true;
-      //  console.log('pauseCron', this.timeLeft);
+      // console.log('pauseCron', this.timeLeft);
       if (this.elementsMounted) {
         this.intervalTimer.stop();
         this.pointer.style.stroke = this.colors.primaryColor;
@@ -677,7 +661,7 @@ export default {
       this.isStarted = false;
       this.isPaused = true;
       //  this.timeLeft = 0;
-      //  console.log('stopCron', this.timeLeft);
+      // console.log('stopCron', this.timeLeft);
       if (this.elementsMounted) {
         this.intervalTimer.stop();
         this.displayTimeLeft(this.wholeTime);
@@ -692,15 +676,11 @@ export default {
 
     updateCron(data) {
       try {
-        // const payload = {
-        //   date: new Date(data.time),
-        //   time: data.time,
-        //   lastTime: data.lastTime,
-        // };
+        // console.log('updateCron :', data);
         if (this.timeLeft <= 0) {
           //          this.stopCron();
         } else if (this.timeLeft > 0) {
-          this.timeLeft -= 1;
+          this.timeLeft -= this.clockInterval;
           this.displayTimeLeft(this.timeLeft);
         }
         return data;
@@ -710,12 +690,12 @@ export default {
     },
 
     setClock(interval) {
+      // console.log('Set clock :', interval);
       if (this.intervalTimer && this.intervalTimer !== null) {
         this.intervalTimer.stop();
       }
       this.intervalTimer = new DeltaTimer(this.updateCron, {}, interval);
       // const start = this.intervalTimer.start();
-      // console.log('Set clock :', start);
       return this.intervalTimer;
     },
 
