@@ -84,7 +84,6 @@ svg.sensor-timer > g.controls > g > text#break:hover {
   text-shadow: ${conf.width / 250}px ${conf.width / 250}px ${conf.width /
     400}px #6e6e6e;
 }
-
 svg.sensor-timer > g.cron-group > circle.cron-base {
   fill: none;
   stroke: #B6B6B6;

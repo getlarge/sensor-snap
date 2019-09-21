@@ -129,7 +129,6 @@
         class="display-remain-time"
         @click.prevent.stop="editTimerField()"
       >
-        <!--  {{ setTimeString(wholeTime) || '60:00' }}-->
         {{ setTimeString(wholeTime) }}
       </text>
       <g :transform="`translate(0,${updatedHeight / 15})`" text-anchor="middle">
@@ -305,11 +304,9 @@ export default {
         if (this.elementsMounted && value !== oldValue && value !== null) {
           if (value < 0) value = 0;
           if (value > 0) {
-            if (this.isStarted && !this.isPaused && !this.timerOutput) {
-              this.stopTime = Date.now() + value * 1000;
-              this.displayTimeLeft(value);
-            } else if (!this.timerOutput && this.timerState) {
-              this.pauseTimer();
+            this.displayTimeLeft(value);
+            if (!this.timerOutput && this.timerState) {
+              this.restartCron();
             }
           } else if (this.isStarted) {
             this.stopCron();
@@ -348,7 +345,7 @@ export default {
       handler(value, oldValue) {
         if (this.elementsMounted && oldValue !== value) {
           if (value === true || value === 1) {
-            if (!this.isStarted && !this.timeLeft) {
+            if (!this.isStarted) {
               this.startCron();
             } else if (this.isPaused && this.isStarted) {
               this.restartCron();
@@ -567,7 +564,6 @@ export default {
               timeIsValid = false;
             }
             if (timeIsValid) {
-              //  text.textContent = `${newValue}`;
               const timeLeft = minutes * 60 + seconds;
               if (this.isPaused) {
                 this.updateSetting(this.updatedSensor, 5538, timeLeft);
@@ -606,7 +602,7 @@ export default {
       this.isStarted = true;
       this.isPaused = false;
       this.timerOutput = 0;
-      // this.timeLeft = this.wholeTime;
+      this.timeLeft = this.wholeTime;
       // console.log('startCron', this.timeLeft);
       if (this.elementsMounted) {
         this.intervalTimer.start();
@@ -625,10 +621,6 @@ export default {
       this.timerOutput = 0;
       if (this.timeLeft <= 0) {
         this.timeLeft = this.wholeTime;
-      }
-      let timeLeft = this.timeLeft;
-      if (timeLeft <= 0) {
-        timeLeft = this.wholeTime;
       }
       // console.log('restartCron', this.timeLeft);
       if (this.elementsMounted) {
@@ -660,7 +652,7 @@ export default {
     stopCron() {
       this.isStarted = false;
       this.isPaused = true;
-      //  this.timeLeft = 0;
+      this.timeLeft = 0;
       // console.log('stopCron', this.timeLeft);
       if (this.elementsMounted) {
         this.intervalTimer.stop();
@@ -677,11 +669,9 @@ export default {
     updateCron(data) {
       try {
         // console.log('updateCron :', data);
-        if (this.timeLeft <= 0) {
-          //          this.stopCron();
-        } else if (this.timeLeft > 0) {
+        if (this.timeLeft > 0) {
           this.timeLeft -= this.clockInterval;
-          this.displayTimeLeft(this.timeLeft);
+          // this.displayTimeLeft(this.timeLeft);
         }
         return data;
       } catch (error) {
@@ -695,7 +685,6 @@ export default {
         this.intervalTimer.stop();
       }
       this.intervalTimer = new DeltaTimer(this.updateCron, {}, interval);
-      // const start = this.intervalTimer.start();
       return this.intervalTimer;
     },
 
