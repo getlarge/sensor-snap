@@ -305,7 +305,7 @@ export default {
           if (value < 0) value = 0;
           if (value > 0) {
             this.displayTimeLeft(value);
-            if (!this.timerOutput && this.timerState) {
+            if (!this.timerOutput && this.timerState && !this.isStarted) {
               this.restartCron();
             }
           } else if (this.isStarted) {
@@ -671,7 +671,6 @@ export default {
         // console.log('updateCron :', data);
         if (this.timeLeft > 0) {
           this.timeLeft -= this.clockInterval;
-          // this.displayTimeLeft(this.timeLeft);
         }
         return data;
       } catch (error) {
