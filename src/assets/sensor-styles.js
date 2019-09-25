@@ -1,5 +1,6 @@
 import audioStyle from './audio-style';
-import cameraStyle from './camera-tyle';
+import colorStyle from './color-style';
+import cameraStyle from './camera-style';
 import gaugeStyle from './gauge-style';
 import levelStyle from './level-style';
 import mapStyle from './map-style';
@@ -118,19 +119,7 @@ SensorStyles.camera = conf => {
 };
 
 SensorStyles.color = conf => {
-  return `svg.sensor-color {
-  --font-color: ${conf.fontColor};
-  --primary-color: ${conf.primaryColor};
-  --secondary-color: ${conf.secondaryColor};
-  --success: ${conf.successColor};
-  --warning: ${conf.warningColor};
-  --danger: ${conf.dangerColor};
-  --border: 1px solid transparent;
-  --box-shadow: 0 ${conf.width / 50}px ${conf.width / 35}px 0px #6e6e6e;
-  --box-shadow-selected: 0 ${conf.width / 75}px ${conf.width /
-    100}px 0px #6e6e6e;
-  text-align: center;
-}`;
+  return colorStyle(conf);
 };
 
 //  SensorStyles.energy = sensor => {};

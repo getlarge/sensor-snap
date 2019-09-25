@@ -84,6 +84,7 @@ import deviceTree from '../assets/device-tree.json';
 import {formatSensor, updateStyles} from '../methods';
 import SensorAudio from './SensorAudio.vue';
 import SensorCamera from './SensorCamera.vue';
+import SensorColor from './SensorColor.vue';
 import SensorGauge from './SensorGauge.vue';
 import SensorLevel from './SensorLevel.vue';
 import SensorMap from './SensorMap.vue';
@@ -128,6 +129,7 @@ export default {
   components: {
     'sensor-audio': SensorAudio,
     'sensor-camera': SensorCamera,
+    'sensor-color': SensorColor,
     'sensor-gauge': SensorGauge,
     'sensor-level': SensorLevel,
     'sensor-map': SensorMap,
@@ -290,8 +292,7 @@ export default {
       ) {
         return 'camera';
       } else if (this.$props.type === componentsList.color.list[0]) {
-        //  return "color";
-        return null;
+        return 'color';
       } else if (
         componentsList.gauge.list.find(
           objectId => objectId === this.$props.type,
@@ -339,9 +340,6 @@ export default {
       get() {
         return formatSensor(this.$props);
       },
-      // set(value) {
-      //   this.updatedSensor = value;
-      // },
     },
     stylesConf() {
       if (!this.componentType) {
@@ -379,9 +377,7 @@ export default {
           return null;
         }
         if (oldValue.id !== newValue.id) {
-          this.$el.removeChild(this.style);
-          this.elementsMounted = false;
-          this.style = document.createElement('style');
+          this.unmountElements();
           //  this.$nextTick(() => {
           this.mountElements();
           //  });
@@ -422,6 +418,12 @@ export default {
         ];
         this.elementsMounted = true;
       }
+    },
+
+    unmountElements() {
+      this.$el.removeChild(this.style);
+      this.elementsMounted = false;
+      this.style = document.createElement('style');
     },
 
     updateSensor(...args) {

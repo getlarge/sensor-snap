@@ -158,8 +158,8 @@ export default {
       scaleMax: 0.3,
       lastMouseDy: null,
       rangeWrapperLeft: null,
-      pageX: 0,
-      pageY: 0,
+      layerX: 0,
+      layerY: 0,
       loading: false,
       elementsMounted: false,
       gradients: [
@@ -239,7 +239,7 @@ export default {
       return this.currentY + this.lastMouseDy / this.mouseDyFactor;
     },
     newY() {
-      return this.currentY + this.mouseY - this.pageY;
+      return this.currentY + this.mouseY - this.layerY;
     },
     newPath() {
       if (this.sliderValue > this.rangeMax)
@@ -332,24 +332,23 @@ export default {
       this.elementsMounted = true;
     },
 
-    // Handle `mousedown` and `touchstart` events, saving data about mouse position
     mouseDown(e) {
       this.mouseY = this.mouseInitialY = e.targetTouches
-        ? e.targetTouches[0].pageY
-        : e.pageY;
+        ? e.targetTouches[0].layerY
+        : e.layerY;
       this.rangeWrapperLeft = this.rangeWrapper.getBoundingClientRect().left;
     },
 
     mouseMove(e) {
       if (this.mouseY) {
-        this.pageX = e.targetTouches ? e.targetTouches[0].pageX : e.pageX;
-        this.pageY = e.targetTouches ? e.targetTouches[0].pageY : e.pageY;
-        this.mouseX = this.pageX - this.rangeWrapperLeft;
-        this.mouseDy = (this.pageY - this.mouseInitialY) * this.mouseDyFactor;
-        //  this.newY = this.currentY + this.mouseY - this.pageY;
+        this.layerX = e.targetTouches ? e.targetTouches[0].layerX : e.layerX;
+        this.layerY = e.targetTouches ? e.targetTouches[0].layerY : e.layerY;
+        this.mouseX = this.layerX - this.rangeWrapperLeft;
+        this.mouseDy = (this.layerY - this.mouseInitialY) * this.mouseDyFactor;
+        //  this.newY = this.currentY + this.mouseY - this.layerY;
         if (this.newY >= this.rangeMinY && this.newY <= this.rangeMaxY) {
           this.currentY = this.newY;
-          this.mouseY = this.pageY;
+          this.mouseY = this.layerY;
         } else {
           this.currentY =
             this.newY < this.rangeMinY ? this.rangeMinY : this.rangeMaxY;

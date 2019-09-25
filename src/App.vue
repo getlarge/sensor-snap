@@ -53,7 +53,7 @@ export default {
 
   data() {
     return {
-      sensor: deviceTree.children[10],
+      sensor: deviceTree.children[12],
       width: 450,
       height: 480,
       randomPics: [
@@ -65,6 +65,14 @@ export default {
         '/icons/aloes/arduino.png',
       ],
       randomSounds: ['/sounds/fire.mp3', '/sounds/wind.mp3'],
+      randomColors: [
+        {unit: 'hex', value: '#4C659E'},
+        {unit: 'hex', value: '#F32D2B'},
+        {unit: 'rgb', value: '40,200,100'},
+        {unit: 'rgb', value: '200,120,40'},
+        // {unit: 'hsl', value: '10,35%,40%'},
+        // {unit: 'hsl', value: '36,50%,76%'},
+      ],
       testInterval: 1,
     };
   },
@@ -88,6 +96,7 @@ export default {
             return;
           }
           if (value.type === 3336) this.startMapTest();
+          if (value.type === 3335) this.startColorTest();
           // if (value.type === 3340) this.startTimerTest();
           if (value.resource === 5700) this.startGaugeTest();
         }
@@ -253,6 +262,35 @@ export default {
           this.stopTimerTest();
         }
         sensor.resources[resource] = sensor.value;
+        this.updateSensorView(sensor);
+      }, interval);
+    },
+
+    stopColorTest() {
+      if (this.colorTimer && this.colorTimer !== null) {
+        console.log('aloes-sensor stopColorTest()');
+        clearInterval(this.colorTimer);
+      }
+    },
+
+    startColorTest(interval) {
+      if (!this.sensor || this.sensor.type !== 3335) return;
+      interval = interval || this.testInterval * 1000;
+      this.stopColorTest();
+      console.log('aloes-sensor startColorTest()');
+      this.colorTimer = setInterval(() => {
+        if (!this.sensor || this.sensor.type !== 3335) {
+          this.stopColorTest();
+          return;
+        }
+        const resource = '5706';
+        const sensor = JSON.parse(JSON.stringify(this.sensor));
+        const randomColor = this.randomColors[
+          Math.floor(Math.random() * this.randomColors.length)
+        ];
+        sensor.value = randomColor.value;
+        sensor.resources[resource] = sensor.value;
+        sensor.resources['5701'] = randomColor.unit;
         this.updateSensorView(sensor);
       }, interval);
     },

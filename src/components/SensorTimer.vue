@@ -335,7 +335,6 @@ export default {
             (value === true || value === 1)
           ) {
             this.stopCron();
-            //  this.pauseCron();
           }
         }
       },
@@ -577,25 +576,21 @@ export default {
     },
 
     setTimerMode(mode) {
-      try {
-        if (this.isStarted) return null;
-        switch (mode) {
-          case 0:
-            this.timerMode = 0;
-            break;
-          case 1:
-            this.timerMode = 1;
-            break;
-          case 2:
-            this.timerMode = 2;
-            break;
-          default:
-            throw new Error('Unsupported mode');
-        }
-        this.updateSetting(this.updatedSensor, 5526, mode);
-      } catch (error) {
-        return error;
+      if (this.isStarted) return null;
+      switch (mode) {
+        case 0:
+          this.timerMode = 0;
+          break;
+        case 1:
+          this.timerMode = 1;
+          break;
+        case 2:
+          this.timerMode = 2;
+          break;
+        default:
+          throw new Error('Unsupported mode');
       }
+      this.updateSetting(this.updatedSensor, 5526, mode);
     },
 
     startCron() {

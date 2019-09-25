@@ -551,6 +551,49 @@
       "inPrefix": "-in",
       "nativeType": 3336,
       "nativeResource": 5514
+    },
+    {
+      "id": "33",
+      "group": 2,
+      "icons": [
+        "/icons/aloes/colors.svg",
+        "/icons/aloes/colors.png",
+        "/icons/aloes/colors-white.png"
+      ],
+      "size": 40,
+      "colors": {
+        "5601": "#5ae2e2",
+        "5602": "#ff3535",
+        "5603": "#5ae2e2",
+        "5604": "#ff3535",
+        "5605": "#000",
+        "5700": "#000",
+        "5701": "#000",
+        "5750": "#000",
+        "5821": "#434b77"
+      },
+      "name": "Color",
+      "type": 3335,
+      "devEui": "1456278",
+      "deviceId": "2",
+      "ownerId": "1",
+      "resource": 5706,
+      "resources": {
+        "5701": "rgb",
+        "5706": "50,41,243",
+        "5750": "app_name"
+      },
+      "value": "#0529F3",
+      "frameCounter": 0,
+      "transportProtocol": "aloesLight",
+      "messageProtocol": "aloesLight",
+      "messageProtocolVersion": "1.0",
+      "nativeSensorId": "6",
+      "nativeNodeId": "0",
+      "outPrefix": "-out",
+      "inPrefix": "-in",
+      "nativeType": 3335,
+      "nativeResource": 5706
     }
   ]
 }
