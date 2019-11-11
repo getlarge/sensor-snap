@@ -187,6 +187,10 @@ const componentsList = {
       successColor: '#77d1bf',
       warningColor: '#ffc85f',
       dangerColor: '#f94b39',
+      america: '#ededed',
+      europe: '#77d1bf',
+      asia: '#ffc85f',
+      africa: '#f94b39',
     },
   },
   switch: {

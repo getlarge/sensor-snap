@@ -93,7 +93,7 @@ import SensorText from './SensorText.vue';
 import SensorTime from './SensorTime.vue';
 import SensorTimer from './SensorTimer.vue';
 
-const defaultSensor = deviceTree.children[7];
+const defaultSensor = deviceTree.children[11];
 
 /**
  * Parent component handling data flow and sub components selection
@@ -138,6 +138,7 @@ export default {
     'sensor-time': SensorTime,
     'sensor-timer': SensorTimer,
     // 'sensor-camera': () => import('./SensorCamera.vue'),
+    // 'sensor-map': () => import('./SensorMap.vue'),
   },
 
   props: {

@@ -107,7 +107,8 @@
 </template>
 
 <script>
-import {checkComponentType, getComponentResource} from '../methods';
+import {checkComponentType, getComponentResource} from '@/methods';
+import SensorEvents from '@/mixins/sensor-events';
 
 /**
  * Child component called when catching this ID : 3335
@@ -142,28 +143,10 @@ const toHex = [
 export default {
   name: 'SensorColor',
 
-  props: {
-    sensor: {
-      type: String,
-      required: true,
-    },
-    width: {
-      type: Number,
-      default: 150,
-    },
-    height: {
-      type: Number,
-      default: 140,
-    },
-  },
+  mixins: [SensorEvents],
 
   data() {
     return {
-      updatedSensor: null,
-      updatedWidth: null,
-      updatedHeight: null,
-      aSide: true,
-      elementsMounted: false,
       picker: null,
       newHue: 0,
       newLightness: 50,
@@ -223,9 +206,6 @@ export default {
   },
 
   computed: {
-    viewBox() {
-      return `0 0 ${this.updatedWidth} ${this.updatedHeight}`;
-    },
     colors() {
       return getComponentResource('color', 'colors');
     },
@@ -299,24 +279,6 @@ export default {
   },
 
   watch: {
-    sensor: {
-      handler(sensor) {
-        this.updatedSensor = JSON.parse(sensor);
-      },
-      immediate: true,
-    },
-    width: {
-      handler(width) {
-        this.updatedWidth = width;
-      },
-      immediate: true,
-    },
-    height: {
-      handler(height) {
-        this.updatedHeight = height;
-      },
-      immediate: true,
-    },
     newHue: {
       handler() {
         if (!this.elementsMounted) return;
@@ -364,18 +326,6 @@ export default {
   methods: {
     hasRightType(type) {
       return checkComponentType('color', type);
-    },
-
-    flipSide(value) {
-      this.$emit('flip-side', value);
-    },
-
-    updateSensor(...args) {
-      this.$emit('update-sensor', ...args);
-    },
-
-    deleteSensor(...args) {
-      this.$emit('delete-sensor', ...args);
     },
 
     mountElements() {

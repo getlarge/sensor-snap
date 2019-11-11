@@ -37,7 +37,7 @@ export const formatSensor = props => {
     };
     return sensor;
   } catch (error) {
-    return error;
+    return null;
   }
 };
 
@@ -54,6 +54,87 @@ export const normalizeNumber = (value, min, limit) => {
   if (val > limit) return limit;
   if (val < min) return min;
   return val;
+};
+
+/**
+ * Mapping a value within a know range to another value using output range
+ * @module methods/mapValuetoRange
+ * @param  {float} input - Input value
+ * @param  {int} x1 - Min Input range value
+ * @param  {int} y1 - Max Input range value
+ * @param  {int} x2 - Min Output range value
+ * @param  {int} y2 - Max Output range value
+ * @return {float} output - mapped value
+ */
+export const mapValuetoRange = (input, x1, y1, x2, y2) =>
+  ((input - x1) * (y2 - x2)) / (y1 - x1) + x2;
+
+/**
+ * Convert SVG X coordinate to a longitude
+ * @module methods/xToLongitude
+ * @param  {float} x
+ * @param  {width} svg width
+ * @return {float}
+ */
+const xToLongitude = (x, width) => {
+  return (x * 180) / width;
+};
+
+/**
+ * Convert SVG Y coordinate to a latitude
+ * @module methods/yToLatitude
+ * @param  {float} y
+ * @param  {width} svg width
+ * @return {float}
+ */
+const yToLatitude = (y, width) => {
+  return (-y * 180) / width + 90;
+};
+
+/**
+ * Convert SVG coordinates to location coordinates
+ * @module methods/svgToGeoPoint
+ * @param  {float} x
+ * @param  {float} y
+ * @param  {width} svg width
+ * @return {object}
+ */
+export const svgToGeoPoint = (x, y, width) => {
+  return {latitude: yToLatitude(y, width), longitude: xToLongitude(x, width)};
+};
+
+/**
+ * Convert longitude to SVG Y coordinate
+ * @module methods/longitudeToX
+ * @param  {float} longitude
+ * @param  {width} svg width
+ * @return {float}
+ */
+const longitudeToX = (longitude, width) => {
+  return (longitude / 180) * width;
+};
+
+/**
+ * Convert latitude to SVG Y coordinate
+ * @module methods/longitudeToX
+ * @param  {float} longitude
+ * @param  {width} svg width
+ * @return {float}
+ */
+const latitudeToY = (latitude, width) => {
+  return (-latitude / 180) * width + 90;
+};
+
+/**
+ * Convert SVG coordinates to location coordinates
+ * @module methods/geoPointToSvg
+ * @param  {float} latitude
+ * @param  {float} longitude
+ * @param  {width} svg width
+ * @return {object}
+ */
+export const geoPointToSvg = (latitude, longitude, width) => {
+  return {x: longitudeToX(longitude, width), y: latitudeToY(latitude, width)};
 };
 
 /**
@@ -90,6 +171,15 @@ export const getDistanceFromCoordinates = (lat1, lon1, lat2, lon2) => {
   return distance;
 };
 
+export const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  const p = 0.017453292519943295;
+  const c = Math.cos;
+  const a =
+    0.5 -
+    c((lat2 - lat1) * p) / 2 +
+    (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2;
+  return 12742 * Math.asin(Math.sqrt(a));
+};
 /**
  * Convert input value in percentage
  * @module methods/getValueInPercentage
@@ -129,7 +219,7 @@ export const updateStyles = (sensor, stylesConf, componentName) => {
     //  console.log('updateStyles', this.style)
     return styles;
   } catch (error) {
-    return error;
+    return null;
   }
 };
 
@@ -150,7 +240,7 @@ export const checkComponentType = (componentType, sensorType) => {
       objectId => objectId === sensorType,
     );
   } catch (error) {
-    return error;
+    return null;
   }
 };
 
@@ -177,7 +267,7 @@ export const getComponentResource = (componentType, componentResource) => {
     }
     return componentsList[componentType][componentResource];
   } catch (error) {
-    return error;
+    return null;
   }
 };
 
@@ -195,7 +285,7 @@ export const setRangeColors = (value, minRangeValue, maxRangeValue) => {
     }
     return c;
   } catch (error) {
-    return error;
+    return null;
   }
 };
 
@@ -226,7 +316,7 @@ export function DeltaTimer(cb, data, interval) {
         if (count > 1) cb(data);
         return null;
       } catch (error) {
-        return error;
+        return null;
       }
     };
 

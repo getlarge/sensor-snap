@@ -91,7 +91,8 @@
 </template>
 
 <script>
-import {checkComponentType, getComponentResource} from '../methods';
+import {checkComponentType, getComponentResource} from '@/methods';
+import SensorEvents from '@/mixins/sensor-events';
 
 /**
  * Child component called when catching these IDs : 3200, 3201, 3342
@@ -108,79 +109,17 @@ import {checkComponentType, getComponentResource} from '../methods';
 export default {
   name: 'SensorSwitch',
 
-  props: {
-    sensor: {
-      type: String,
-      required: true,
-    },
-    width: {
-      type: Number,
-      default: 150,
-    },
-    height: {
-      type: Number,
-      default: 140,
-    },
-  },
-
-  data() {
-    return {
-      updatedSensor: null,
-      updatedWidth: null,
-      updatedHeight: null,
-      aSide: true,
-    };
-  },
+  mixins: [SensorEvents],
 
   computed: {
-    viewBox() {
-      return `0 0 ${this.updatedWidth} ${this.updatedHeight}`;
-    },
     colors() {
       return getComponentResource('switch', 'colors');
     },
   },
 
-  watch: {
-    sensor: {
-      handler(sensor) {
-        this.updatedSensor = JSON.parse(sensor);
-      },
-      immediate: true,
-    },
-    width: {
-      handler(width) {
-        this.updatedWidth = width;
-      },
-      immediate: true,
-    },
-    height: {
-      handler(height) {
-        this.updatedHeight = height;
-      },
-      immediate: true,
-    },
-  },
-
-  mounted() {},
-
-  beforeDestroy() {},
-
   methods: {
     hasRightType(type) {
       return checkComponentType('switch', type);
-    },
-
-    flipSide(value) {
-      this.$emit('flip-side', value);
-    },
-
-    updateSensor(...args) {
-      this.$emit('update-sensor', ...args);
-    },
-
-    deleteSensor(...args) {
-      this.$emit('delete-sensor', ...args);
     },
   },
 };

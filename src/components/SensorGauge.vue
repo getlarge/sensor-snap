@@ -127,7 +127,8 @@ import {
   getValueInPercentage,
   normalizeNumber,
   setRangeColors,
-} from '../methods';
+} from '@/methods';
+import SensorEvents from '@/mixins/sensor-events';
 
 /**
  * Child component called when catching these IDs : 3300 until 3305 - 3315 - 3316 until 3330 - 3346
@@ -146,27 +147,10 @@ import {
 export default {
   name: 'SensorGauge',
 
-  props: {
-    sensor: {
-      type: String,
-      required: true,
-    },
-    width: {
-      type: Number,
-      default: 150,
-    },
-    height: {
-      type: Number,
-      default: 140,
-    },
-  },
+  mixins: [SensorEvents],
 
   data() {
     return {
-      updatedSensor: null,
-      updatedWidth: null,
-      updatedHeight: null,
-      aSide: true,
       previousValue: 0,
       gaugeNeedle: '/icons/aloes/meter-gauge-needle.svg',
       startAngle: 135,
@@ -186,9 +170,6 @@ export default {
   },
 
   computed: {
-    viewBox() {
-      return `0 0 ${this.updatedWidth} ${this.updatedHeight}`;
-    },
     radius() {
       return Number(this.updatedWidth) / 2.5;
     },
@@ -282,24 +263,6 @@ export default {
   },
 
   watch: {
-    sensor: {
-      handler(sensor) {
-        this.updatedSensor = JSON.parse(sensor);
-      },
-      immediate: true,
-    },
-    width: {
-      handler(width) {
-        this.updatedWidth = width;
-      },
-      immediate: true,
-    },
-    height: {
-      handler(height) {
-        this.updatedHeight = height;
-      },
-      immediate: true,
-    },
     sensorValue: {
       handler(val) {
         if (!val || val === null) return null;
@@ -335,22 +298,6 @@ export default {
   methods: {
     hasRightType(type) {
       return checkComponentType('gauge', type);
-    },
-
-    updateSensor(...args) {
-      this.$emit('update-sensor', ...args);
-    },
-
-    updateSetting(...args) {
-      this.$emit('update-setting', ...args);
-    },
-
-    deleteSensor(...args) {
-      this.$emit('delete-sensor', ...args);
-    },
-
-    flipSide(value) {
-      this.$emit('flip-side', value);
     },
 
     mountElements() {

@@ -281,7 +281,8 @@
 </template>
 
 <script>
-import {getComponentResource} from '../methods';
+import {getComponentResource} from '@/methods';
+import SensorEvents from '@/mixins/sensor-events';
 
 /**
  * Child component called when catching these ID :3333
@@ -296,30 +297,13 @@ import {getComponentResource} from '../methods';
 export default {
   name: 'SensorTime',
 
-  props: {
-    sensor: {
-      type: String,
-      required: true,
-    },
-    width: {
-      type: Number,
-      default: 150,
-    },
-    height: {
-      type: Number,
-      default: 140,
-    },
-  },
+  mixins: [SensorEvents],
 
   data() {
     return {
-      updatedSensor: null,
-      updatedWidth: null,
-      updatedHeight: null,
       showClock: true,
       agendaIcon: '/icons/aloes/agenda.svg',
       hands: [],
-      aSide: true,
       months: [
         'Jan',
         'Feb',
@@ -386,9 +370,6 @@ export default {
   },
 
   computed: {
-    viewBox() {
-      return `0 0 ${this.updatedWidth} ${this.updatedHeight}`;
-    },
     colors() {
       return getComponentResource('time', 'colors');
     },
@@ -412,27 +393,6 @@ export default {
     },
   },
 
-  watch: {
-    sensor: {
-      handler(sensor) {
-        this.updatedSensor = JSON.parse(sensor);
-      },
-      immediate: true,
-    },
-    width: {
-      handler(width) {
-        this.updatedWidth = width;
-      },
-      immediate: true,
-    },
-    height: {
-      handler(height) {
-        this.updatedHeight = height;
-      },
-      immediate: true,
-    },
-  },
-
   mounted() {
     this.$nextTick(() => {
       if (this.updatedSensor.type === 3333) {
@@ -442,21 +402,7 @@ export default {
     });
   },
 
-  beforeDestroy() {},
-
   methods: {
-    updateSensor(...args) {
-      this.$emit('update-sensor', ...args);
-    },
-
-    deleteSensor(...args) {
-      this.$emit('delete-sensor', ...args);
-    },
-
-    flipSide(value) {
-      this.$emit('flip-side', value);
-    },
-
     showDay(...args) {
       //  console.log('showDay', args);
       return args;

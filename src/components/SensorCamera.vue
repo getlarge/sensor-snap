@@ -52,6 +52,7 @@
 
 <script>
 import debounce from 'lodash.debounce';
+import SensorEvents from '@/mixins/sensor-events';
 
 /**
  * Child component called when Object Id : 3349
@@ -65,6 +66,8 @@ import debounce from 'lodash.debounce';
  */
 export default {
   name: 'SensorCamera',
+
+  mixins: [SensorEvents],
 
   props: {
     sensor: {
@@ -168,23 +171,6 @@ export default {
   },
 
   methods: {
-    /**
-     * Update sensor event
-     *
-     * @param {array} args - Array containing sensor instance, resource and value to update
-     */
-    updateSensor(...args) {
-      this.$emit('update-sensor', ...args);
-    },
-
-    deleteSensor(...args) {
-      this.$emit('delete-sensor', ...args);
-    },
-
-    flipSide(value) {
-      this.$emit('flip-side', value);
-    },
-
     mountElements() {
       this.image = this.$refs[`streamViewer-${this.updatedSensor.id}`];
       this.elementsMounted = true;

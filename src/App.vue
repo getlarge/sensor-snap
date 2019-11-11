@@ -29,7 +29,6 @@
       :native-node-id="updatedSensor.nativeNodeId || null"
       :width="width"
       :height="height"
-      class="sensor-snap"
       @update-sensor="onUpdateSensor"
       @update-setting="onUpdateSetting"
       @delete-sensor="onDeleteSensor"
@@ -53,7 +52,7 @@ export default {
 
   data() {
     return {
-      sensor: deviceTree.children[12],
+      sensor: deviceTree.children[5],
       width: 450,
       height: 480,
       randomPics: [
@@ -95,7 +94,7 @@ export default {
           if (oldValue && oldValue.id === value.id) {
             return;
           }
-          if (value.type === 3336) this.startMapTest();
+          if (value.type === 3336) this.startMapTest(5000);
           if (value.type === 3335) this.startColorTest();
           // if (value.type === 3340) this.startTimerTest();
           if (value.resource === 5700) this.startGaugeTest();
@@ -220,7 +219,12 @@ export default {
           Number(sensor.resources['5515']) + Math.floor(Math.random() + 1)
         ).toString();
         sensor.resources['5518'] = new Date().getTime();
-        // console.log('MAP UPDATE', sensor.resources);
+        // console.log(
+        //   'aloes-sensor startMapTest() with values :',
+        //   sensor.resources['5514'],
+        //   sensor.resources['5515'],
+        //   sensor.resources['5518'],
+        // );
         this.updateSensorView(sensor);
       }, interval);
     },

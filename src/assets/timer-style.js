@@ -60,26 +60,26 @@ svg.sensor-timer > g.controls > text.display-remain-time {
   fill: var(--primary-color);
   cursor: pointer;
 }
-svg.sensor-timer > g.controls > g > text#pause {
+svg.sensor-timer > g.controls > g > text.play {
   cursor: pointer;
   text-shadow: ${conf.width / 150}px ${conf.width / 150}px ${conf.width /
     200}px #6e6e6e;
   fill: var(--primary-color);
   font-size: ${conf.width / 10}px;
 }
-svg.sensor-timer > g.controls > g > text#pause:hover { 
+svg.sensor-timer > g.controls > g > text.play:hover { 
    text-shadow: ${conf.width / 250}px ${conf.width / 250}px ${conf.width /
     400}px #6e6e6e;
   opacity: 0.8; 
 }
-svg.sensor-timer > g.controls > g > text#break {
+svg.sensor-timer > g.controls > g > text.stop {
   text-shadow: ${conf.width / 150}px ${conf.width / 150}px ${conf.width /
     200}px #6e6e6e;
   cursor: pointer;
   fill: var(--primary-color);
   font-size: ${conf.width / 10}px;
 }
-svg.sensor-timer > g.controls > g > text#break:hover { 
+svg.sensor-timer > g.controls > g > text.stop:hover { 
   opacity: 0.8; 
   text-shadow: ${conf.width / 250}px ${conf.width / 250}px ${conf.width /
     400}px #6e6e6e;

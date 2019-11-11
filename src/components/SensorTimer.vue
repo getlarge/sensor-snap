@@ -157,7 +157,8 @@
 
 <script>
 import debounce from 'lodash.debounce';
-import {getComponentResource, DeltaTimer} from '../methods';
+import {getComponentResource, DeltaTimer} from '@/methods';
+import SensorEvents from '@/mixins/sensor-events';
 
 /**
  * Child component called when catching these ID: 3340
@@ -172,28 +173,11 @@ import {getComponentResource, DeltaTimer} from '../methods';
 export default {
   name: 'SensorTimer',
 
-  props: {
-    sensor: {
-      type: String,
-      required: true,
-    },
-    width: {
-      type: Number,
-      default: 150,
-    },
-    height: {
-      type: Number,
-      default: 140,
-    },
-  },
+  mixins: [SensorEvents],
 
   data() {
     return {
-      updatedSensor: null,
-      updatedWidth: null,
-      updatedHeight: null,
       showClock: true,
-      aSide: true,
       pointer: null,
       pointerGroup: null,
       length: 0,
@@ -202,7 +186,6 @@ export default {
       timerClock: null,
       setterBtns: [],
       timerModeBtns: [],
-      elementsMounted: false,
       intervalTimer: null,
       isPaused: true,
       isStarted: false,
@@ -212,9 +195,6 @@ export default {
   },
 
   computed: {
-    viewBox() {
-      return `0 0 ${this.updatedWidth} ${this.updatedHeight}`;
-    },
     colors() {
       return getComponentResource('timer', 'colors');
     },
@@ -281,24 +261,6 @@ export default {
   },
 
   watch: {
-    sensor: {
-      handler(sensor) {
-        this.updatedSensor = JSON.parse(sensor);
-      },
-      immediate: true,
-    },
-    width: {
-      handler(width) {
-        this.updatedWidth = width;
-      },
-      immediate: true,
-    },
-    height: {
-      handler(height) {
-        this.updatedHeight = height;
-      },
-      immediate: true,
-    },
     timeLeft: {
       handler(value, oldValue) {
         if (this.elementsMounted && value !== oldValue && value !== null) {
@@ -329,11 +291,7 @@ export default {
     timerOutput: {
       handler(value) {
         if (this.elementsMounted) {
-          if (
-            !this.isPaused &&
-            this.isStarted &&
-            (value === true || value === 1)
-          ) {
+          if (this.isStarted && (value === true || value === 1)) {
             this.stopCron();
           }
         }
@@ -369,31 +327,8 @@ export default {
       immediate: true,
     },
     timerEvent: {
-      handler(value) {
-        if (this.elementsMounted && value !== null) {
-          switch (value) {
-            case 'start':
-              if (!this.isStarted) {
-                this.startCron();
-              }
-              break;
-            case 'restart':
-              if (!this.isStarted) {
-                this.restartCron();
-              }
-              break;
-            case 'stop':
-              if (this.isStarted) {
-                this.stopCron();
-              }
-              break;
-            case 'pause':
-              if (this.isStarted && !this.isPaused) {
-                this.pauseCron();
-              }
-              break;
-          }
-        }
+      handler(event) {
+        this.parseEvent(event);
       },
       immediate: true,
     },
@@ -423,24 +358,6 @@ export default {
   },
 
   methods: {
-    updateSensor(...args) {
-      this.$emit('update-sensor', ...args);
-    },
-
-    updateSetting(...args) {
-      if (args[0] && args[0].id) {
-        this.$emit('update-setting', ...args);
-      }
-    },
-
-    deleteSensor(...args) {
-      this.$emit('delete-sensor', ...args);
-    },
-
-    flipSide(value) {
-      this.$emit('flip-side', value);
-    },
-
     mountElements() {
       this.progressBar = this.$el.querySelector('.cron-progress');
       this.pointer = this.$el.querySelector('.cron-dot');
@@ -662,15 +579,11 @@ export default {
     },
 
     updateCron(data) {
-      try {
-        // console.log('updateCron :', data);
-        if (this.timeLeft > 0) {
-          this.timeLeft -= this.clockInterval;
-        }
-        return data;
-      } catch (error) {
-        return error;
+      // console.log('updateCron :', data);
+      if (this.timeLeft > 0) {
+        this.timeLeft -= this.clockInterval;
       }
+      return data;
     },
 
     setClock(interval) {
@@ -697,6 +610,33 @@ export default {
       } else if (!this.isPaused && this.isStarted) {
         this.updateSensor(this.updatedSensor, 5523, 'pause');
         this.pauseCron();
+      }
+    },
+
+    parseEvent(value) {
+      if (this.elementsMounted && value !== null) {
+        switch (value) {
+          case 'start':
+            if (!this.isStarted) {
+              this.startCron();
+            }
+            break;
+          case 'restart':
+            if (!this.isStarted) {
+              this.restartCron();
+            }
+            break;
+          case 'stop':
+            if (this.isStarted) {
+              this.stopCron();
+            }
+            break;
+          case 'pause':
+            if (this.isStarted && !this.isPaused) {
+              this.pauseCron();
+            }
+            break;
+        }
       }
     },
   },

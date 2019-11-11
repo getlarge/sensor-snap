@@ -58,6 +58,7 @@
 
 <script>
 //  import {getComponentResource} from '../methods';
+import SensorEvents from '@/mixins/sensor-events';
 
 /**
  * Child component called when Object Id : 3341
@@ -74,28 +75,10 @@
 export default {
   name: 'SensorText',
 
-  props: {
-    sensor: {
-      type: String,
-      required: true,
-    },
-    width: {
-      type: Number,
-      default: 150,
-    },
-    height: {
-      type: Number,
-      default: 140,
-    },
-  },
+  mixins: [SensorEvents],
 
   data() {
     return {
-      updatedSensor: null,
-      updatedWidth: null,
-      updatedHeight: null,
-      aSide: true,
-      elementsMounted: false,
       textInput: null,
       textWidth: this.$props.width / 2,
       textContent: null,
@@ -104,9 +87,6 @@ export default {
   },
 
   computed: {
-    viewBox() {
-      return `0 0 ${this.updatedWidth} ${this.updatedHeight}`;
-    },
     textResource: {
       get() {
         return this.updatedSensor.resources['5527'];
@@ -118,24 +98,6 @@ export default {
   },
 
   watch: {
-    sensor: {
-      handler(sensor) {
-        this.updatedSensor = JSON.parse(sensor);
-      },
-      immediate: true,
-    },
-    width: {
-      handler(width) {
-        this.updatedWidth = width;
-      },
-      immediate: true,
-    },
-    height: {
-      handler(height) {
-        this.updatedHeight = height;
-      },
-      immediate: true,
-    },
     textResource: {
       handler(newValue) {
         if (newValue.length > this.charNumber) {
@@ -167,22 +129,6 @@ export default {
   },
 
   methods: {
-    flipSide(value) {
-      this.$emit('flip-side', value);
-    },
-
-    updateSensor(...args) {
-      this.$emit('update-sensor', ...args);
-    },
-
-    updateSetting(...args) {
-      this.$emit('update-setting', ...args);
-    },
-
-    deleteSensor(...args) {
-      this.$emit('delete-sensor', ...args);
-    },
-
     mountElements() {
       //  this.sensorValue = this.$refs[`sensorValue-${this.updatedSensor.id}`];
       this.textInput = document.getElementById(

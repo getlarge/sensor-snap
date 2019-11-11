@@ -2,6 +2,7 @@
   <!-- inspired by https://github.com/lmgonzalves/elastic-range-input -->
   <svg
     v-if="hasRightType(updatedSensor.type)"
+    :id="`level-${updatedSensor.id}`"
     :ref="`rangeWrapper-${updatedSensor.id}`"
     :width="updatedWidth"
     :height="updatedHeight"
@@ -58,7 +59,10 @@
           x="0"
           y="0"
         >
-          <path class="range-slider-path" :d="newPath" />
+          <path
+            :class="`range-slider-path slider-path-${updatedSensor.id}`"
+            :d="newPath"
+          />
         </clipPath>
       </defs>
       <use
@@ -66,7 +70,10 @@
         class="range-marks-colored"
       />
       <!-- Slider `path`, that will be morphed properly on user interaction -->
-      <path class="range-slider-path" :d="newPath" />
+      <path
+        :class="`range-slider-path slider-path-${updatedSensor.id}`"
+        :d="newPath"
+      />
       <!--  :d="`M 0 ${updatedHeight} l ${updatedWidth} 0 l 0 ${updatedHeight} l -${updatedWidth} 0 Z`" -->
       <use
         v-bind="{'xlink:href': `#rangeMarks-${updatedSensor.id}`}"
@@ -76,6 +83,7 @@
     </g>
     <g
       :ref="`rangeValues-${updatedSensor.id}`"
+      :id="`range-values-${updatedSensor.id}`"
       class="range-values"
       :transfrom="`translateY(${rangeHeight - currentY}px)`"
     >
@@ -106,8 +114,11 @@
 </template>
 
 <script>
-import anime from 'animejs';
-import {checkComponentType} from '../methods';
+import {easeElastic, easeLinear} from 'd3-ease';
+import {select} from 'd3-selection';
+import {active} from 'd3-transition';
+import {checkComponentType} from '@/methods';
+import SensorEvents from '@/mixins/sensor-events';
 
 /**
  * Child component called when catching these IDs : 3306, 3311, 3312
@@ -122,28 +133,10 @@ import {checkComponentType} from '../methods';
 export default {
   name: 'SensorLevel',
 
-  props: {
-    sensor: {
-      type: String,
-      required: true,
-    },
-    width: {
-      type: Number,
-      default: 150,
-    },
-    height: {
-      type: Number,
-      default: 140,
-    },
-  },
+  mixins: [SensorEvents],
 
   data() {
     return {
-      animeScript: null,
-      updatedSensor: null,
-      updatedWidth: null,
-      updatedHeight: null,
-      aSide: true,
       previousValue: 0,
       rangeWrapper: null,
       rangeValues: null,
@@ -161,7 +154,6 @@ export default {
       layerX: 0,
       layerY: 0,
       loading: false,
-      elementsMounted: false,
       gradients: [
         {margin: 1.19, width: 14, pos: 15},
         {margin: 1.17, width: 18, pos: 14},
@@ -183,11 +175,14 @@ export default {
   },
 
   computed: {
-    viewBox() {
-      return `0 0 ${this.updatedWidth} ${this.updatedHeight}`;
-    },
     rangeHeight() {
       return this.updatedHeight - this.updatedHeight / 6;
+    },
+    svg() {
+      if (this.updatedSensor && this.updatedSensor.id) {
+        return select(`#level-${this.updatedSensor.id}`);
+      }
+      return null;
     },
     sliderValue: {
       get() {
@@ -203,7 +198,6 @@ export default {
         return this.updatedSensor.resources['5850'];
       },
       set(value) {
-        //  this.updatedSensor.resources["5851"] = parseInt(value);
         this.updatedSensor.resources['5850'] = value;
       },
     },
@@ -260,24 +254,6 @@ export default {
   },
 
   watch: {
-    sensor: {
-      handler(sensor) {
-        this.updatedSensor = JSON.parse(sensor);
-      },
-      immediate: true,
-    },
-    width: {
-      handler(width) {
-        this.updatedWidth = width;
-      },
-      immediate: true,
-    },
-    height: {
-      handler(height) {
-        this.updatedHeight = height;
-      },
-      immediate: true,
-    },
     sliderValue: {
       handler(value) {
         this.currentY = (this.rangeHeight * value) / this.rangeMax;
@@ -311,25 +287,19 @@ export default {
       return checkComponentType('level', type);
     },
 
-    updateSensor(...args) {
-      this.$emit('update-sensor', ...args);
-      this.loading = false;
-    },
-
-    deleteSensor(...args) {
-      this.$emit('delete-sensor', ...args);
-    },
-
-    flipSide(value) {
-      this.$emit('flip-side', value);
-    },
-
     mountElements() {
-      this.rangeWrapper = this.$refs[`rangeWrapper-${this.updatedSensor.id}`];
-      this.rangeValues = this.$refs[`rangeValues-${this.updatedSensor.id}`];
-      //  this.rangeSliderPaths = document.querySelectorAll('.range-slider-path');
-      this.rangeSliderPaths = this.$el.querySelectorAll('.range-slider-path');
-      this.elementsMounted = true;
+      try {
+        this.rangeWrapper = this.$refs[`rangeWrapper-${this.updatedSensor.id}`];
+        this.rangeValues = this.svg.select(
+          `#range-values-${this.updatedSensor.id}`,
+        );
+        this.rangeSliderPaths = this.svg.selectAll(
+          `.slider-path-${this.updatedSensor.id}`,
+        );
+        this.elementsMounted = true;
+      } catch (e) {
+        this.elementsMounted = false;
+      }
     },
 
     mouseDown(e) {
@@ -362,22 +332,21 @@ export default {
     mouseUp() {
       if (this.mouseDy) {
         this.elasticRelease();
-        setTimeout(() => {
-          if (this.loading) return null;
-          this.loading = true;
-          this.updateSensor(this.updatedSensor, 5851, this.sliderValue);
-          if (this.sliderValue === this.rangeMax) {
-            this.updateSensor(this.updatedSensor, 5850, true);
-          } else if (this.sliderValue === this.rangeMin) {
-            this.updateSensor(this.updatedSensor, 5850, false);
-          }
-        }, 100);
+        if (this.loading) return;
+        this.loading = true;
+        this.updateSensor(this.updatedSensor, 5851, this.sliderValue);
+        if (this.sliderValue === this.rangeMax) {
+          this.updateSensor(this.updatedSensor, 5850, true);
+        } else if (this.sliderValue === this.rangeMin) {
+          this.updateSensor(this.updatedSensor, 5850, false);
+        }
+        this.loading = false;
       }
       this.mouseY = this.mouseDy = 0;
     },
 
     setListeners() {
-      if (!this.elementsMounted) return null;
+      if (!this.elementsMounted) return;
       this.rangeWrapper.addEventListener('mousedown', this.mouseDown);
       this.rangeWrapper.addEventListener('touchstart', this.mouseDown);
       this.rangeWrapper.addEventListener('mousemove', this.mouseMove);
@@ -388,15 +357,14 @@ export default {
     },
 
     removeEventListeners() {
-      if (this.rangeWrapper) {
-        this.rangeWrapper.removeEventListener('mousedown', this.mouseDown);
-        this.rangeWrapper.removeEventListener('touchstart', this.mouseDown);
-        this.rangeWrapper.removeEventListener('mousemove', this.mouseMove);
-        this.rangeWrapper.removeEventListener('touchmove', this.mouseMove);
-        this.rangeWrapper.removeEventListener('mouseup', this.mouseUp);
-        this.rangeWrapper.removeEventListener('mouseleave', this.mouseUp);
-        this.rangeWrapper.removeEventListener('touchend', this.mouseUp);
-      }
+      if (!this.elementsMounted) return;
+      this.rangeWrapper.removeEventListener('mousedown', this.mouseDown);
+      this.rangeWrapper.removeEventListener('touchstart', this.mouseDown);
+      this.rangeWrapper.removeEventListener('mousemove', this.mouseMove);
+      this.rangeWrapper.removeEventListener('touchmove', this.mouseMove);
+      this.rangeWrapper.removeEventListener('mouseup', this.mouseUp);
+      this.rangeWrapper.removeEventListener('mouseleave', this.mouseUp);
+      this.rangeWrapper.removeEventListener('touchend', this.mouseUp);
     },
 
     gradientHeight(x) {
@@ -412,15 +380,11 @@ export default {
     },
 
     afterUpdate() {
-      if (!this.elementsMounted) return null;
-      if (this.sliderValue > this.rangeMax) return null;
-      if (this.sliderValue < this.rangeMin) return null;
-      anime.remove([
-        this.rangeValues,
-        this.rangeSliderPaths[0],
-        this.rangeSliderPaths[1],
-      ]);
-      // Some maths calc
+      if (!this.elementsMounted) return;
+      if (this.sliderValue > this.rangeMax) return;
+      if (this.sliderValue < this.rangeMin) return;
+      this.rangeValues.interrupt();
+      this.rangeSliderPaths.interrupt();
       if (Math.abs(this.mouseDy) < this.mouseDyLimit) {
         this.lastMouseDy = this.mouseDy;
       } else {
@@ -433,45 +397,49 @@ export default {
     },
 
     elasticRelease() {
-      if (!this.elementsMounted) return null;
-      // Morph the paths to the opposite direction, to simulate a strong elasticity
-      anime({
-        targets: this.rangeSliderPaths,
-        d: this.buildPath(
-          -this.lastMouseDy * 1.3,
-          this.rangeHeight -
-            (this.currentY - this.lastMouseDy / this.mouseDyFactor),
-        ),
-        duration: 150,
-        easing: 'linear',
-        complete: () => {
-          // Morph the paths to the normal state, using the `elasticOut` easing function (default)
-          anime({
-            targets: this.rangeSliderPaths,
-            d: this.buildPath(0, this.rangeHeight - this.currentY),
-            duration: 1000,
-            elasticity: 200,
-          });
-        },
-      });
+      if (!this.elementsMounted) return;
+      const self = this;
+      const customElastic = easeElastic.period(0.4);
 
-      // Translate the values to the opposite direction, to simulate a strong elasticity
-      anime({
-        targets: this.rangeValues,
-        translateY:
-          this.rangeHeight -
-          (this.currentY + this.lastMouseDy / this.mouseDyFactor / 4),
-        duration: 150,
-        easing: 'linear',
-        complete: () => {
-          anime({
-            targets: this.rangeValues,
-            translateY: this.rangeHeight - this.currentY,
-            duration: 1000,
-            elasticity: 200,
-          });
-        },
-      });
+      this.rangeSliderPaths
+        .attr(
+          'd',
+          this.buildPath(
+            -this.lastMouseDy * 1.3,
+            this.rangeHeight -
+              (this.currentY - this.lastMouseDy / this.mouseDyFactor),
+          ),
+        )
+        .transition()
+        .ease(easeLinear)
+        .duration(250)
+        .on('start', function() {
+          active(this)
+            .attr('d', self.buildPath(0, self.rangeHeight - self.currentY))
+            .transition()
+            .duration(250)
+            .ease(customElastic);
+        });
+
+      this.rangeValues
+        .attr(
+          'transform',
+          `translate(0, ${this.rangeHeight -
+            (this.currentY + this.lastMouseDy / this.mouseDyFactor / 4)})`,
+        )
+        .transition()
+        .ease(easeLinear)
+        .duration(250)
+        .on('start', function() {
+          active(this)
+            .attr(
+              'transform',
+              `translate(0, ${self.rangeHeight - self.currentY})`,
+            )
+            .transition()
+            .duration(250)
+            .ease(customElastic);
+        });
     },
   },
 };

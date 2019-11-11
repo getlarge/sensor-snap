@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import SensorEvents from '@/mixins/sensor-events';
+
 /**
  * Child component called when Object Id : 3339
  *
@@ -64,6 +66,8 @@
  */
 export default {
   name: 'SensorAudio',
+
+  mixins: [SensorEvents],
 
   props: {
     sensor: {
@@ -149,18 +153,6 @@ export default {
   },
 
   methods: {
-    updateSensor(...args) {
-      this.$emit('update-sensor', ...args);
-    },
-
-    deleteSensor(...args) {
-      this.$emit('delete-sensor', ...args);
-    },
-
-    flipSide(value) {
-      this.$emit('flip-side', value);
-    },
-
     mountElements() {
       try {
         window.AudioContext = window.AudioContext || window.webkitAudioContext;

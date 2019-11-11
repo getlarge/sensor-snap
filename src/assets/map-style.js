@@ -13,9 +13,6 @@ const mapStyle = conf => {
     100}px 0px #6e6e6e;
   text-align: center;
 }
-svg.sensor-map > image.map-viewer {
-  cursor: pointer;
-}
 text.sensor-title {
   fill: var(--primary-color);
   fill-opacity: 1;
@@ -29,93 +26,6 @@ circle.delete-button {
   stroke: var(--warning);
   stroke-width: ${conf.width / 50}px;
   cursor: pointer;
-}
-.map-marker {
-    /* adjusting for the marker dimensions
-    so that it is centered on coordinates */
-    margin-left: -${conf.width / 80}px;
-    margin-top: -${conf.width / 80}px;
-    box-sizing: border-box;
-}
-.map-marker.map-clickable {
-    cursor: pointer;
-}
-.pulse {
-    width: ${conf.width / 40}px;
-    height: ${conf.width / 40}px;
-    border: ${conf.width / 80}px solid var(--primary-color);
-    -webkit-border-radius: ${conf.width / 13}px;
-    -moz-border-radius: ${conf.width / 13}px;
-    border-radius: ${conf.width / 13}px;
-    background-color: #716f42;
-    z-index: 10;
-    position: absolute;
-    box-sizing: border-box;
-}
-.map-marker .dot {
-    border: ${conf.width / 40}px solid var(--secondary-color);
-    background: transparent;
-    -webkit-border-radius: ${conf.width / 7}px;
-    -moz-border-radius: ${conf.width / 7}px;
-    border-radius: ${conf.width / 7}px;
-    height: ${conf.width / 8}px;
-    width: ${conf.width / 8}px;
-    -webkit-animation: pulse 1s ease-out;
-    -moz-animation: pulse 1s ease-out;
-    animation: pulse 1s ease-out;
-    -webkit-animation-iteration-count: 10;
-    -moz-animation-iteration-count: 10;
-    animation-iteration-count: 10;
-    position: absolute;
-    top: -${conf.width / 20}px;
-    left: -${conf.width / 20}px;
-    z-index: 1;
-    opacity: 0;
-    box-sizing: border-box;
-}
-@-moz-keyframes pulse {
-   0% {
-      -moz-transform: scale(0);
-      opacity: 0.0;
-   }
-   25% {
-      -moz-transform: scale(0);
-      opacity: 0.1;
-   }
-   50% {
-      -moz-transform: scale(0.1);
-      opacity: 0.3;
-   }
-   75% {
-      -moz-transform: scale(0.5);
-      opacity: 0.5;
-   }
-   100% {
-      -moz-transform: scale(1);
-      opacity: 0.0;
-   }
-  }
-  @-webkit-keyframes "pulse" {
-   0% {
-      -webkit-transform: scale(0);
-      opacity: 0.0;
-   }
-   25% {
-      -webkit-transform: scale(0);
-      opacity: 0.1;
-   }
-   50% {
-      -webkit-transform: scale(0.1);
-      opacity: 0.3;
-   }
-   75% {
-      -webkit-transform: scale(0.5);
-      opacity: 0.5;
-   }
-   100% {
-      -webkit-transform: scale(1);
-      opacity: 0.0;
-   }
 }`;
 };
 
