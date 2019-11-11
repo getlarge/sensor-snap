@@ -8,6 +8,27 @@ Format Sensor instance with SensorSnap props</p>
 <dt><a href="#module_methods/normalizeNumber">methods/normalizeNumber</a> ⇒ <code>float</code></dt>
 <dd><p>Validate new value input ( number )</p>
 </dd>
+<dt><a href="#module_methods/mapValuetoRange">methods/mapValuetoRange</a> ⇒ <code>float</code></dt>
+<dd><p>Mapping a value within a know range to another value using output range</p>
+</dd>
+<dt><a href="#module_methods/xToLongitude">methods/xToLongitude</a> ⇒ <code>float</code></dt>
+<dd><p>Convert SVG X coordinate to a longitude</p>
+</dd>
+<dt><a href="#module_methods/yToLatitude">methods/yToLatitude</a> ⇒ <code>float</code></dt>
+<dd><p>Convert SVG Y coordinate to a latitude</p>
+</dd>
+<dt><a href="#module_methods/svgToGeoPoint">methods/svgToGeoPoint</a> ⇒ <code>object</code></dt>
+<dd><p>Convert SVG coordinates to location coordinates</p>
+</dd>
+<dt><a href="#module_methods/longitudeToX">methods/longitudeToX</a> ⇒ <code>float</code></dt>
+<dd><p>Convert longitude to SVG Y coordinate</p>
+</dd>
+<dt><a href="#module_methods/longitudeToX">methods/longitudeToX</a> ⇒ <code>float</code></dt>
+<dd><p>Convert latitude to SVG Y coordinate</p>
+</dd>
+<dt><a href="#module_methods/geoPointToSvg">methods/geoPointToSvg</a> ⇒ <code>object</code></dt>
+<dd><p>Convert SVG coordinates to location coordinates</p>
+</dd>
 <dt><a href="#module_methods/degreesToRadians">methods/degreesToRadians</a> ⇒ <code>float</code></dt>
 <dd><p>Transform an angle value from degree to radians ( number )</p>
 </dd>
@@ -55,6 +76,89 @@ Validate new value input ( number )
 | value | <code>any</code> | New sensor value |
 | min | <code>int</code> | Min Range value |
 | limit | <code>init</code> | Max Range value |
+
+<a name="module_methods/mapValuetoRange"></a>
+
+## methods/mapValuetoRange ⇒ <code>float</code>
+Mapping a value within a know range to another value using output range
+
+**Returns**: <code>float</code> - output - mapped value  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| input | <code>float</code> | Input value |
+| x1 | <code>int</code> | Min Input range value |
+| y1 | <code>int</code> | Max Input range value |
+| x2 | <code>int</code> | Min Output range value |
+| y2 | <code>int</code> | Max Output range value |
+
+<a name="module_methods/xToLongitude"></a>
+
+## methods/xToLongitude ⇒ <code>float</code>
+Convert SVG X coordinate to a longitude
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| x | <code>float</code> |  |
+| svg | <code>width</code> | width |
+
+<a name="module_methods/yToLatitude"></a>
+
+## methods/yToLatitude ⇒ <code>float</code>
+Convert SVG Y coordinate to a latitude
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| y | <code>float</code> |  |
+| svg | <code>width</code> | width |
+
+<a name="module_methods/svgToGeoPoint"></a>
+
+## methods/svgToGeoPoint ⇒ <code>object</code>
+Convert SVG coordinates to location coordinates
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| x | <code>float</code> |  |
+| y | <code>float</code> |  |
+| svg | <code>width</code> | width |
+
+<a name="module_methods/longitudeToX"></a>
+
+## methods/longitudeToX ⇒ <code>float</code>
+Convert longitude to SVG Y coordinate
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| longitude | <code>float</code> |  |
+| svg | <code>width</code> | width |
+
+<a name="module_methods/longitudeToX"></a>
+
+## methods/longitudeToX ⇒ <code>float</code>
+Convert latitude to SVG Y coordinate
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| longitude | <code>float</code> |  |
+| svg | <code>width</code> | width |
+
+<a name="module_methods/geoPointToSvg"></a>
+
+## methods/geoPointToSvg ⇒ <code>object</code>
+Convert SVG coordinates to location coordinates
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| latitude | <code>float</code> |  |
+| longitude | <code>float</code> |  |
+| svg | <code>width</code> | width |
 
 <a name="module_methods/degreesToRadians"></a>
 

@@ -107,7 +107,7 @@ const defaultSensor = deviceTree.children[11];
  * @param {string} type - OMA ObjectId
  * @param {string} resources - OMA Resources corresponding to sensor.type (JSON Object)
  * @param {string} resource - OMA ResourceId
- * @param {string} value - last savec sensor value
+ * @param {string} value - last saved sensor value
  * @param {string[]} icons - OMA viewResources icons
  * @param {string} colors - OMA viewResources colors - (JSON Object)
  * @param {string} [frameCounter] - sensor message counter

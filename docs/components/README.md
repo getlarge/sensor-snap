@@ -10,6 +10,10 @@ Level : 5548, appType : 5750</p>
 <dd><p>Child component called when Object Id : 3349</p>
 <p>Resources : Bitmap input : 5910, Bitmap input reset : 5911, appType : 5750</p>
 </dd>
+<dt><a href="#module_components/SensorSwitch">components/SensorSwitch</a></dt>
+<dd><p>Child component called when catching this ID : 3335</p>
+<p>Resources : color unit : 5701, color : 5706 appType 5750</p>
+</dd>
 <dt><a href="#module_components/SensorGauge">components/SensorGauge</a></dt>
 <dd><p>Child component called when catching these IDs : 3300 until 3305 - 3315 - 3316 until 3330 - 3346</p>
 <p>Resources : input state : 5600, minMeasuredValue 5601, maxMeasuredValue 5602</p>
@@ -68,6 +72,20 @@ Level : 5548, appType : 5750
 Child component called when Object Id : 3349
 
 Resources : Bitmap input : 5910, Bitmap input reset : 5911, appType : 5750
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [width] | <code>number</code> | Component width |
+| [height] | <code>number</code> | Component height |
+| sensor | <code>Array.&lt;string&gt;</code> | Json stringified sensor instance |
+
+<a name="module_components/SensorSwitch"></a>
+
+## components/SensorSwitch
+Child component called when catching this ID : 3335
+
+Resources : color unit : 5701, color : 5706 appType 5750
 
 
 | Param | Type | Description |
@@ -139,7 +157,7 @@ Parent component handling data flow and sub components selection
 | type | <code>string</code> | OMA ObjectId |
 | resources | <code>string</code> | OMA Resources corresponding to sensor.type (JSON Object) |
 | resource | <code>string</code> | OMA ResourceId |
-| value | <code>string</code> | last savec sensor value |
+| value | <code>string</code> | last saved sensor value |
 | icons | <code>Array.&lt;string&gt;</code> | OMA viewResources icons |
 | colors | <code>string</code> | OMA viewResources colors - (JSON Object) |
 | [frameCounter] | <code>string</code> | sensor message counter |
