@@ -52,7 +52,7 @@ export default {
 
   data() {
     return {
-      sensor: deviceTree.children[5],
+      sensor: deviceTree.children[11],
       width: 450,
       height: 480,
       randomPics: [

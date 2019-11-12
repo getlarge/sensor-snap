@@ -12,11 +12,11 @@
   >
     <g
       v-show="countries"
-      :x="0"
+      x="0"
+      y="0"
       :id="`map-paths-${updatedSensor.id}`"
       :ref="`mapPaths-${updatedSensor.id}`"
     ></g>
-    <!--       :y="updatedHeight / 6" -->
     <text
       :transform="`translate(${updatedWidth / 2}, ${updatedHeight / 10})`"
       text-anchor="middle"
@@ -110,37 +110,12 @@ export default {
       //   // .range([this.colors.primaryColor, this.colors.secondaryColor]);
     },
     mapHeight() {
-      if (!this.elementsMounted) return null;
+      if (!this.mapPaths) return null;
       return this.mapPaths.getBoundingClientRect().height;
     },
     mapWidth() {
-      if (!this.elementsMounted) return null;
+      if (!this.mapPaths) return null;
       return this.mapPaths.getBoundingClientRect().width;
-    },
-    zoomListener() {
-      const minX = 0;
-      const maxX = this.updatedWidth * 2;
-      const minY = -this.updatedHeight / 2.5;
-      const maxY = this.updatedHeight * 1.5;
-      return (
-        zoom()
-          .scaleExtent([this.minZoom, this.maxZoom])
-          .translateExtent([[minX, minY], [maxX, maxY]])
-          // .extent([[0, 0], [width, height]])
-          .on('zoom', this.zoomed)
-      );
-    },
-    svg() {
-      if (this.updatedSensor && this.updatedSensor.id) {
-        return select(`#map-${this.updatedSensor.id}`)
-          .call(this.zoomListener)
-          .on('dblclick.zoom', () => this.doubleClicked(event));
-      }
-      return null;
-    },
-    countriesGroup() {
-      if (!this.elementsMounted) return null;
-      return select(`#map-paths-${this.updatedSensor.id}`);
     },
     tooltip() {
       if (!this.elementsMounted) return null;
@@ -153,7 +128,6 @@ export default {
       return [0, 0];
     },
     projection() {
-      if (!this.elementsMounted) return null;
       return geoMercator();
     },
     originGeo() {
@@ -170,7 +144,7 @@ export default {
       return geoPath().projection(this.projection);
     },
     countries() {
-      if (!this.elementsMounted || !this.mapData || !this.path) return null;
+      if (!this.mapData || !this.countriesGroup || !this.path) return null;
       return this.countriesGroup
         .selectAll('.country')
         .data(feature(this.mapData, this.mapData.objects.countries).features)
@@ -359,7 +333,6 @@ export default {
         .attr('cx', x)
         .attr('cy', y)
         .attr('r', '0px')
-        // .attr('id', `point-inner-circle-${point.timestamp}`)
         .attr('id', `point-inner-circle-${this.updatedSensor.id}-${index}`)
         .attr('class', 'destCircleInner')
         .style('fill', this.colors.primaryColor)
@@ -447,7 +420,6 @@ export default {
     },
 
     removeMarker(index) {
-      // this.svg.select(`#point-mouse-circle-${point.timestamp}`).remove();
       this.svg
         .select(`#point-inner-circle-${this.updatedSensor.id}-${index}`)
         .remove();
@@ -537,6 +509,26 @@ export default {
       });
     },
 
+    addLocation(location) {
+      location.isNew = true;
+      location.tooltipText = new Date(location.timestamp * 1000);
+      this.locationSeries.push(location);
+      return location;
+    },
+
+    buildLocation() {
+      if (this.latitude !== null && this.longitude !== null) {
+        return {
+          coord: [Number(this.longitude), Number(this.latitude)],
+          latitude: Number(this.latitude),
+          longitude: Number(this.longitude),
+          name: this.updatedSensor.name,
+          timestamp: this.timestamp,
+        };
+      }
+      return null;
+    },
+
     zoomLevel(rate) {
       if (rate && rate !== null && typeof rate === 'number') {
         return (this.updatedHeight / 15) * rate;
@@ -561,6 +553,20 @@ export default {
       this.yMove = event.transform.y;
       this.countriesGroup.attr('transform', event.transform);
       this.debouncedUpdateMarkers();
+    },
+
+    zoomListener() {
+      const minX = 0;
+      const maxX = this.mapWidth;
+      const minY = -this.mapHeight / 4;
+      const maxY = this.mapHeight / 1.5;
+      return (
+        zoom()
+          .scaleExtent([this.minZoom, this.maxZoom])
+          .translateExtent([[minX, minY], [maxX, maxY]])
+          // .extent([[0, 0], [width, height]])
+          .on('zoom', this.zoomed)
+      );
     },
 
     doubleClicked(e) {
@@ -598,39 +604,24 @@ export default {
       return distance > this.activeDistance ? true : false;
     },
 
-    addLocation(location) {
-      location.isNew = true;
-      location.tooltipText = new Date(location.timestamp * 1000);
-      this.locationSeries.push(location);
-      return location;
-    },
-
-    buildLocation() {
-      if (this.latitude !== null && this.longitude !== null) {
-        return {
-          coord: [Number(this.longitude), Number(this.latitude)],
-          latitude: Number(this.latitude),
-          longitude: Number(this.longitude),
-          name: this.updatedSensor.name,
-          timestamp: this.timestamp,
-        };
-      }
-      return null;
-    },
-
     async mountElements() {
       try {
         if (!window.SVGPathElement || window.SVGPathElement === null) {
           return;
         }
         this.mapData = await fetch(this.mapUrl).then(body => body.json());
-        // console.log(
-        //   'TOPOLOGY',
-        //   feature(this.mapData, this.mapData.objects.countries).features,
-        // );
+        // console.log(feature(this.mapData, this.mapData.objects.countries));
+        this.countriesGroup = select(`#map-paths-${this.updatedSensor.id}`);
         this.mapPaths = this.$refs[`mapPaths-${this.updatedSensor.id}`];
         this.map = this.$refs[`map-${this.updatedSensor.id}`];
-        this.elementsMounted = true;
+        this.svg = select(`#map-${this.updatedSensor.id}`);
+        setTimeout(() => {
+          // console.log('MOUNT elements', this.countriesGroup, this.mapPaths);
+          this.svg
+            .call(this.zoomListener())
+            .on('dblclick.zoom', () => this.doubleClicked(event));
+          this.elementsMounted = true;
+        }, 350);
       } catch (error) {
         this.elementsMounted = false;
         throw error;
