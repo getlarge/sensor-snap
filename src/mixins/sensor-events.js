@@ -1,24 +1,21 @@
 /**
- * Mixin used in every component
- *
  * @module mixins/SensorEvents
- * @vue-prop {number} [width] - Component width
- * @vue-prop {number} [height] - Component height
- * @vue-prop {string} sensor - Json stringified sensor instance
- * @vue-data {object} updatedSensor
- * @vue-data {number} updatedHeight
- * @vue-data {number} updatedWidth
- * @vue-data {boolean} aSide - Indicate widget side
- * @vue-data {boolean} elementsMounted - Indicate if DOM elements are mounted
- * @vue-computed {string} viewBox - return SVG viewBox
- * @method {void} updateSensor
- * @vue-event {void} update-sensor
- * @method {void} updateSetting
- * @vue-event {void} update-setting
- * @method {void} deleteSensor
- * @vue-event {void} delete-sensor
- * @method {void} flipSide
- * @vue-event {void} flip-side
+ * @description Mixin used in every component
+ * @params {number} [width] - Component width
+ * @params {number} [height] - Component height
+ * @params {string} sensor - JSON stringified sensor instance
+ * @properties {object} data
+ * @properties {object} data.updatedSensor
+ * @properties {number} data.updatedHeight
+ * @properties {number} data.updatedWidth
+ * @properties {boolean} data.aSide - Indicate widget side
+ * @properties {boolean} data.elementsMounted - Indicate if DOM elements are mounted
+ * @properties {object} computed
+ * @properties {string} computed.viewBox - return SVG viewBox
+ * @fires update-sensor
+ * @fires update-setting
+ * @fires delete-sensor
+ * @fires flip-side
  */
 export default {
   props: {

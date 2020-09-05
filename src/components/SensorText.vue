@@ -65,9 +65,10 @@ import SensorEvents from '@/mixins/sensor-events';
  * @description Child component called when Object Id : 3341
  * @description Resources : text : 5527, X coord : 5528, Y coord : 5529, clear Display : 5530, contrast : 5531
  * @description max X : 5545, max Y: 5546, level control: 5548, switch : 5850, appType 5750
- * @param {number} [width] - Component width
- * @param {number} [height] - Component height
- * @param {string[]} sensor - Json stringified sensor instance
+ * @properties {string} name
+ * @properties {object} data
+ * @properties {object} computed
+ * @properties {object} methods
  */
 export default {
   name: 'SensorText',

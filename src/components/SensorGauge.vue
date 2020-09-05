@@ -133,13 +133,11 @@ import SensorEvents from '@/mixins/sensor-events';
 /**
  * @module components/SensorGauge
  * @description Child component called when catching these IDs : 3300 until 3305 - 3315 - 3316 until 3330 - 3346
- * @vue-data {boolean} isPaused - Indicate if cron is paused
- * @vue-data {boolean} isStarted - Indicate if cron is started
- * @vue-computed {function} colors
- * @vue-computed {number} latitude - OMA resource 5514
- * @vue-computed {number} longitude - OMA resource 5515
- * @vue-computed {number} timestamp - OMA resource 5518
- * @vue-event {void} mountElements - Get/set all DOM references
+ * @properties {string} name
+ * @properties {object} data
+ * @properties {object} computed
+ * @properties {object} computed.colors
+ * @properties {object} methods
  */
 export default {
   name: 'SensorGauge',

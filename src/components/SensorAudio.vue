@@ -55,11 +55,8 @@ import SensorEvents from '@/mixins/sensor-events';
 
 /**
  * @module components/SensorAudio
- * @desc Child component called when Object Id : 3339
- * @desc Resources : Clip : 5522, Trigger : 5523, Duration : 5524, Level : 5548, appType : 5750
- * @param {number} [width] - Component width
- * @param {number} [height] - Component height
- * @param {string[]} sensor - Json stringified sensor instance
+ * @description Child component called when Object Id : 3339
+ * @description Resources : Clip : 5522, Trigger : 5523, Duration : 5524, Level : 5548, appType : 5750
  */
 export default {
   name: 'SensorAudio',

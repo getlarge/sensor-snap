@@ -163,16 +163,19 @@ import SensorEvents from '@/mixins/sensor-events';
 /**
  * @module components/SensorTimer
  * @description Child component called when catching these ID: 3340
- * @vue-data {boolean} isPaused - Indicate if cron is paused
- * @vue-data {boolean} isStarted - Indicate if cron is started
- * @vue-computed {function} colors
- * @vue-computed {number} wholeTime - OMA resource 5521
- * @vue-computed {number} timeLeft - OMA resource 5538
- * @vue-computed {boolean} timerState - OMA resource 5850
- * @vue-computed {boolean} timerOutput - OMA resource 5543
- * @vue-computed {number} timerMode - OMA resource 5526
- * @vue-computed {string} timerEvent - OMA resource 5523
- * @method {void} mountElements - Get/set all DOM references
+ * @properties {string} name
+ * @properties {object} data
+ * @properties {object} data.isStarted - Indicate if cron is started
+ * @properties {object} data.isPaused - Indicate if cron is paused
+ * @properties {object} computed
+ * @properties {object} computed.colors
+ * @properties {number} computed.wholeTime- OMA resource 5521
+ * @properties {number} computed.timeLeft- OMA resource 5538
+ * @properties {boolean} computed.timerState - OMA resource 5850
+ * @properties {boolean} computed.timerOutput - OMA resource 5543
+ * @properties {number} computed.timerMode - OMA resource 5526
+ * @properties {string} computed.timerEvent - OMA resource 5523
+ * @properties {object} methods
  */
 export default {
   name: 'SensorTimer',
@@ -268,11 +271,20 @@ export default {
     timeLeft: {
       handler(value, oldValue) {
         if (this.elementsMounted && value !== oldValue && value !== null) {
-          if (value < 0) value = 0;
+          if (value < 0) {
+            value = 0;
+          }
           if (value > 0) {
-            this.displayTimeLeft(value);
-            if (!this.timerOutput && this.timerState && !this.isStarted) {
+            if (this.isStarted && !this.isPaused && !this.timerOutput) {
+              this.displayTimeLeft(value);
+            } else if (
+              !this.timerOutput &&
+              this.timerState &&
+              !this.isStarted
+            ) {
               this.restartCron();
+            } else if (!this.timerOutput && this.isPaused) {
+              //  this.restartCron();
             }
           } else if (this.isStarted) {
             this.stopCron();
@@ -284,7 +296,9 @@ export default {
     wholeTime: {
       handler(value) {
         if (value !== null) {
-          if (value < 0) value = 0;
+          if (value < 0) {
+            value = 0;
+          }
           if (!this.isStarted) {
             this.displayTimeLeft(value);
           }
@@ -538,7 +552,6 @@ export default {
       if (this.timeLeft <= 0) {
         this.timeLeft = this.wholeTime;
       }
-      // console.log('restartCron', this.timeLeft);
       if (this.elementsMounted) {
         this.intervalTimer.start();
         this.pointer.style.stroke = this.colors.successColor;
@@ -553,7 +566,6 @@ export default {
     pauseCron() {
       this.isStarted = true;
       this.isPaused = true;
-      // console.log('pauseCron', this.timeLeft);
       if (this.elementsMounted) {
         this.intervalTimer.stop();
         this.pointer.style.stroke = this.colors.primaryColor;
@@ -569,7 +581,6 @@ export default {
       this.isStarted = false;
       this.isPaused = true;
       this.timeLeft = 0;
-      // console.log('stopCron', this.timeLeft);
       if (this.elementsMounted) {
         this.intervalTimer.stop();
         this.displayTimeLeft(this.wholeTime);
@@ -583,7 +594,6 @@ export default {
     },
 
     updateCron(data) {
-      // console.log('updateCron :', data);
       if (this.timeLeft > 0) {
         this.timeLeft -= this.clockInterval;
       }
@@ -591,7 +601,6 @@ export default {
     },
 
     setClock(interval) {
-      // console.log('Set clock :', interval);
       if (this.intervalTimer && this.intervalTimer !== null) {
         this.intervalTimer.stop();
       }

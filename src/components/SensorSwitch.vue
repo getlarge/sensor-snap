@@ -99,8 +99,6 @@ import SensorEvents from '@/mixins/sensor-events';
  * @description Child component called when catching these IDs : 3200, 3201, 3342
  * @description Resources : input state : 5500, counter : 5501, onTime: 5852, offtime : 5854
  * @description output state : 5550, output polarity : 5551 appType 5750
-* @vue-computed {function} colors
- * @method {boolean} hasRightType
  */
 export default {
   name: 'SensorSwitch',

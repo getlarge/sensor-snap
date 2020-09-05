@@ -1,14 +1,15 @@
 {
-  "plugins": ["node_modules/jsdoc-vuejs", "plugins/markdown"],
-  "recurseDepth": 10,
+  "plugins": [],
   "source": {
     "includePattern": "\\.(vue|js)$",
     "excludePattern": "(^|\\/|\\\\)_"
   },
-  "sourceType": "module",
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc", "closure"]
+  },
+  "sourceType": "script",
   "opts": {
-    "encoding": "utf8",
-    "recurse": true,
-    "readme": "README.md"
+    "encoding": "utf8"
   }
 }

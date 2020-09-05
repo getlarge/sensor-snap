@@ -11,6 +11,7 @@ module.exports = {
 		sidebar: [
 			['/readme/', 'Readme'],
 			['/components/', 'Components'],
+			['/mixins/', 'Mixins'],
 			['/methods/', 'Methods'],
 			['/resources/', 'Resources'],
 		],

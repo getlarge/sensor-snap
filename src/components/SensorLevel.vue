@@ -124,13 +124,10 @@ import SensorEvents from '@/mixins/sensor-events';
  * @module components/SensorLevel
  * @description Child component called when catching these IDs : 3306, 3311, 3312
  * @description Resources : output state : 5850,  dimmer  : 5851, on time: 5852, UNIT : 5701 appType 5750
- * @vue-data {boolean} isPaused - Indicate if cron is paused
- * @vue-data {boolean} isStarted - Indicate if cron is started
- * @vue-computed {function} colors
- * @vue-computed {number} latitude - OMA resource 5514
- * @vue-computed {number} longitude - OMA resource 5515
- * @vue-computed {number} timestamp - OMA resource 5518
- * @vue-event {void} mountElements - Get/set all DOM references
+ * @properties {string} name
+ * @properties {object} data
+ * @properties {object} computed
+ * @properties {object} methods
  */
 export default {
   name: 'SensorLevel',

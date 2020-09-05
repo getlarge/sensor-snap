@@ -285,13 +285,14 @@ import { getComponentResource } from '@/methods';
 import SensorEvents from '@/mixins/sensor-events';
 
 /**
- * 
+ *
  * @module components/SensorTime
  * @description Child component called when catching these ID :3333
  * @description Resources : 3333 : TIME 5506*, FRACTIONAL TIME 5507, appType 5750
- * @param {number} [width] - Component width
- * @param {number} [height] - Component height
- * @param {string[]} sensor - Json stringified sensor instance
+ * @properties {string} name
+ * @properties {object} data
+ * @properties {object} computed
+ * @properties {object} methods
  */
 export default {
   name: 'SensorTime',

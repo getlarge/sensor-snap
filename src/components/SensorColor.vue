@@ -114,9 +114,10 @@ import SensorEvents from '@/mixins/sensor-events';
  * @module components/SensorSwitch
  * @description Child component called when catching this ID : 3335
  * @description  Resources : color unit : 5701, color : 5706 appType 5750
- * @param {number} [width] - Component width
- * @param {number} [height] - Component height
- * @param {string[]} sensor - Json stringified sensor instance
+ * @properties {string} name
+ * @properties {object} data
+ * @properties {object} computed
+ * @properties {object} methods
  */
 
 const toHex = [

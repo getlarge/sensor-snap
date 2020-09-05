@@ -56,11 +56,8 @@ import SensorEvents from '@/mixins/sensor-events';
 
 /**
  * @module components/SensorCamera
- * @desc Child component called when Object Id : 3349
- * @desc Resources : Bitmap input : 5910, Bitmap input reset : 5911, appType : 5750
- * @param {number} [width] - Component width
- * @param {number} [height] - Component height
- * @param {string[]} sensor - Json stringified sensor instance
+ * @description Child component called when Object Id : 3349
+ * @description Resources : Bitmap input : 5910, Bitmap input reset : 5911, appType : 5750
  */
 export default {
   name: 'SensorCamera',
