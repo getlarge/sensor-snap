@@ -137,59 +137,59 @@
           :stroke-width="updatedWidth / 40"
         />
         <use
-          v-bind="{'xlink:href': `#hourScale-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#hourScale-${updatedSensor.id}` }"
           transform="rotate(30)"
         />
         <use
-          v-bind="{'xlink:href': `#hourScale-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#hourScale-${updatedSensor.id}` }"
           transform="rotate(60)"
         />
         <use
-          v-bind="{'xlink:href': `#hourScale-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#hourScale-${updatedSensor.id}` }"
           transform="rotate(90)"
         />
         <use
-          v-bind="{'xlink:href': `#hourScale-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#hourScale-${updatedSensor.id}` }"
           transform="rotate(120)"
         />
         <use
-          v-bind="{'xlink:href': `#hourScale-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#hourScale-${updatedSensor.id}` }"
           transform="rotate(150)"
         />
         <use
-          v-bind="{'xlink:href': `#hourScale-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#hourScale-${updatedSensor.id}` }"
           transform="rotate(180)"
         />
         <use
-          v-bind="{'xlink:href': `#hourScale-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#hourScale-${updatedSensor.id}` }"
           transform="rotate(210)"
         />
         <use
-          v-bind="{'xlink:href': `#hourScale-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#hourScale-${updatedSensor.id}` }"
           transform="rotate(240)"
         />
         <use
-          v-bind="{'xlink:href': `#hourScale-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#hourScale-${updatedSensor.id}` }"
           transform="rotate(270)"
         />
         <use
-          v-bind="{'xlink:href': `#hourScale-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#hourScale-${updatedSensor.id}` }"
           transform="rotate(300)"
         />
         <use
-          v-bind="{'xlink:href': `#hourScale-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#hourScale-${updatedSensor.id}` }"
           transform="rotate(330)"
         />
         <use
-          v-bind="{'xlink:href': `#secondHand-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#secondHand-${updatedSensor.id}` }"
           transform="translate(0, 0)"
         />
         <use
-          v-bind="{'xlink:href': `#minuteHand-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#minuteHand-${updatedSensor.id}` }"
           transform="translate(0, 0)"
         />
         <use
-          v-bind="{'xlink:href': `#hourHand-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#hourHand-${updatedSensor.id}` }"
           transform="translate(0, 0)"
         />
         <circle
@@ -252,13 +252,13 @@
           :y="calendarHeight / 6.5"
         />
         <use
-          v-bind="{'xlink:href': `#calendarWeek-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#calendarWeek-${updatedSensor.id}` }"
           :transform="
             `translate(${calendarWidth / 28}, ${calendarHeight / 2.6})`
           "
         />
         <use
-          v-bind="{'xlink:href': `#calendarDay-${updatedSensor.id}`}"
+          v-bind="{ 'xlink:href': `#calendarDay-${updatedSensor.id}` }"
           :transform="
             `translate(${calendarWidth / 28}, ${calendarHeight / 2.6})`
           "
@@ -267,13 +267,13 @@
     </defs>
     <use
       v-show="showClock"
-      v-bind="{'xlink:href': `#clock-${updatedSensor.id}`}"
+      v-bind="{ 'xlink:href': `#clock-${updatedSensor.id}` }"
       :transform="`translate(${updatedWidth / 2}, ${updatedHeight / 1.8})`"
       @click.prevent.stop="updateSensor(updatedSensor, 5507, getSeconds)"
     />
     <use
       v-show="!showClock"
-      v-bind="{'xlink:href': `#calendar-${updatedSensor.id}`}"
+      v-bind="{ 'xlink:href': `#calendar-${updatedSensor.id}` }"
       :transform="`translate(0, ${updatedHeight / 5.5})`"
       @click.prevent.stop="updateSensor(updatedSensor, 5506, Date.now())"
     />
@@ -281,15 +281,14 @@
 </template>
 
 <script>
-import {getComponentResource} from '@/methods';
+import { getComponentResource } from '@/methods';
 import SensorEvents from '@/mixins/sensor-events';
 
 /**
- * Child component called when catching these ID :3333
- *
- * Resources : 3333 : TIME 5506*, FRACTIONAL TIME 5507, appType 5750
- *
- * @exports components/SensorTime
+ * 
+ * @module components/SensorTime
+ * @description Child component called when catching these ID :3333
+ * @description Resources : 3333 : TIME 5506*, FRACTIONAL TIME 5507, appType 5750
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance
@@ -319,52 +318,52 @@ export default {
         'Dec',
       ],
       days: [
-        {x: 7, y: 5},
-        {x: 6, y: 5},
-        {x: 5, y: 5},
-        {x: 4, y: 5},
-        {x: 3, y: 5},
-        {x: 2, y: 5},
-        {x: 1, y: 5},
-        {x: 7, y: 4},
-        {x: 6, y: 4},
-        {x: 5, y: 4},
-        {x: 4, y: 4},
-        {x: 3, y: 4},
-        {x: 2, y: 4},
-        {x: 1, y: 4},
-        {x: 7, y: 3},
-        {x: 6, y: 3},
-        {x: 5, y: 3},
-        {x: 4, y: 3},
-        {x: 3, y: 3},
-        {x: 2, y: 3},
-        {x: 1, y: 3},
-        {x: 7, y: 2},
-        {x: 6, y: 2},
-        {x: 5, y: 2},
-        {x: 4, y: 2},
-        {x: 3, y: 2},
-        {x: 2, y: 2},
-        {x: 1, y: 2},
-        {x: 7, y: 1},
-        {x: 6, y: 1},
-        {x: 5, y: 1},
-        {x: 4, y: 1},
-        {x: 3, y: 1},
-        {x: 2, y: 1},
-        {x: 1, y: 1},
-        {x: 7, y: 0},
-        {x: 6, y: 0},
+        { x: 7, y: 5 },
+        { x: 6, y: 5 },
+        { x: 5, y: 5 },
+        { x: 4, y: 5 },
+        { x: 3, y: 5 },
+        { x: 2, y: 5 },
+        { x: 1, y: 5 },
+        { x: 7, y: 4 },
+        { x: 6, y: 4 },
+        { x: 5, y: 4 },
+        { x: 4, y: 4 },
+        { x: 3, y: 4 },
+        { x: 2, y: 4 },
+        { x: 1, y: 4 },
+        { x: 7, y: 3 },
+        { x: 6, y: 3 },
+        { x: 5, y: 3 },
+        { x: 4, y: 3 },
+        { x: 3, y: 3 },
+        { x: 2, y: 3 },
+        { x: 1, y: 3 },
+        { x: 7, y: 2 },
+        { x: 6, y: 2 },
+        { x: 5, y: 2 },
+        { x: 4, y: 2 },
+        { x: 3, y: 2 },
+        { x: 2, y: 2 },
+        { x: 1, y: 2 },
+        { x: 7, y: 1 },
+        { x: 6, y: 1 },
+        { x: 5, y: 1 },
+        { x: 4, y: 1 },
+        { x: 3, y: 1 },
+        { x: 2, y: 1 },
+        { x: 1, y: 1 },
+        { x: 7, y: 0 },
+        { x: 6, y: 0 },
       ],
       weekDays: [
-        {value: 'Su', x: 7, y: 0},
-        {value: 'Mo', x: 6, y: 0},
-        {value: 'Tu', x: 5, y: 0},
-        {value: 'We', x: 4, y: 0},
-        {value: 'Th', x: 3, y: 0},
-        {value: 'Fr', x: 2, y: 0},
-        {value: 'Sa', x: 1, y: 0},
+        { value: 'Su', x: 7, y: 0 },
+        { value: 'Mo', x: 6, y: 0 },
+        { value: 'Tu', x: 5, y: 0 },
+        { value: 'We', x: 4, y: 0 },
+        { value: 'Th', x: 3, y: 0 },
+        { value: 'Fr', x: 2, y: 0 },
+        { value: 'Sa', x: 1, y: 0 },
       ],
     };
   },

@@ -91,20 +91,16 @@
 </template>
 
 <script>
-import {checkComponentType, getComponentResource} from '@/methods';
+import { checkComponentType, getComponentResource } from '@/methods';
 import SensorEvents from '@/mixins/sensor-events';
 
 /**
- * Child component called when catching these IDs : 3200, 3201, 3342
- *
- * Resources : input state : 5500, counter : 5501, onTime: 5852, offtime : 5854
- *
- * output state : 5550, output polarity : 5551 appType 5750
- *
- * @exports components/SensorSwitch
- * @param {number} [width] - Component width
- * @param {number} [height] - Component height
- * @param {string[]} sensor - Json stringified sensor instance
+ * @module components/SensorSwitch
+ * @description Child component called when catching these IDs : 3200, 3201, 3342
+ * @description Resources : input state : 5500, counter : 5501, onTime: 5852, offtime : 5854
+ * @description output state : 5550, output polarity : 5551 appType 5750
+* @vue-computed {function} colors
+ * @method {boolean} hasRightType
  */
 export default {
   name: 'SensorSwitch',

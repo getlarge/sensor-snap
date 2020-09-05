@@ -60,7 +60,7 @@
         :transform="`translate(0, ${updatedHeight / 8})`"
         :height="`${updatedHeight / 5.3}`"
         :width="`${updatedWidth / 5}`"
-        v-bind="{'xlink:href': updatedSensor.icons[0]}"
+        v-bind="{ 'xlink:href': updatedSensor.icons[0] }"
         class="sensor-icon"
       />
       <g
@@ -75,7 +75,7 @@
           :height="`${updatedHeight / 2.28}`"
           :width="`${updatedWidth / 7.5}`"
           class="meter-needle"
-          v-bind="{'xlink:href': gaugeNeedle}"
+          v-bind="{ 'xlink:href': gaugeNeedle }"
         />
       </g>
       <text
@@ -131,19 +131,16 @@ import {
 import SensorEvents from '@/mixins/sensor-events';
 
 /**
- * Child component called when catching these IDs : 3300 until 3305 - 3315 - 3316 until 3330 - 3346
- *
- * Resources : input state : 5600, minMeasuredValue 5601, maxMeasuredValue 5602
- *
- * output state : 5650, maxRange : 5604, minRange : 5603, appType 5750, sensorType 5751
- *
- * @exports components/SensorGauge
- * @param {number} [width] - Component width
- * @param {number} [height] - Component height
- * @param {string[]} sensor - Json stringified sensor instance
- *
+ * @module components/SensorGauge
+ * @description Child component called when catching these IDs : 3300 until 3305 - 3315 - 3316 until 3330 - 3346
+ * @vue-data {boolean} isPaused - Indicate if cron is paused
+ * @vue-data {boolean} isStarted - Indicate if cron is started
+ * @vue-computed {function} colors
+ * @vue-computed {number} latitude - OMA resource 5514
+ * @vue-computed {number} longitude - OMA resource 5515
+ * @vue-computed {number} timestamp - OMA resource 5518
+ * @vue-event {void} mountElements - Get/set all DOM references
  */
-
 export default {
   name: 'SensorGauge',
 
@@ -181,7 +178,9 @@ export default {
     },
     minMeasuredValue: {
       get() {
-        if (!this.updatedSensor.resources['5601']) return null;
+        if (!this.updatedSensor.resources['5601']) {
+          return null;
+        }
         return this.updatedSensor.resources['5601'];
       },
       set(value) {
@@ -190,7 +189,9 @@ export default {
     },
     maxMeasuredValue: {
       get() {
-        if (!this.updatedSensor.resources['5602']) return null;
+        if (!this.updatedSensor.resources['5602']) {
+          return null;
+        }
         return this.updatedSensor.resources['5602'];
       },
       set(value) {
@@ -199,7 +200,9 @@ export default {
     },
     minRangeValue: {
       get() {
-        if (!this.updatedSensor.resources['5603']) return 0;
+        if (!this.updatedSensor.resources['5603']) {
+          return 0;
+        }
         return this.updatedSensor.resources['5603'];
       },
       set(value) {
@@ -208,7 +211,9 @@ export default {
     },
     maxRangeValue: {
       get() {
-        if (!this.updatedSensor.resources['5604']) return 100;
+        if (!this.updatedSensor.resources['5604']) {
+          return 100;
+        }
         return this.updatedSensor.resources['5604'];
       },
       set(value) {
@@ -216,8 +221,12 @@ export default {
       },
     },
     mainResourceId() {
-      if (this.updatedSensor.type === 3202) return '5600';
-      if (this.updatedSensor.type === 3203) return '5650';
+      if (this.updatedSensor.type === 3202) {
+        return '5600';
+      }
+      if (this.updatedSensor.type === 3203) {
+        return '5650';
+      }
       return '5700';
     },
     unitResource: {
@@ -241,7 +250,6 @@ export default {
     },
     sensorValue: {
       get() {
-        //  return this.updatedSensor.resources[this.mainResourceId];
         return normalizeNumber(
           this.updatedSensor.resources[this.mainResourceId],
           this.minRangeValue,
@@ -249,7 +257,6 @@ export default {
         );
       },
       set(value) {
-        //  if (!value || value === null) value = 0;
         this.updateValue(value);
       },
     },
@@ -265,7 +272,9 @@ export default {
   watch: {
     sensorValue: {
       handler(val) {
-        if (!val || val === null) return null;
+        if (!val || val === null) {
+          return null;
+        }
         if (val < this.minMeasuredValue) {
           this.minMeasuredValue = val;
         } else if (val > this.maxMeasuredValue) {
@@ -336,17 +345,23 @@ export default {
     },
 
     label(val) {
-      if (!val || val === null) val = 0;
+      if (!val || val === null) {
+        val = 0;
+      }
       return Math.round(val);
     },
 
     flag(val) {
-      if (!val || val === null) val = 0;
+      if (!val || val === null) {
+        val = 0;
+      }
       return this.angle(val) <= 180 ? 0 : 1;
     },
 
     angle(val) {
-      if (!val || val === null) val = 100;
+      if (!val || val === null) {
+        val = 100;
+      }
       return this.getAngle(
         val,
         360 - Math.abs(this.startAngle - this.endAngle),
@@ -359,12 +374,13 @@ export default {
         this.minRangeValue,
         this.maxRangeValue,
       );
-      //  this.setValueAnimated(value);
     },
 
     easeInOutCubic(pos) {
       // https://github.com/danro/easing-js/blob/master/easing.js
-      if ((pos /= 0.5) < 1) return 0.5 * Math.pow(pos, 3);
+      if ((pos /= 0.5) < 1) {
+        return 0.5 * Math.pow(pos, 3);
+      }
       return 0.5 * (Math.pow(pos - 2, 3) + 2);
     },
 
@@ -380,7 +396,6 @@ export default {
       const animate = () => {
         const progress = currentIteration / iterations;
         const value = change * easing(progress) + start;
-        // console.log(progress + ", " + value);
         step(value, currentIteration);
         currentIteration += 1;
         if (progress < 1) {
@@ -432,7 +447,9 @@ export default {
     },
 
     setGaugeColor(value, duration) {
-      if (!this.elementsMounted) return null;
+      if (!this.elementsMounted) {
+        return;
+      }
       let c = this.gaugeColor;
       c = setRangeColors(value, this.minRangeValue, this.maxRangeValue);
       const dur = duration * 1000;
@@ -470,8 +487,9 @@ export default {
     },
 
     updateGauge(sensorValue) {
-      if (!this.elementsMounted) return null;
-      // this is because we are using arc greater than 180deg
+      if (!this.elementsMounted) {
+        return;
+      }
       const value = getValueInPercentage(
         sensorValue,
         this.minRangeValue,
@@ -480,8 +498,13 @@ export default {
       if (this.displayValue) {
         this.gaugeValueElem.textContent = this.label(sensorValue);
       }
-      if (sensorValue > this.maxRangeValue) return;
-      if (sensorValue < this.minRangeValue) return;
+      if (
+        sensorValue > this.maxRangeValue ||
+        sensorValue < this.minRangeValue
+      ) {
+        return;
+      }
+
       this.gaugeValuePath.setAttribute(
         'd',
         this.pathString(

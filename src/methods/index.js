@@ -14,8 +14,7 @@ export const formatSensor = props => {
       id: props.id,
       deviceId: props.deviceId,
       ownerId: props.ownerId,
-      devEui: props.devEui || null,
-      devAddr: props.devAddr || null,
+      devEui: props.devEui,
       frameCounter: props.frameCounter,
       transportProtocol: props.transportProtocol,
       transportProtocolVersion: props.transportProtocolVersion,
@@ -31,7 +30,7 @@ export const formatSensor = props => {
       type: props.type,
       resources: JSON.parse(props.resources),
       resource: props.resource,
-      icons: props.icons.split(','),
+      icons: props.icons ? props.icons.split(',') : [],
       colors: JSON.parse(props.colors),
       value: JSON.parse(props.value),
     };
@@ -51,8 +50,12 @@ export const formatSensor = props => {
  */
 export const normalizeNumber = (value, min, limit) => {
   const val = Number(value);
-  if (val > limit) return limit;
-  if (val < min) return min;
+  if (val > limit) {
+    return limit;
+  }
+  if (val < min) {
+    return min;
+  }
   return val;
 };
 
@@ -100,7 +103,7 @@ const yToLatitude = (y, width) => {
  * @return {object}
  */
 export const svgToGeoPoint = (x, y, width) => {
-  return {latitude: yToLatitude(y, width), longitude: xToLongitude(x, width)};
+  return { latitude: yToLatitude(y, width), longitude: xToLongitude(x, width) };
 };
 
 /**
@@ -134,7 +137,7 @@ const latitudeToY = (latitude, width) => {
  * @return {object}
  */
 export const geoPointToSvg = (latitude, longitude, width) => {
-  return {x: longitudeToX(longitude, width), y: latitudeToY(latitude, width)};
+  return { x: longitudeToX(longitude, width), y: latitudeToY(latitude, width) };
 };
 
 /**
@@ -167,8 +170,7 @@ export const getDistanceFromCoordinates = (lat1, lon1, lat2, lon2) => {
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const distance = earthRadius * c; // Distance in km
-  return distance;
+  return earthRadius * c;
 };
 
 export const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -297,44 +299,35 @@ export const setRangeColors = (value, minRangeValue, maxRangeValue) => {
  * @param {number} interval - Timeout interval
  */
 export function DeltaTimer(cb, data, interval) {
-  try {
-    let timeout, lastTime;
-    let count = 0;
+  let timeout, lastTime;
+  let count = 0;
 
-    const loop = () => {
-      try {
-        count += 1;
-        const thisTime = +new Date();
-        const deltaTime = thisTime - lastTime;
-        const delay = Math.max(interval - deltaTime, 0);
-        timeout = setTimeout(loop, delay);
-        lastTime = thisTime + delay;
-        data.delay = delay;
-        data.count = count;
-        data.time = thisTime;
-        data.lastTime = lastTime;
-        if (count > 1) cb(data);
-        return null;
-      } catch (error) {
-        return null;
-      }
-    };
+  const loop = () => {
+    count += 1;
+    const thisTime = +new Date();
+    const deltaTime = thisTime - lastTime;
+    const delay = Math.max(interval - deltaTime, 0);
+    timeout = setTimeout(loop, delay);
+    lastTime = thisTime + delay;
+    data.delay = delay;
+    data.count = count;
+    data.time = thisTime;
+    data.lastTime = lastTime;
+    if (count > 1) cb(data);
+  };
 
-    const start = () => {
-      timeout = setTimeout(loop, 0);
-      lastTime = +new Date();
-      return lastTime;
-    };
+  const start = () => {
+    timeout = setTimeout(loop, 0);
+    lastTime = +new Date();
+    return lastTime;
+  };
 
-    const stop = () => {
-      clearTimeout(timeout);
-      return lastTime;
-    };
+  const stop = () => {
+    clearTimeout(timeout);
+    return lastTime;
+  };
 
-    this.start = start;
-    this.stop = stop;
-    return timeout;
-  } catch (error) {
-    throw error;
-  }
+  this.start = start;
+  this.stop = stop;
+  return timeout;
 }

@@ -13,7 +13,7 @@
       :frame-counter="updatedSensor.frameCounter"
       :resources="JSON.stringify(updatedSensor.resources)"
       :resource="updatedSensor.resource"
-      :icons="updatedSensor.icons.toString()"
+      :icons="updatedSensor.icons ? updatedSensor.icons.toString() : []"
       :colors="JSON.stringify(sensor.colors)"
       :transport-protocol="sensor.transportProtocol"
       :transport-protocol-version="sensor.transportProtocolVersion"
@@ -38,7 +38,7 @@
 
 <script>
 /* eslint-disable no-console */
-import {updateAloesSensors} from 'aloes-handlers';
+import { updateAloesSensors } from 'aloes-handlers';
 import deviceTree from '@/assets/device-tree.json';
 import componentsList from '@/assets/components-list';
 import SensorSnap from './components/SensorSnap.vue';
@@ -52,7 +52,7 @@ export default {
 
   data() {
     return {
-      sensor: deviceTree.children[11],
+      sensor: deviceTree.children[10],
       width: 450,
       height: 480,
       randomPics: [
@@ -65,10 +65,10 @@ export default {
       ],
       randomSounds: ['/sounds/fire.mp3', '/sounds/wind.mp3'],
       randomColors: [
-        {unit: 'hex', value: '#4C659E'},
-        {unit: 'hex', value: '#F32D2B'},
-        {unit: 'rgb', value: '40,200,100'},
-        {unit: 'rgb', value: '200,120,40'},
+        { unit: 'hex', value: '#4C659E' },
+        { unit: 'hex', value: '#F32D2B' },
+        { unit: 'rgb', value: '40,200,100' },
+        { unit: 'rgb', value: '200,120,40' },
         // {unit: 'hsl', value: '10,35%,40%'},
         // {unit: 'hsl', value: '36,50%,76%'},
       ],

@@ -61,13 +61,10 @@
 import SensorEvents from '@/mixins/sensor-events';
 
 /**
- * Child component called when Object Id : 3341
- *
- * Resources : text : 5527, X coord : 5528, Y coord : 5529, clear Display : 5530, contrast : 5531
- *
- * max X : 5545, max Y: 5546, level control: 5548, switch : 5850, appType 5750
- *
- * @exports components/SensorText
+ * @module components/SensorText
+ * @description Child component called when Object Id : 3341
+ * @description Resources : text : 5527, X coord : 5528, Y coord : 5529, clear Display : 5530, contrast : 5531
+ * @description max X : 5545, max Y: 5546, level control: 5548, switch : 5850, appType 5750
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance
@@ -106,7 +103,6 @@ export default {
             const start = newValue.slice(i, i + this.charNumber);
             //  const index = newValue.indexOf(' ', i + this.charNumber - 8);
             //  const afterSpace = newValue.slice(i, index);
-            //  console.log('for index', i, index, start);
             this.textContent.push(start);
           }
         } else {
@@ -138,27 +134,25 @@ export default {
     },
 
     editTextInput() {
-      try {
-        if (!this.elementsMounted) return null;
-        const fieldName = this.textInput.id.split('-')[0];
-        let newValue;
-        if (this.textResource) {
-          newValue = prompt(
-            `Please enter ${fieldName.trim()}`,
-            this.textResource.trim(),
-          );
-        } else {
-          newValue = prompt(`Please enter ${fieldName.trim()}`);
-        }
-        if (newValue && newValue !== null) {
-          newValue = newValue.trim();
-          this.textInput.style.fill = 'transparent';
-          return this.updateSensor(this.updatedSensor, 5527, newValue);
-        }
+      if (!this.elementsMounted) {
         return null;
-      } catch (error) {
-        return error;
       }
+      const fieldName = this.textInput.id.split('-')[0];
+      let newValue;
+      if (this.textResource) {
+        newValue = prompt(
+          `Please enter ${fieldName.trim()}`,
+          this.textResource.trim(),
+        );
+      } else {
+        newValue = prompt(`Please enter ${fieldName.trim()}`);
+      }
+      if (newValue && newValue !== null) {
+        newValue = newValue.trim();
+        this.textInput.style.fill = 'transparent';
+        return this.updateSensor(this.updatedSensor, 5527, newValue);
+      }
+      return null;
     },
 
     spanHeight(index) {

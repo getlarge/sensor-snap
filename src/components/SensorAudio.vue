@@ -34,7 +34,7 @@
       :transform="`translate(${updatedWidth / 4}, ${updatedHeight / 4})`"
       :height="updatedHeight / 2"
       :width="updatedWidth / 2"
-      v-bind="{'xlink:href': updatedSensor.icons[1]}"
+      v-bind="{ 'xlink:href': updatedSensor.icons[1] }"
       class="sensor-icon"
       @click.prevent.stop="playSound(audioClipBuffer)"
     />
@@ -43,7 +43,7 @@
       :transform="`translate(${updatedWidth / 4}, ${updatedHeight / 4})`"
       :height="updatedHeight / 2"
       :width="updatedWidth / 2"
-      v-bind="{'xlink:href': updatedSensor.icons[2]}"
+      v-bind="{ 'xlink:href': updatedSensor.icons[2] }"
       class="sensor-icon"
       @click.prevent.stop="stopSound()"
     />
@@ -54,12 +54,9 @@
 import SensorEvents from '@/mixins/sensor-events';
 
 /**
- * Child component called when Object Id : 3339
- *
- * Resources : Clip : 5522, Trigger : 5523, Duration : 5524
- * Level : 5548, appType : 5750
- *
- * @exports components/SensorAudio
+ * @module components/SensorAudio
+ * @desc Child component called when Object Id : 3339
+ * @desc Resources : Clip : 5522, Trigger : 5523, Duration : 5524, Level : 5548, appType : 5750
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance
@@ -69,28 +66,8 @@ export default {
 
   mixins: [SensorEvents],
 
-  props: {
-    sensor: {
-      type: String,
-      required: true,
-    },
-    width: {
-      type: Number,
-      default: 150,
-    },
-    height: {
-      type: Number,
-      default: 140,
-    },
-  },
-
   data() {
     return {
-      updatedSensor: null,
-      updatedHeight: null,
-      updatedWidth: null,
-      aSide: true,
-      elementsMounted: false,
       audioContext: null,
       audioSource: null,
       audioClipBuffer: null,

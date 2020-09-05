@@ -36,14 +36,14 @@
 </template>
 
 <script>
-import {geoMercator, geoPath} from 'd3-geo';
-import {interpolate} from 'd3-interpolate';
-import {event, select} from 'd3-selection';
-import {scaleQuantize} from 'd3-scale';
-import {active} from 'd3-transition';
-import {schemeBlues} from 'd3-scale-chromatic';
-import {zoom} from 'd3-zoom';
-import {feature} from 'topojson-client';
+import { geoMercator, geoPath } from 'd3-geo';
+import { interpolate } from 'd3-interpolate';
+import { select } from 'd3-selection';
+import { scaleQuantize } from 'd3-scale';
+import { active } from 'd3-transition';
+import { schemeBlues } from 'd3-scale-chromatic';
+import { zoom } from 'd3-zoom';
+import { feature } from 'topojson-client';
 import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
 import {
@@ -51,21 +51,19 @@ import {
   getComponentResource,
   getDistanceFromCoordinates,
   mapValuetoRange,
-  // svgToGeoPoint,
 } from '@/methods';
 import SensorEvents from '@/mixins/sensor-events';
 
 /**
- * Child component called when Object Id : 3336
- *
- * Resources : Latitude : 5514, Longitude : 5515, Uncertainity : 5516
- *
- * Velocity 5517, Timestamp : 5518, Compass direction : 5705, appType : 5750
- *
- * @exports components/SensorMap
- * @param {number} [width] - Component width
- * @param {number} [height] - Component height
- * @param {string[]} sensor - Json stringified sensor instance
+ * @module components/SensorMap
+ * @description  Child component called when Object Id : 3336
+ * @vue-data {boolean} isPaused - Indicate if cron is paused
+ * @vue-data {boolean} isStarted - Indicate if cron is started
+ * @vue-computed {function} colors
+ * @vue-computed {number} latitude - OMA resource 5514
+ * @vue-computed {number} longitude - OMA resource 5515
+ * @vue-computed {number} timestamp - OMA resource 5518
+ * @vue-event {void} mountElements - Get/set all DOM references
  */
 export default {
   name: 'SensorMap',
@@ -155,15 +153,7 @@ export default {
         .style('fill', d => this.getColor(d.id));
     },
     markerSize() {
-      const rate = mapValuetoRange(
-        this.mapScale,
-        this.minZoom,
-        this.maxZoom,
-        10,
-        2,
-      );
-      // console.log('MARKER SIZE ', rate);
-      return rate;
+      return mapValuetoRange(this.mapScale, this.minZoom, this.maxZoom, 10, 2);
     },
     latitude: {
       get() {
@@ -202,13 +192,17 @@ export default {
   watch: {
     timestamp: {
       handler(newValue, oldValue) {
-        if (!newValue || oldValue === newValue) return;
+        if (!newValue || oldValue === newValue) {
+          return;
+        }
         if (oldValue !== null && typeof oldValue !== 'number') {
           oldValue = Number(oldValue);
         }
         if (typeof newValue !== 'number') {
           newValue = Number(newValue);
-          if (isNaN(newValue)) return;
+          if (isNaN(newValue)) {
+            return;
+          }
         }
         this.location = this.buildLocation();
       },
@@ -277,10 +271,11 @@ export default {
     },
 
     createConnection(point, index) {
-      if (!point) return null;
+      if (!point) {
+        return null;
+      }
       const destinationGeo = point.coord;
       const connection = [this.originPos, this.projection(destinationGeo)];
-      // console.log('DRAW CONNECTION', connection);
       const distance = calculateDistance(
         this.originGeo[1],
         this.originGeo[0],
@@ -288,7 +283,6 @@ export default {
         destinationGeo[0],
       );
       const duration = this.calculateDuration(distance);
-      // console.log('CALC DISTANCE DURATION', distance, duration);
 
       this.svg
         .append('path')
@@ -297,8 +291,8 @@ export default {
         .attr('id', `link-${this.updatedSensor.id}-${index}`)
         .attr('d', coordinates => {
           const d = {
-            origin: {x: coordinates[0][0], y: coordinates[0][1]},
-            destination: {x: coordinates[1][0], y: coordinates[1][1]},
+            origin: { x: coordinates[0][0], y: coordinates[0][1] },
+            destination: { x: coordinates[1][0], y: coordinates[1][1] },
           };
           const s = d.destination.x > d.origin.x ? true : false;
           return this.getArc(d, s);
@@ -379,7 +373,7 @@ export default {
         .style('class', 'destCircleMouse')
         .style('fill', this.colors.primaryColor)
         .style('fill-opacity', '1')
-        .on('mouseover', d => {
+        .on('mouseover', (event, d) => {
           this.tooltip
             .html(`<span style="color:white">${this.updatedSensor.name}</span>`)
             .attr('class', 'tooltipDestination')
@@ -441,9 +435,10 @@ export default {
     },
 
     updateMarker(point, index) {
-      if (!point || !point.timestamp || !point.latitude) return null;
+      if (!point || !point.timestamp || !point.latitude) {
+        return;
+      }
       const diff = new Date().getTime() - point.timestamp;
-      // console.log('DIFF UPDATE', diff);
       let updateMarker = false;
       if (point.isNew) {
         point.isNew = false;
@@ -481,7 +476,6 @@ export default {
       const newX = this.xMove;
       const newY = this.yMove;
       const scale = this.mapScale;
-      // console.log('GEOPOINT TO SVG', x, newX, y, newY);
 
       if (pointElements.length > 0) {
         pointElements.forEach(key => {
@@ -546,7 +540,7 @@ export default {
       return 0.1;
     },
 
-    zoomed() {
+    zoomed(event) {
       // console.log('ZOOMED', event.transform, this.mapPaths.attributes);
       this.mapScale = event.transform.k;
       this.xMove = event.transform.x;
@@ -563,9 +557,12 @@ export default {
       return (
         zoom()
           .scaleExtent([this.minZoom, this.maxZoom])
-          .translateExtent([[minX, minY], [maxX, maxY]])
+          .translateExtent([
+            [minX, minY],
+            [maxX, maxY],
+          ])
           // .extent([[0, 0], [width, height]])
-          .on('zoom', this.zoomed)
+          .on('zoom', event => this.zoomed(event))
       );
     },
 
@@ -610,16 +607,14 @@ export default {
           return;
         }
         this.mapData = await fetch(this.mapUrl).then(body => body.json());
-        // console.log(feature(this.mapData, this.mapData.objects.countries));
         this.countriesGroup = select(`#map-paths-${this.updatedSensor.id}`);
         this.mapPaths = this.$refs[`mapPaths-${this.updatedSensor.id}`];
         this.map = this.$refs[`map-${this.updatedSensor.id}`];
         this.svg = select(`#map-${this.updatedSensor.id}`);
         setTimeout(() => {
-          // console.log('MOUNT elements', this.countriesGroup, this.mapPaths);
           this.svg
             .call(this.zoomListener())
-            .on('dblclick.zoom', () => this.doubleClicked(event));
+            .on('dblclick.zoom', event => this.doubleClicked(event));
           this.elementsMounted = true;
         }, 350);
       } catch (error) {

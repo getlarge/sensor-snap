@@ -81,7 +81,7 @@
 <script>
 import componentsList from '../assets/components-list';
 import deviceTree from '../assets/device-tree.json';
-import {formatSensor, updateStyles} from '../methods';
+import { formatSensor, updateStyles } from '../methods';
 import SensorAudio from './SensorAudio.vue';
 import SensorCamera from './SensorCamera.vue';
 import SensorColor from './SensorColor.vue';
@@ -96,8 +96,8 @@ import SensorTimer from './SensorTimer.vue';
 const defaultSensor = deviceTree.children[11];
 
 /**
- * Parent component handling data flow and sub components selection
- * @exports components/SensorSnap
+ * @module components/SensorSnap
+ * @description Parent component handling data flow and sub components selection
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string} id - Required, sensorId
@@ -137,7 +137,6 @@ export default {
     'sensor-text': SensorText,
     'sensor-time': SensorTime,
     'sensor-timer': SensorTimer,
-    // 'sensor-camera': () => import('./SensorCamera.vue'),
     // 'sensor-map': () => import('./SensorMap.vue'),
   },
 
@@ -330,11 +329,15 @@ export default {
       return null;
     },
     refName() {
-      if (!this.componentType && this.componentType === null) return null;
+      if (!this.componentType && this.componentType === null) {
+        return null;
+      }
       return componentsList[this.componentType].name;
     },
     componentName() {
-      if (!this.refName || this.refName === null) return null;
+      if (!this.refName || this.refName === null) {
+        return null;
+      }
       return this.refName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
     },
     sensor: {
@@ -410,8 +413,6 @@ export default {
           this.stylesConf,
           this.componentName,
         );
-        //  console.log('update styles', styles);
-        //  const styles = this.updateStyles(this.componentName);
         this.style.innerHTML = styles;
         this.$el.prepend(this.style);
         this.sensorDescription = this.$refs[

@@ -35,7 +35,7 @@
       :transform="`translate(${updatedWidth / 4}, ${updatedHeight / 4})`"
       :height="updatedHeight / 2"
       :width="updatedWidth / 2"
-      v-bind="{'xlink:href': updatedSensor.icons[0]}"
+      v-bind="{ 'xlink:href': updatedSensor.icons[0] }"
       class="sensor-icon"
     />
     <image
@@ -44,7 +44,7 @@
       :transform="`translate(${updatedWidth / 8}, ${updatedHeight / 4})`"
       :height="updatedHeight / 1.6"
       :width="updatedWidth / 1.4"
-      v-bind="{'xlink:href': imageUrl}"
+      v-bind="{ 'xlink:href': imageUrl }"
       class="stream-viewer"
     />
   </svg>
@@ -55,11 +55,9 @@ import debounce from 'lodash.debounce';
 import SensorEvents from '@/mixins/sensor-events';
 
 /**
- * Child component called when Object Id : 3349
- *
- * Resources : Bitmap input : 5910, Bitmap input reset : 5911, appType : 5750
- *
- * @exports components/SensorCamera
+ * @module components/SensorCamera
+ * @desc Child component called when Object Id : 3349
+ * @desc Resources : Bitmap input : 5910, Bitmap input reset : 5911, appType : 5750
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance
@@ -70,18 +68,6 @@ export default {
   mixins: [SensorEvents],
 
   props: {
-    sensor: {
-      type: String,
-      required: true,
-    },
-    width: {
-      type: Number,
-      default: 150,
-    },
-    height: {
-      type: Number,
-      default: 140,
-    },
     imgType: {
       type: String,
       required: false,
@@ -91,11 +77,7 @@ export default {
 
   data() {
     return {
-      updatedSensor: null,
-      updatedHeight: null,
-      updatedWidth: null,
       updatedImgType: null,
-      aSide: true,
       imageUrl: null,
       fpm: [1, 2, 4, 6],
     };

@@ -66,7 +66,7 @@
         </clipPath>
       </defs>
       <use
-        v-bind="{'xlink:href': `#rangeMarks-${updatedSensor.id}`}"
+        v-bind="{ 'xlink:href': `#rangeMarks-${updatedSensor.id}` }"
         class="range-marks-colored"
       />
       <!-- Slider `path`, that will be morphed properly on user interaction -->
@@ -76,7 +76,7 @@
       />
       <!--  :d="`M 0 ${updatedHeight} l ${updatedWidth} 0 l 0 ${updatedHeight} l -${updatedWidth} 0 Z`" -->
       <use
-        v-bind="{'xlink:href': `#rangeMarks-${updatedSensor.id}`}"
+        v-bind="{ 'xlink:href': `#rangeMarks-${updatedSensor.id}` }"
         class="range-marks-white"
         :clip-path="`url(#rangeSliderClipPath-${updatedSensor.id})`"
       />
@@ -114,21 +114,23 @@
 </template>
 
 <script>
-import {easeElastic, easeLinear} from 'd3-ease';
-import {select} from 'd3-selection';
-import {active} from 'd3-transition';
-import {checkComponentType} from '@/methods';
+import { easeElastic, easeLinear } from 'd3-ease';
+import { select } from 'd3-selection';
+import { active } from 'd3-transition';
+import { checkComponentType } from '@/methods';
 import SensorEvents from '@/mixins/sensor-events';
 
 /**
- * Child component called when catching these IDs : 3306, 3311, 3312
- *
- * Resources : output state : 5850,  dimmer  : 5851, on time: 5852, UNIT : 5701 appType 5750
- *
- * @exports components/SensorLevel
- * @param {number} [width] - Component width
- * @param {number} [height] - Component height
- * @param {string[]} sensor - Json stringified sensor instance
+ * @module components/SensorLevel
+ * @description Child component called when catching these IDs : 3306, 3311, 3312
+ * @description Resources : output state : 5850,  dimmer  : 5851, on time: 5852, UNIT : 5701 appType 5750
+ * @vue-data {boolean} isPaused - Indicate if cron is paused
+ * @vue-data {boolean} isStarted - Indicate if cron is started
+ * @vue-computed {function} colors
+ * @vue-computed {number} latitude - OMA resource 5514
+ * @vue-computed {number} longitude - OMA resource 5515
+ * @vue-computed {number} timestamp - OMA resource 5518
+ * @vue-event {void} mountElements - Get/set all DOM references
  */
 export default {
   name: 'SensorLevel',
@@ -155,21 +157,21 @@ export default {
       layerY: 0,
       loading: false,
       gradients: [
-        {margin: 1.19, width: 14, pos: 15},
-        {margin: 1.17, width: 18, pos: 14},
-        {margin: 1.16, width: 21, pos: 13},
-        {margin: 1.15, width: 25, pos: 12},
-        {margin: 1.15, width: 25, pos: 11},
-        {margin: 1.15, width: 25, pos: 10},
-        {margin: 1.15, width: 25, pos: 9},
-        {margin: 1.15, width: 25, pos: 8},
-        {margin: 1.15, width: 25, pos: 7},
-        {margin: 1.15, width: 25, pos: 6},
-        {margin: 1.15, width: 25, pos: 5},
-        {margin: 1.15, width: 25, pos: 4},
-        {margin: 1.16, width: 21, pos: 3},
-        {margin: 1.17, width: 18, pos: 2},
-        {margin: 1.19, width: 14, pos: 1},
+        { margin: 1.19, width: 14, pos: 15 },
+        { margin: 1.17, width: 18, pos: 14 },
+        { margin: 1.16, width: 21, pos: 13 },
+        { margin: 1.15, width: 25, pos: 12 },
+        { margin: 1.15, width: 25, pos: 11 },
+        { margin: 1.15, width: 25, pos: 10 },
+        { margin: 1.15, width: 25, pos: 9 },
+        { margin: 1.15, width: 25, pos: 8 },
+        { margin: 1.15, width: 25, pos: 7 },
+        { margin: 1.15, width: 25, pos: 6 },
+        { margin: 1.15, width: 25, pos: 5 },
+        { margin: 1.15, width: 25, pos: 4 },
+        { margin: 1.16, width: 21, pos: 3 },
+        { margin: 1.17, width: 18, pos: 2 },
+        { margin: 1.19, width: 14, pos: 1 },
       ],
     };
   },
@@ -202,19 +204,27 @@ export default {
       },
     },
     switchButtonClass() {
-      if (this.switchValue) {
-        return `switch-button switched-on`;
-      }
-      return `switch-button switched-off`;
+      return this.switchValue
+        ? `switch-button switched-on`
+        : `switch-button switched-off`;
     },
     rangeMin() {
-      if (!this.updatedSensor || !this.updatedSensor.resources) return 0;
-      if (this.updatedSensor.resources['5701'] === '%') return 0;
+      if (
+        !this.updatedSensor ||
+        !this.updatedSensor.resources ||
+        this.updatedSensor.resources['5701'] === '%'
+      ) {
+        return 0;
+      }
       return 0;
     },
     rangeMax() {
-      if (!this.updatedSensor || !this.updatedSensor.resources) return 100;
-      if (this.updatedSensor.resources['5701'] === '%') return 100;
+      if (!this.updatedSensor || !this.updatedSensor.resources) {
+        return 100;
+      }
+      if (this.updatedSensor.resources['5701'] === '%') {
+        return 100;
+      }
       return 100;
     },
     rangeMinY() {
@@ -224,10 +234,10 @@ export default {
       return (this.rangeHeight * this.rangeMax) / this.rangeMax;
     },
     scale() {
-      const scale =
+      return (
         ((this.sliderValue - this.rangeMin) / (this.rangeMax - this.rangeMin)) *
-        this.scaleMax;
-      return scale;
+        this.scaleMax
+      );
     },
     newSliderY() {
       return this.currentY + this.lastMouseDy / this.mouseDyFactor;
@@ -374,15 +384,19 @@ export default {
     buildPath(dy, ty) {
       if (!dy || dy === null) dy = 0;
       if (!ty || ty === null) ty = 0;
-      return `M 0 ${ty} q ${this.mouseX} ${dy} ${this.updatedWidth} 0 l 0 ${
-        this.updatedHeight
-      } l -${this.updatedWidth} 0 Z`;
+      return `M 0 ${ty} q ${this.mouseX} ${dy} ${this.updatedWidth} 0 l 0 ${this.updatedHeight} l -${this.updatedWidth} 0 Z`;
     },
 
     afterUpdate() {
-      if (!this.elementsMounted) return;
-      if (this.sliderValue > this.rangeMax) return;
-      if (this.sliderValue < this.rangeMin) return;
+      if (!this.elementsMounted) {
+        return;
+      }
+      if (
+        this.sliderValue > this.rangeMax ||
+        this.sliderValue < this.rangeMin
+      ) {
+        return;
+      }
       this.rangeValues.interrupt();
       this.rangeSliderPaths.interrupt();
       if (Math.abs(this.mouseDy) < this.mouseDyLimit) {
@@ -397,7 +411,9 @@ export default {
     },
 
     elasticRelease() {
-      if (!this.elementsMounted) return;
+      if (!this.elementsMounted) {
+        return;
+      }
       const self = this;
       const customElastic = easeElastic.period(0.4);
 

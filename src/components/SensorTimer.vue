@@ -157,18 +157,22 @@
 
 <script>
 import debounce from 'lodash.debounce';
-import {getComponentResource, DeltaTimer} from '@/methods';
+import { getComponentResource, DeltaTimer } from '@/methods';
 import SensorEvents from '@/mixins/sensor-events';
 
 /**
- * Child component called when catching these ID: 3340
- *
- * Resources : whole_time : 5521, remain_time: 5538, appType: 5750
- *
- * @exports components/SensorTimer
- * @param {number} [width] - Component width
- * @param {number} [height] - Component height
- * @param {string[]} sensor - Json stringified sensor instance
+ * @module components/SensorTimer
+ * @description Child component called when catching these ID: 3340
+ * @vue-data {boolean} isPaused - Indicate if cron is paused
+ * @vue-data {boolean} isStarted - Indicate if cron is started
+ * @vue-computed {function} colors
+ * @vue-computed {number} wholeTime - OMA resource 5521
+ * @vue-computed {number} timeLeft - OMA resource 5538
+ * @vue-computed {boolean} timerState - OMA resource 5850
+ * @vue-computed {boolean} timerOutput - OMA resource 5543
+ * @vue-computed {number} timerMode - OMA resource 5526
+ * @vue-computed {string} timerEvent - OMA resource 5523
+ * @method {void} mountElements - Get/set all DOM references
  */
 export default {
   name: 'SensorTimer',

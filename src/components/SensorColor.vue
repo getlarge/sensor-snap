@@ -107,15 +107,13 @@
 </template>
 
 <script>
-import {checkComponentType, getComponentResource} from '@/methods';
+import { checkComponentType, getComponentResource } from '@/methods';
 import SensorEvents from '@/mixins/sensor-events';
 
 /**
- * Child component called when catching this ID : 3335
- *
- * Resources : color unit : 5701, color : 5706 appType 5750
- *
- * @exports components/SensorSwitch
+ * @module components/SensorSwitch
+ * @description Child component called when catching this ID : 3335
+ * @description  Resources : color unit : 5701, color : 5706 appType 5750
  * @param {number} [width] - Component width
  * @param {number} [height] - Component height
  * @param {string[]} sensor - Json stringified sensor instance
@@ -154,13 +152,13 @@ export default {
       displayColor: null,
       sliders: [],
       hueGradientStops: [
-        {offset: '0', 'stop-color': '#ffef15', 'stop-opacity': '1'},
-        {offset: '0.16105497', 'stop-color': '#60ff18', 'stop-opacity': '1'},
-        {offset: '0.35173747', 'stop-color': '#02fff9', 'stop-opacity': '1'},
-        {offset: '0.48789391', 'stop-color': '#0202ff', 'stop-opacity': '1'},
-        {offset: '0.70091939', 'stop-color': '#fd00ca', 'stop-opacity': '1'},
-        {offset: '0.83720928', 'stop-color': '#ff1c1c', 'stop-opacity': '1'},
-        {offset: '1', 'stop-color': '#ff0000', 'stop-opacity': '1'},
+        { offset: '0', 'stop-color': '#ffef15', 'stop-opacity': '1' },
+        { offset: '0.16105497', 'stop-color': '#60ff18', 'stop-opacity': '1' },
+        { offset: '0.35173747', 'stop-color': '#02fff9', 'stop-opacity': '1' },
+        { offset: '0.48789391', 'stop-color': '#0202ff', 'stop-opacity': '1' },
+        { offset: '0.70091939', 'stop-color': '#fd00ca', 'stop-opacity': '1' },
+        { offset: '0.83720928', 'stop-color': '#ff1c1c', 'stop-opacity': '1' },
+        { offset: '1', 'stop-color': '#ff0000', 'stop-opacity': '1' },
       ],
       lightGradientsStops: [
         {
@@ -281,14 +279,18 @@ export default {
   watch: {
     newHue: {
       handler() {
-        if (!this.elementsMounted) return;
+        if (!this.elementsMounted) {
+          return;
+        }
         this.updateGradients();
       },
       immediate: true,
     },
     color: {
       handler(color) {
-        if (!color) return;
+        if (!color) {
+          return;
+        }
         this.parseColor(color);
         if (this.elementsMounted) {
           this.setHSL(this.newHue, this.newSaturation, this.newLightness);
@@ -311,9 +313,7 @@ export default {
     this.mountElements();
     this.$nextTick(() => {
       // this.parseColor();
-      this.currentColor.style.fill = `hsl(${this.newHue}, ${
-        this.newSaturation
-      }%, ${this.newLightness}%)`;
+      this.currentColor.style.fill = `hsl(${this.newHue}, ${this.newSaturation}%, ${this.newLightness}%)`;
       this.setHSL(this.newHue, this.newSaturation, this.newLightness);
       this.displayColor = this.getColorHex();
     });
@@ -348,9 +348,7 @@ export default {
           handleY: this.colorPickerY - 1,
           handleWidth: this.handleWidth,
           handleHeight: this.colorPickerHeight,
-          handleStyle: `stroke: ${this.stroke}; stroke-width: ${
-            this.strokeWidth
-          }; cursor: pointer;`,
+          handleStyle: `stroke: ${this.stroke}; stroke-width: ${this.strokeWidth}; cursor: pointer;`,
           handleListener: this.onHandleMouseDown,
         },
         {
@@ -368,9 +366,7 @@ export default {
           handleY: this.colorPickerY + this.colorPickerHeight * 2 - 1,
           handleWidth: this.handleWidth,
           handleHeight: this.colorPickerHeight,
-          handleStyle: `stroke: ${this.stroke}; stroke-width: ${
-            this.strokeWidth
-          }; cursor: pointer;`,
+          handleStyle: `stroke: ${this.stroke}; stroke-width: ${this.strokeWidth}; cursor: pointer;`,
           handleListener: this.onHandleMouseDown,
         },
         {
@@ -388,9 +384,7 @@ export default {
           handleY: this.colorPickerY + this.colorPickerHeight * 4 - 1,
           handleWidth: this.handleWidth,
           handleHeight: this.colorPickerHeight,
-          handleStyle: `stroke: ${this.stroke}; stroke-width: ${
-            this.strokeWidth
-          }; cursor: pointer;`,
+          handleStyle: `stroke: ${this.stroke}; stroke-width: ${this.strokeWidth}; cursor: pointer;`,
           handleListener: this.onHandleMouseDown,
         },
       ];
@@ -487,7 +481,7 @@ export default {
       let green = parseInt(result[2], 16);
       let blue = parseInt(result[3], 16);
       // console.log('hexToRgb:res', red, green, blue);
-      return {red, green, blue};
+      return { red, green, blue };
     },
 
     rgbToHsl(color) {
@@ -527,7 +521,7 @@ export default {
       saturation = Math.round(saturation);
       lightness = lightness * 100;
       lightness = Math.round(lightness);
-      return {hue, saturation, lightness};
+      return { hue, saturation, lightness };
     },
 
     parseColor() {
@@ -607,9 +601,7 @@ export default {
     },
 
     hslColor() {
-      return `hsl(${this.newHue}, ${this.newSaturation}%, ${
-        this.newLightness
-      }%)`;
+      return `hsl(${this.newHue}, ${this.newSaturation}%, ${this.newLightness}%)`;
     },
 
     getColorHSL() {
@@ -650,30 +642,17 @@ export default {
     },
 
     mousemoveListener(evt) {
-      // console.log(
-      //   'MOUSEMOVE',
-      //   evt.clientX,
-      //   evt.layerX,
-      //   this.parentX,
-      //   this.colorPickerWidth,
-      //   evt.clientX - this.parentX,
-      //   evt.layerX - this.parentX,
-      // );
       this.setHandleX(evt.target, evt.clientX - this.parentX);
     },
 
     mouseupListener(evt) {
       evt.target.removeEventListener('mousemove', this.mousemoveListener, true);
       evt.target.removeEventListener('mouseup', this.mouseupListener, true);
-      // document.removeEventListener('mousemove', this.mousemoveListener, true);
-      // document.removeEventListener('mouseup', this.mouseupListener, true);
     },
 
     onHandleMouseDown(evt) {
       evt.target.addEventListener('mousemove', this.mousemoveListener, true);
       evt.target.addEventListener('mouseup', this.mouseupListener, true);
-      // document.addEventListener('mousemove', this.mousemoveListener, true);
-      // document.addEventListener('mouseup', this.mouseupListener, true);
     },
   },
 };
