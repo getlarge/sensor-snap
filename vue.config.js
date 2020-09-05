@@ -1,22 +1,5 @@
 module.exports = {
-  // publicPath: undefined,
-  // outputDir: undefined,
-  // assetsDir: "static",
-  // runtimeCompiler: true,
-  // productionSourceMap: undefined,
-  // parallel: undefined,
-  configureWebpack: {
-    // externals: {canvas: {}},
-    // externals: function(context, request, callback) {
-    //   if (/xlsx|canvg|pdfmake/.test(request)) {
-    //     return callback(null, 'commonjs ' + request);
-    //   }
-    //   callback();
-    // },
-    // output: {
-    //   libraryExport: 'default',
-    // },
-  },
+  configureWebpack: {},
   chainWebpack: config => {
     config.module
       .rule('worker')
@@ -32,18 +15,6 @@ module.exports = {
         options.fallback = false;
         return options;
       });
-    //   if (config.plugins.store.get('prefetch')) {
-    //     config.plugin('prefetch').tap(args => {
-    //       args[0].fileBlacklist = [
-    //         // /\.map$/,
-    //         /pdfmake\.[^.]+\.js$/,
-    //         /xlsx\.[^.]+\.js$/,
-    //         /fabric[^.]*\.[^.]+\.js$/,
-    //         /responsivedefaults\.[^.]+\.js$/,
-    //       ];
-    //       return args;
-    //     });
-    //   }
   },
 
   css: {

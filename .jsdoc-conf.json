@@ -1,5 +1,5 @@
 {
-  "plugins": ["node_modules/jsdoc-vue"],
+  "plugins": ["node_modules/jsdoc-vuejs", "plugins/markdown"],
   "recurseDepth": 10,
   "source": {
     "includePattern": "\\.(vue|js)$",
